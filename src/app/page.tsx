@@ -1,67 +1,268 @@
-import Image from 'next/image';
+import ColorPalette from '@/components/Color/ColorPalette';
+import Typography from '@/components/Typography/Typography';
 
 export default function Home() {
   return (
-    <div className='grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-sans sm:p-20'>
-      <main className='row-start-2 flex flex-col items-center gap-[32px] sm:items-start'>
-        <Image className='dark:invert' src='/next.svg' alt='Next.js logo' width={180} height={38} priority />
-        <ol className='list-inside list-decimal text-center font-mono text-sm/6 sm:text-left'>
-          <li className='mb-2 tracking-[-.01em]'>
-            Get started by editing{' '}
-            <code className='rounded bg-black/[.05] px-1 py-0.5 font-mono font-semibold dark:bg-white/[.06]'>src/app/page.tsx</code>.
-          </li>
-          <li className='tracking-[-.01em]'>Save and see your changes instantly.</li>
-        </ol>
+    <div className='min-h-screen space-y-8 p-8'>
+      <div className='mx-auto max-w-6xl space-y-12'>
+        {/* 헤더 섹션 */}
+        <header className='space-y-4 text-center'>
+          <Typography variant='title1-bold' as='h1'>
+            톡톡 가볍게, 당신의 할일을 말해보세요
+          </Typography>
+          <Typography variant='body1-regular' as='p'>
+            Pretendard 폰트와 컬러 시스템을 활용한 디자인 시스템
+          </Typography>
+        </header>
 
-        <div className='flex flex-col items-center gap-4 sm:flex-row'>
-          <a
-            className='bg-foreground text-background flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent px-4 text-sm font-medium transition-colors hover:bg-[#383838] sm:h-12 sm:w-auto sm:px-5 sm:text-base dark:hover:bg-[#ccc]'
-            href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            <Image className='dark:invert' src='/vercel.svg' alt='Vercel logomark' width={20} height={20} />
-            Deploy now
-          </a>
-          <a
-            className='flex h-10 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm font-medium transition-colors hover:border-transparent hover:bg-[#f2f2f2] sm:h-12 sm:w-auto sm:px-5 sm:text-base md:w-[158px] dark:border-white/[.145] dark:hover:bg-[#1a1a1a]'
-            href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className='row-start-3 flex flex-wrap items-center justify-center gap-[24px]'>
-        <a
-          className='flex items-center gap-2 hover:underline hover:underline-offset-4'
-          href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <Image aria-hidden src='/file.svg' alt='File icon' width={16} height={16} />
-          Learn
-        </a>
-        <a
-          className='flex items-center gap-2 hover:underline hover:underline-offset-4'
-          href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <Image aria-hidden src='/window.svg' alt='Window icon' width={16} height={16} />
-          Examples
-        </a>
-        <a
-          className='flex items-center gap-2 hover:underline hover:underline-offset-4'
-          href='https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <Image aria-hidden src='/globe.svg' alt='Globe icon' width={16} height={16} />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        {/* 컬러 시스템 섹션 */}
+        <section className='space-y-8'>
+          <Typography variant='title2-bold' as='h2'>
+            컬러 시스템
+          </Typography>
+
+          {/* Purple 팔레트 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Purple Scale
+            </Typography>
+            <ColorPalette
+              title=''
+              colors={[
+                'purple-50',
+                'purple-100',
+                'purple-150',
+                'purple-200',
+                'purple-300',
+                'purple-400',
+                'purple-500',
+                'purple-600',
+                'purple-700',
+                'purple-800',
+                'purple-900',
+              ]}
+            />
+          </div>
+
+          {/* Gray 팔레트 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Gray Scale
+            </Typography>
+            <ColorPalette
+              title=''
+              colors={['gray-100', 'gray-200', 'gray-300', 'gray-400', 'gray-500', 'gray-600', 'gray-700', 'gray-800', 'gray-900']}
+            />
+          </div>
+
+          {/* White */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              White
+            </Typography>
+            <ColorPalette title='' colors={['white']} />
+          </div>
+        </section>
+
+        {/* 타이포그래피 예시 섹션 */}
+        <section className='space-y-8'>
+          <Typography variant='title2-bold' as='h2'>
+            타이포그래피 시스템
+          </Typography>
+
+          {/* Count */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Count
+            </Typography>
+            <div className='rounded-lg border bg-gray-50 p-4'>
+              <Typography variant='count-bold'>1,2,3,4,5,6,7,8,9,10</Typography>
+            </div>
+          </div>
+
+          {/* Title1 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Title1
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='title1-bold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='title1-semibold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+            </div>
+          </div>
+
+          {/* Title2 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Title2
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='title2-bold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='title2-semibold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+            </div>
+          </div>
+
+          {/* Title3 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Title3
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='title3-bold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='title3-semibold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+            </div>
+          </div>
+
+          {/* Body1 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Body1
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body1-bold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body1-semibold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body1-medium'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body1-regular'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+            </div>
+          </div>
+
+          {/* Body2 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Body2
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body2-bold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body2-semibold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body2-medium-tight'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body2-medium-loose'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body2-regular'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+            </div>
+          </div>
+
+          {/* Body3 */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Body3
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body3-bold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body3-semibold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body3-medium-tight'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body3-medium-loose'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='body3-regular'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+            </div>
+          </div>
+
+          {/* Caption */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Caption
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='caption-bold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='caption-semibold'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='caption-medium'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='caption-regular'>톡톡 가볍게, 당신의 할일을 말해보세요</Typography>
+              </div>
+            </div>
+          </div>
+
+          {/* Date */}
+          <div className='space-y-4'>
+            <Typography variant='title3-semibold' as='h3'>
+              Date
+            </Typography>
+            <div className='space-y-2'>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='date-large'>1,2,3,4,5,6,7,8,9,10</Typography>
+              </div>
+              <div className='rounded-lg border bg-gray-50 p-4'>
+                <Typography variant='date-small'>1,2,3,4,5,6,7,8,9,10</Typography>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 사용법 섹션 */}
+        <section className='space-y-4'>
+          <Typography variant='title2-bold' as='h2'>
+            사용법
+          </Typography>
+          <div className='rounded-lg border border-blue-200 bg-blue-50 p-6'>
+            <Typography variant='body2-regular' as='p' className='mb-4'>
+              Typography 컴포넌트와 컬러 시스템을 사용하여 일관된 디자인을 적용할 수 있습니다.
+            </Typography>
+            <pre className='overflow-x-auto rounded bg-gray-100 p-4 text-sm'>
+              <code>{`import Typography from '@/components/Typography/Typography';
+import ColorPalette from '@/components/Color/ColorPalette';
+
+// 타이포그래피 사용
+<Typography variant="title1-bold" as="h1">
+  제목 텍스트
+</Typography>
+
+// 컬러 팔레트 사용
+<ColorPalette
+  title="Purple Scale"
+  colors={['purple-600', 'purple-500', 'purple-400']}
+/>
+
+// CSS 클래스 직접 사용
+<div className="bg-purple-600 text-white p-4">
+  컬러 적용된 요소
+</div>`}</code>
+            </pre>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
