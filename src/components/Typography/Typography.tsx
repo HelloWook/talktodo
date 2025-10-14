@@ -50,7 +50,6 @@ export const Typography = ({ variant, children, className, as: Component = 'span
         fontSize: styles.fontSize,
         fontWeight: styles.fontWeight,
         lineHeight: styles.lineHeight,
-        ...props,
       },
       ...props,
     },
