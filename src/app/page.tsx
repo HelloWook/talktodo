@@ -1,4 +1,7 @@
+'use client';
 import ColorPalette from '@/components/Color/ColorPalette';
+import ToastContainer from '@/components/Toast/ToastContainer';
+import { toastStore } from '@/components/Toast/toastStore';
 import Typography from '@/components/Typography/Typography';
 
 export default function Home() {
@@ -262,6 +265,10 @@ import ColorPalette from '@/components/Color/ColorPalette';
             </pre>
           </div>
         </section>
+
+        <button onClick={() => toastStore.addToast({ id: '1', content: 'test', handleClick: () => {} })}>toast</button>
+
+        <ToastContainer />
       </div>
     </div>
   );
