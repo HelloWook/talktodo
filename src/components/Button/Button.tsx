@@ -18,8 +18,6 @@ const sizeClasses = {
   large: 'h-[44px] rounded-[12px]',
 } as const satisfies Record<ButtonSize, string>;
 
-const baseStyle = 'flex items-center justify-center cursor-pointer px-4 text-white';
-
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: ButtonVariant;
@@ -33,7 +31,12 @@ const Button = ({ children, variant = 'primary', size = 'medium', className, dis
   return (
     <button
       {...rest}
-      className={cn(baseStyle, variantClasses[variant], sizeClasses[size], className)}
+      className={cn(
+        'flex cursor-pointer items-center justify-center px-4 text-white',
+        variantClasses[variant],
+        sizeClasses[size],
+        className,
+      )}
       disabled={disabled}
       onClick={onClick ? () => onClick() : () => {}}
     >
