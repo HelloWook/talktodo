@@ -3,6 +3,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { ToastType } from '@/components/Toast/Toast.type';
 import { toastService } from '@/components/Toast/toastService';
 
+/**
+ * 토스트를 호출 하는 훅입니다.
+ * 사용 예시:
+ * const { toasts, addToast, removeToast } = useToast();
+ * addToast('테스트 토스트');
+ * removeToast('테스트 토스트');
+ */
+
 export const useToast = () => {
   const [toasts, setToasts] = useState<ToastType[]>([]);
 
@@ -18,10 +26,18 @@ export const useToast = () => {
     };
   }, [handleToastsChange]);
 
+  const addToast = useCallback((content: string) => {
+    toastService.addToast(content);
+  }, []);
+
+  const removeToast = useCallback((id: string) => {
+    toastService.removeToast(id);
+  }, []);
+
   return {
     toasts,
-    addToast: toastService.addToast,
-    removeToast: toastService.removeToast,
+    addToast,
+    removeToast,
   };
 };
 
