@@ -40,8 +40,8 @@ export const Playground: Story = {
 export const Variants: Story = {
   render: (args) => (
     <div className='flex gap-3'>
-      {(['primary', 'secondary', 'tertiary', 'disabled'] as const).map((variant) => (
-        <Button key={variant} {...args} variant={variant} className='w-[320px]'>
+      {(['primary', 'secondary', 'tertiary', 'disabled', 'kakao', 'naver', 'google'] as const).map((variant) => (
+        <Button key={variant} {...args} variant={variant} className='w-[320px]' onClick={() => {}}>
           {variant}
         </Button>
       ))}
@@ -56,7 +56,7 @@ export const Sizes: Story = {
   render: (args) => (
     <div className='flex items-end gap-3'>
       {(['small', 'medium', 'large'] as const).map((size) => (
-        <Button key={size} {...args} size={size}>
+        <Button key={size} {...args} size={size} onClick={() => {}}>
           {size}
         </Button>
       ))}
