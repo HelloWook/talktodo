@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import './globals.css';
+import ToastContainer from '@/components/Toast/ToastContainer';
+
 import { Providers } from './providers';
 
 const pretendard = localFont({
@@ -45,6 +47,9 @@ export default function RootLayout({
     <html lang='ko'>
       <body className={`${pretendard.variable} antialiased`}>
         <Providers>{children}</Providers>
+
+        <div id='toast-container' />
+        <ToastContainer />
       </body>
     </html>
   );
