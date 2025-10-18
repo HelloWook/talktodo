@@ -27,7 +27,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   className?: string;
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Button = ({ children, variant = 'primary', size = 'medium', className, disabled = false, onClick, ...rest }: ButtonProps) => {
