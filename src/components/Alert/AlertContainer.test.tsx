@@ -1,5 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
+import { act } from 'react';
+
 import AlertContainer from './AlertContainer';
 import { AlertSubject } from './AlertSubject';
 
@@ -31,10 +33,12 @@ describe('AlertContainer', () => {
     render(<AlertContainer />);
 
     const alertSubject = AlertSubject.getInstance();
-    alertSubject.addAlert({
-      id: 1,
-      message: '테스트 알림',
-      handleClick: jest.fn(),
+    act(() => {
+      alertSubject.addAlert({
+        id: 1,
+        message: '테스트 알림',
+        handleClick: jest.fn(),
+      });
     });
 
     await waitFor(() => {
