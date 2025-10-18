@@ -26,10 +26,18 @@ export const useToast = () => {
     };
   }, [handleToastsChange]);
 
+  const addToast = useCallback((content: string) => {
+    toastService.addToast(content);
+  }, []);
+
+  const removeToast = useCallback((id: string) => {
+    toastService.removeToast(id);
+  }, []);
+
   return {
     toasts,
-    addToast: toastService.addToast,
-    removeToast: toastService.removeToast,
+    addToast,
+    removeToast,
   };
 };
 
