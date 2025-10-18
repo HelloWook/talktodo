@@ -1,10 +1,11 @@
 'use client';
-import ColorPalette from '@/components/Color/ColorPalette';
-import ToastContainer from '@/components/Toast/ToastContainer';
-import { toastStore } from '@/components/Toast/toastStore';
-import Typography from '@/components/Typography/Typography';
+import { ColorPalette } from '@/components/Color/ColorPalette';
+import { Typography } from '@/components/Typography/Typography';
+import { useToast } from '@/hooks/useToast';
 
 export default function Home() {
+  const { addToast } = useToast();
+
   return (
     <div className='min-h-screen space-y-8 p-8'>
       <div className='mx-auto max-w-6xl space-y-12'>
@@ -266,9 +267,7 @@ import ColorPalette from '@/components/Color/ColorPalette';
           </div>
         </section>
 
-        <button onClick={() => toastStore.addToast({ id: '1', content: 'test', handleClick: () => {} })}>toast</button>
-
-        <ToastContainer />
+        <button onClick={() => addToast('테스트 토스트입니다!')}>토스트 테스트</button>
       </div>
     </div>
   );

@@ -1,44 +1,28 @@
 'use client';
-import { useEffect, useSyncExternalStore } from 'react';
 
-import { toastStore } from './toastStore';
+import { createPortal } from 'react-dom';
 
-type Toast = {
-  id: string;
-  content: string;
-  handleClick: () => void;
-};
+import useMount from '@/hooks/useMount';
+import { useToast } from '@/hooks/useToast';
 
-const useToastHook = () => {
-  return useSyncExternalStore(
-    () => toastStore.subscribe(() => {}),
-    () => toastStore.get(),
-    () => toastStore.get(),
-  );
-};
-
-const Toast = ({ toast }: { toast: Toast }) => {
-  return <div>{toast.content}</div>;
-};
-
-const MAX_TOASTS = 3;
-const MAX_TOAST_DURATION = 3000;
+import Toast from './Toast';
 
 const ToastContainer = () => {
-  const toasts = useToastHook();
+  const isMounted = useMount();
+  const { toasts } = useToast();
 
-  useEffect(() => {
-    setTimeout(() => {
-      toastStore.set(toasts.slice(1));
-    }, MAX_TOAST_DURATION);
-  });
+  if (!isMounted) return null;
 
-  return (
-    <div>
-      {toasts.map((toast) => (
-        <Toast key={toast.id} toast={toast} />
-      ))}
-    </div>
+  return createPortal(
+    <div className='fixed top-4 left-1/2 z-50 flex -translate-x-1/2 transform flex-col items-center gap-2 space-y-2'>
+      {toasts
+        .slice()
+        .reverse()
+        .map((toast) => (
+          <Toast key={toast.id} id={toast.id} content={toast.content} />
+        ))}
+    </div>,
+    document.getElementById('toast-container') as HTMLElement,
   );
 };
 
