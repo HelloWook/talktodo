@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
+import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -14,8 +15,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
     NaverProvider({
-      clientId: process.env.NAVER_CLIENT_ID!,
-      clientSecret: process.env.NAVER_CLIENT_SECRET!,
+      clientId: process.env.NAVER_CLIENT_ID,
+      clientSecret: process.env.NAVER_CLIENT_SECRET,
+    }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET,
     }),
   ],
   session: {

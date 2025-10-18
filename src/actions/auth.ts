@@ -11,5 +11,5 @@ export async function signInWithNaver() {
 }
 
 export async function signInWithKakao() {
-  await signIn('kakao');
+  await signIn('kakao', { redirectTo: '/' });
 }
