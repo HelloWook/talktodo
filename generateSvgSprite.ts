@@ -8,7 +8,7 @@ import { optimize, type Config as SVGOConfig } from 'svgo';
 
 // 아이콘 파일 모으기
 const svgFiles = globSync('assets/icons/*.svg');
-const brandIcons = ['kakao', 'google', 'naver', 'logo', 'image', 'profile'];
+const brandIcons = ['kakao', 'google', 'naver', 'logo', 'image', 'profile', 'alert'];
 
 const svgoConfig: SVGOConfig = {
   multipass: true,
