@@ -20,7 +20,7 @@ const sizeClasses = {
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: ButtonVariant;
+  variant: ButtonVariant;
   size?: ButtonSize;
   className?: string;
   disabled?: boolean;
