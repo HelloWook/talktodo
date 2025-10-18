@@ -51,10 +51,12 @@ describe('AlertContainer', () => {
     render(<AlertContainer />);
 
     const alertSubject = AlertSubject.getInstance();
-    alertSubject.addAlert({
-      id: 1,
-      message: '테스트 알림',
-      handleClick: mockHandleClick,
+    act(() => {
+      alertSubject.addAlert({
+        id: 1,
+        message: '테스트 알림',
+        handleClick: mockHandleClick,
+      });
     });
 
     await waitFor(() => {
