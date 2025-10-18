@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import './globals.css';
+import AlertContainer from '@/components/Alert/AlertContainer';
 import ToastContainer from '@/components/Toast/ToastContainer';
 
 import { Providers } from './providers';
@@ -49,7 +50,9 @@ export default function RootLayout({
         <Providers>{children}</Providers>
 
         <div id='toast-container' />
+        <div id='alert-root' />
         <ToastContainer />
+        <AlertContainer />
       </body>
     </html>
   );
