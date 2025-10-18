@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/nextjs-vite';
 import '../src/app/globals.css';
+import './preview.css';
 import { AppRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 const preview: Preview = {
@@ -27,9 +28,7 @@ const preview: Preview = {
 
       return (
         <AppRouterContext.Provider value={mockedRouter}>
-          <div>
-            <Story />
-          </div>
+          <Story />
         </AppRouterContext.Provider>
       );
     },

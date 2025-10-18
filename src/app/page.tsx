@@ -1,7 +1,11 @@
-import ColorPalette from '@/components/Color/ColorPalette';
-import Typography from '@/components/Typography/Typography';
+'use client';
+import { ColorPalette } from '@/components/Color/ColorPalette';
+import { Typography } from '@/components/Typography/Typography';
+import { useToast } from '@/hooks/useToast';
 
 export default function Home() {
+  const { addToast } = useToast();
+
   return (
     <div className='min-h-screen space-y-8 p-8'>
       <div className='mx-auto max-w-6xl space-y-12'>
@@ -262,6 +266,8 @@ import ColorPalette from '@/components/Color/ColorPalette';
             </pre>
           </div>
         </section>
+
+        <button onClick={() => addToast('테스트 토스트입니다!')}>토스트 테스트</button>
       </div>
     </div>
   );
