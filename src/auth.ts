@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
+import NaverProvider from 'next-auth/providers/naver';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -11,6 +12,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           prompt: 'consent',
         },
       },
+    }),
+    NaverProvider({
+      clientId: process.env.NAVER_CLIENT_ID!,
+      clientSecret: process.env.NAVER_CLIENT_SECRET!,
     }),
   ],
   session: {
@@ -32,5 +37,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session: async ({ session, token }) => {
       return session;
     },
+  },
+  pages: {
+    error: '/login',
   },
 });

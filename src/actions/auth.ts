@@ -7,7 +7,7 @@ export async function signInWithGoogle() {
 }
 
 export async function signInWithNaver() {
-  await signIn('naver');
+  await signIn('naver', { redirectTo: '/' });
 }
 
 export async function signInWithKakao() {
