@@ -1,6 +1,6 @@
 'use client';
 import { ColorPalette } from '@/components/Color/ColorPalette';
-import { Typography } from '@/components/Typography/Typography';
+import Typography from '@/components/Typography/Typography';
 import { useToast } from '@/hooks/useToast';
 
 export default function Home() {
