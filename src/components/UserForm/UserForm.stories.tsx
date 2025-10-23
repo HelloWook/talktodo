@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { useRef } from 'react';
 
 import UserForm from './UserForm';
 
@@ -8,9 +9,9 @@ const meta: Meta<typeof UserForm> = {
   parameters: {
     layout: 'centered',
     backgrounds: {
-      default: 'light',
+      default: 'gray',
       values: [
-        { name: 'light', value: '#f5f5f5' },
+        { name: 'gray', value: '#f5f5f5' },
         { name: 'dark', value: '#333333' },
       ],
     },
@@ -26,88 +27,143 @@ export default meta;
 type Story = StoryObj<typeof UserForm>;
 
 export const Default: Story = {
-  render: (args) => (
-    <UserForm {...args}>
-      <UserForm.Title title='마이 페이지' />
-      <UserForm.ProfileUpload />
-      <UserForm.FieldGroup fieldName='이름' placeholder='이름을 입력하세요' />
-      <UserForm.FieldGroup fieldName='이메일' placeholder='이메일을 입력하세요' />
-      <UserForm.FormButton>로그인</UserForm.FormButton>
-    </UserForm>
-  ),
-};
+  render: (args) => {
+    const imageRef = useRef<HTMLInputElement>(null);
 
-export const WithCustomTitle: Story = {
-  render: (args) => (
-    <UserForm {...args}>
-      <UserForm.Title title='회원가입' />
-      <UserForm.ProfileUpload />
-      <UserForm.FieldGroup fieldName='이름' placeholder='이름을 입력하세요' />
-      <UserForm.FieldGroup fieldName='이메일' placeholder='이메일을 입력하세요' />
-      <UserForm.FieldGroup fieldName='비밀번호' placeholder='비밀번호를 입력하세요' type='password' />
-      <UserForm.FormButton>회원가입</UserForm.FormButton>
-    </UserForm>
-  ),
+    return (
+      <UserForm {...args}>
+        <UserForm.Title title='회원가입' />
+        <UserForm.FieldGroup fieldName='이메일' type='email' placeholder='이메일을 입력하세요' />
+        <UserForm.FieldGroup fieldName='비밀번호' type='password' placeholder='비밀번호를 입력하세요' />
+        <UserForm.FormButton>가입하기</UserForm.FormButton>
+      </UserForm>
+    );
+  },
+  args: {
+    onSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+  },
 };
 
 export const LoginForm: Story = {
-  render: (args) => (
-    <UserForm {...args}>
-      <UserForm.Title title='로그인' />
-      <UserForm.FieldGroup fieldName='이메일' placeholder='이메일을 입력하세요' />
-      <UserForm.FieldGroup fieldName='비밀번호' placeholder='비밀번호를 입력하세요' type='password' />
-      <UserForm.FormButton>로그인</UserForm.FormButton>
-    </UserForm>
-  ),
+  render: (args) => {
+    return (
+      <UserForm {...args}>
+        <UserForm.Title title='로그인' />
+        <UserForm.FieldGroup fieldName='이메일' type='email' placeholder='이메일을 입력하세요' />
+        <UserForm.FieldGroup fieldName='비밀번호' type='password' placeholder='비밀번호를 입력하세요' />
+        <UserForm.FormButton>로그인</UserForm.FormButton>
+      </UserForm>
+    );
+  },
+  args: {
+    onSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+  },
 };
 
-export const ProfileEdit: Story = {
-  render: (args) => (
-    <UserForm {...args}>
-      <UserForm.Title title='프로필 수정' />
-      <UserForm.ProfileUpload />
-      <UserForm.FieldGroup fieldName='이름' placeholder='이름을 입력하세요' defaultValue='홍길동' />
-      <UserForm.FieldGroup fieldName='이메일' placeholder='이메일을 입력하세요' defaultValue='hong@example.com' />
-      <UserForm.FieldGroup fieldName='전화번호' placeholder='전화번호를 입력하세요' />
-      <UserForm.FormButton>저장</UserForm.FormButton>
-    </UserForm>
-  ),
+export const WithProfileUpload: Story = {
+  render: (args) => {
+    const imageRef = useRef<HTMLInputElement>(null);
+
+    return (
+      <UserForm {...args}>
+        <UserForm.Title title='프로필 수정' />
+        <UserForm.FieldGroup fieldName='이름' type='text' placeholder='이름을 입력하세요'>
+          <UserForm.UserProfileUpload imageRef={imageRef} />
+        </UserForm.FieldGroup>
+        <UserForm.FieldGroup fieldName='이메일' type='email' placeholder='이메일을 입력하세요' />
+        <UserForm.FormButton>저장하기</UserForm.FormButton>
+      </UserForm>
+    );
+  },
+  args: {
+    onSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+  },
 };
 
-export const WithDisabledFields: Story = {
-  render: (args) => (
-    <UserForm {...args}>
-      <UserForm.Title title='회원 정보' />
-      <UserForm.ProfileUpload />
-      <UserForm.FieldGroup fieldName='이름' placeholder='이름을 입력하세요' disabled />
-      <UserForm.FieldGroup fieldName='이메일' placeholder='이메일을 입력하세요' disabled />
-      <UserForm.FormButton>수정하기</UserForm.FormButton>
-    </UserForm>
-  ),
+export const CompleteRegistrationForm: Story = {
+  render: (args) => {
+    const imageRef = useRef<HTMLInputElement>(null);
+
+    return (
+      <UserForm {...args}>
+        <UserForm.Title title='회원 정보 입력' />
+        <UserForm.FieldGroup fieldName='이름' type='text' placeholder='이름을 입력하세요'>
+          <UserForm.UserProfileUpload imageRef={imageRef} />
+        </UserForm.FieldGroup>
+        <UserForm.FieldGroup fieldName='이메일' type='email' placeholder='example@email.com' />
+        <UserForm.FieldGroup fieldName='비밀번호' type='password' placeholder='비밀번호를 입력하세요' />
+        <UserForm.FieldGroup fieldName='비밀번호 확인' type='password' placeholder='비밀번호를 다시 입력하세요' />
+        <UserForm.FormButton>회원가입 완료</UserForm.FormButton>
+      </UserForm>
+    );
+  },
+  args: {
+    onSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+  },
 };
 
-export const Components: Story = {
-  render: () => (
-    <div className='space-y-8'>
-      <div>
-        <h3 className='mb-4 text-lg font-semibold'>Title Component</h3>
-        <UserForm.Title title='제목 예시' />
-      </div>
+export const MinimalForm: Story = {
+  render: (args) => {
+    return (
+      <UserForm {...args}>
+        <UserForm.Title title='간단 로그인' />
+        <UserForm.FieldGroup fieldName='이메일' type='email' placeholder='이메일' />
+        <UserForm.FormButton>로그인</UserForm.FormButton>
+      </UserForm>
+    );
+  },
+  args: {
+    onSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+  },
+};
 
-      <div>
-        <h3 className='mb-4 text-lg font-semibold'>FieldGroup Component</h3>
-        <UserForm.FieldGroup fieldName='테스트 필드' placeholder='입력하세요' />
-      </div>
+export const WithDefaultValues: Story = {
+  render: (args) => {
+    return (
+      <UserForm {...args}>
+        <UserForm.Title title='정보 수정' />
+        <UserForm.FieldGroup fieldName='이름' type='text' placeholder='이름' defaultValue='홍길동' />
+        <UserForm.FieldGroup fieldName='이메일' type='email' placeholder='이메일' defaultValue='hong@example.com' />
+        <UserForm.FieldGroup fieldName='전화번호' type='tel' placeholder='전화번호' defaultValue='010-1234-5678' />
+        <UserForm.FormButton>수정 완료</UserForm.FormButton>
+      </UserForm>
+    );
+  },
+  args: {
+    onSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+  },
+};
 
-      <div>
-        <h3 className='mb-4 text-lg font-semibold'>FormButton Component</h3>
-        <UserForm.FormButton>버튼 예시</UserForm.FormButton>
-      </div>
+export const Playground: Story = {
+  render: (args) => {
+    const imageRef = useRef<HTMLInputElement>(null);
 
-      <div>
-        <h3 className='mb-4 text-lg font-semibold'>ProfileUpload Component</h3>
-        <UserForm.ProfileUpload />
-      </div>
-    </div>
-  ),
+    return (
+      <UserForm {...args}>
+        <UserForm.Title title='폼 테스트' />
+        <UserForm.FieldGroup fieldName='텍스트' type='text' placeholder='텍스트를 입력하세요'>
+          <UserForm.UserProfileUpload imageRef={imageRef} />
+        </UserForm.FieldGroup>
+        <UserForm.FieldGroup fieldName='이메일' type='email' placeholder='이메일을 입력하세요' />
+        <UserForm.FormButton>제출</UserForm.FormButton>
+      </UserForm>
+    );
+  },
+  args: {
+    onSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+  },
 };

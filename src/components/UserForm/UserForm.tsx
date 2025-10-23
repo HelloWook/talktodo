@@ -1,19 +1,21 @@
 'use client';
-import Image from 'next/image';
 
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import Typography from '../Typography/Typography';
+import ProfileUpload from './ProfileUpload/ProfileUpload';
+
 interface UserFormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
 }
 
-const UserForm = ({ children, ...props }: UserFormProps) => {
+interface UserFormTitleProps {
+  onSubmit: () => void;
+}
+
+const UserForm = ({ children, onSubmit, ...props }: UserFormProps) => {
   return (
-    <form
-      {...props}
-      className='h-[613px] w-[90%] max-w-[640px] rounded-[28px] bg-[var(--color-white)] pt-[56px] pr-[32px] pb-[40px] pl-[32px]'
-    >
+    <form {...props} className='h-[613px] w-[90%] max-w-[640px] rounded-[28px] bg-[var(--color-white)] p-10' onSubmit={onSubmit}>
       {children}
     </form>
   );
@@ -23,17 +25,21 @@ interface AuthFormTitleProps {
   title: string;
 }
 
-const ProfileUpload = () => {
+interface UserProfileUploadProps {
+  imageRef: React.RefObject<HTMLInputElement | null>;
+}
+
+const UserProfileUpload = ({ imageRef }: UserProfileUploadProps) => {
   return (
     <div>
-      <Image src='/img/profile.png' alt='profile' width={100} height={100} />
+      <ProfileUpload imageRef={imageRef} />
     </div>
   );
 };
 
 const AuthFormTitle = ({ title }: AuthFormTitleProps) => {
   return (
-    <Typography variant='title1-bold' as='h1' className='mb-6'>
+    <Typography variant='title1-semibold' as='h1' className='mb-6'>
       {title}
     </Typography>
   );
@@ -60,10 +66,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-const FormButton = ({ children, onClick, ...props }: ButtonProps) => {
+const FormButton = ({ children, ...props }: ButtonProps) => {
   return (
-    <Button variant='primary' size='medium' className='mt-4' onClick={onClick} {...props} type='submit'>
-      <Typography variant='body2-bold' as='span' className='text-white'>
+    <Button variant='primary' size='medium' {...props} type='submit' onClick={() => {}}>
+      <Typography variant='body2-bold' as='span'>
         {children}
       </Typography>
     </Button>
@@ -73,5 +79,5 @@ const FormButton = ({ children, onClick, ...props }: ButtonProps) => {
 UserForm.Title = AuthFormTitle;
 UserForm.FieldGroup = FieldGroup;
 UserForm.FormButton = FormButton;
-UserForm.ProfileUpload = ProfileUpload;
+UserForm.UserProfileUpload = UserProfileUpload;
 export default UserForm;
