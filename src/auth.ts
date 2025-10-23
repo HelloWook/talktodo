@@ -36,7 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const { email, name, picture } = profile as { email: string; name: string; picture: string };
 
         await userService.createUser({
-          email: email,
+          email: email + '@google.com',
           nickname: name,
           image: picture,
         });
@@ -45,15 +45,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider === 'naver') {
         const { email, name, image } = profile?.response as { email: string; name: string; image: string };
         await userService.createUser({
-          email: email,
+          email: email + '@naver.com',
           nickname: name,
           image: image,
         });
       }
 
       if (account?.provider === 'kakao') {
-        console.log(profile);
-        const { id, nickname, profile_image } = profile as { id: string; nickname: string; profile_image: string };
+        const { nickname, profile_image } = profile?.properties as { nickname: string; profile_image: string };
+        const { email } = profile?.kakao_account as { email: string };
+        await userService.createUser({
+          email: email + '@kakao.com',
+          nickname: nickname,
+          image: profile_image,
+        });
       }
 
       return true;
