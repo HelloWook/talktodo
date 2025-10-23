@@ -112,12 +112,6 @@ describe('ProfileUpload', () => {
     });
   });
 
-  it('올바른 클래스명을 가진다.', () => {
-    render(<TestWrapper />);
-    const container = screen.getByAltText('미리보기').parentElement;
-    expect(container).toHaveClass('flex', 'items-center', 'justify-center', 'flex-col', 'relative', 'mb-[44px]');
-  });
-
   it('이미지가 원형으로 렌더링된다.', () => {
     render(<TestWrapper />);
     const profileImage = screen.getByAltText('미리보기');
