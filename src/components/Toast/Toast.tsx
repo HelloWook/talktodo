@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import { Typography } from '../Typography/Typography';
+import Typography from '../Typography/Typography';
 
 interface ToastProps {
   id: string;

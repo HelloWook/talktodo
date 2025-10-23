@@ -8,7 +8,7 @@ import { TypographyProps, getTypographyStyles } from './typography.types';
  * Typography Component
  * 폰트 디자인 시스템을 활용한 타이포그래피 컴포넌트
  */
-export const Typography = ({ variant, children, className, as: Component = 'span', ...props }: TypographyProps) => {
+const Typography = ({ variant, children, className, as: Component = 'span', ...props }: TypographyProps) => {
   const styles = getTypographyStyles(variant);
 
   return React.createElement(

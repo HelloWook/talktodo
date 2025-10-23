@@ -2,7 +2,7 @@ import { ReactNode, ButtonHTMLAttributes } from 'react';
 
 import { cn } from '@/utils/cn';
 
-type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'disabled';
+type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'disabled' | 'kakao' | 'naver' | 'google';
 type ButtonSize = 'small' | 'medium' | 'large';
 
 const variantClasses = {
@@ -10,11 +10,14 @@ const variantClasses = {
   secondary: 'bg-purple-700 hover:!bg-purple-200 hover:!text-purple-500',
   tertiary: 'bg-purple-800 hover:!bg-purple-300 hover:!text-purple-500',
   disabled: 'bg-gray-300 hover:!bg-gray-100 hover:!text-gray-400',
+  kakao: 'bg-[#fee500] ',
+  naver: 'bg-[#00de63]',
+  google: 'bg-[#ffffff]',
 } as const satisfies Record<ButtonVariant, string>;
 
 const sizeClasses = {
-  small: 'h-[56px] rounded-[16px] ds-typo-body1-bold',
-  medium: 'h-[50px]  rounded-[12px] ds-typo-body2-bold',
+  small: 'h-[56px] rounded-[16px] ',
+  medium: 'h-[50px]  rounded-[12px] ',
   large: 'h-[44px] rounded-[12px]',
 } as const satisfies Record<ButtonSize, string>;
 
