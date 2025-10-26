@@ -13,7 +13,7 @@ const MyPageForm = () => {
         <UserForm.UserProfileUpload imageRef={imageRef} />
         <UserForm.FieldGroup fieldName='이름' />
         <UserForm.FieldGroup fieldName='이메일' />
-        <UserForm.FormButton className='w-full'>로그인</UserForm.FormButton>
+        <UserForm.FormButton className='w-full'>저장</UserForm.FormButton>
       </UserForm>
     </>
   );

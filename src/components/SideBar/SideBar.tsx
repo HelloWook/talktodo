@@ -15,13 +15,12 @@ interface Goal {
 }
 
 interface SidebarProps {
-  onFoldToggle: () => void;
   userNickname: string;
   userEmail: string;
   goals: Goal[] | string[];
 }
 
-const SideBar = ({ onFoldToggle: _onFoldToggle, userNickname, userEmail, goals }: SidebarProps) => {
+const SideBar = ({ userNickname, userEmail, goals }: SidebarProps) => {
   const [isFold, setIsFold] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -52,7 +51,7 @@ const SideBar = ({ onFoldToggle: _onFoldToggle, userNickname, userEmail, goals }
   };
 
   return (
-    <aside className={'h-full p-5'}>
+    <aside className={'absolute top-0 left-0 h-full p-5'}>
       <div
         className={`scrollbar-hide box-border flex h-full flex-col items-center justify-between ${!isFold && 'overflow-y-scroll'} rounded-[20px] bg-white shadow-[0px_0px_12px_0px_rgba(235,235,235,1.00)] transition-all duration-300 ${isFold ? 'w-20' : 'w-64'}`}
       >

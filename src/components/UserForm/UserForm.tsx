@@ -15,7 +15,7 @@ interface UserFormTitleProps {
 
 const UserForm = ({ children, onSubmit, ...props }: UserFormProps) => {
   return (
-    <form {...props} className='h-[613px] w-[90%] max-w-[640px] rounded-[28px] bg-[var(--color-white)] p-10' onSubmit={onSubmit}>
+    <form {...props} className='h-[613px] w-[90%] max-w-[640px] rounded-[28px] bg-[var(--color-white)] p-10 shadow' onSubmit={onSubmit}>
       {children}
     </form>
   );
