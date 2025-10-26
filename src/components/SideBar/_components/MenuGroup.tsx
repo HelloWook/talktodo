@@ -20,7 +20,7 @@ interface MenuGroupProps {
 
 export default function MenuGroup({ title, icon, items, isFold, onTitleClick }: MenuGroupProps) {
   return (
-    <div className={`flex w-full flex-col justify-center border-b border-gray-200 py-5 ${items.length > 0 ? `gap-3` : ''}`}>
+    <div className={`flex w-full flex-col justify-center border-b border-gray-200 py-5 ${items.length > 0 && !isFold && `gap-3`}`}>
       {/* 메뉴 그룹 헤더 */}
       <button className={`flex cursor-pointer items-center ${isFold ? 'justify-center' : 'gap-1'}`} onClick={onTitleClick}>
         <Icon name={icon} className='h-8 w-8' />
