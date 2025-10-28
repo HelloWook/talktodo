@@ -35,10 +35,12 @@ const Fab = ({ items, size, className }: FabProps) => {
           <Icon name='plus' className={cn('text-white transition-transform duration-200', showItems && 'rotate-[45deg]')} />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' side='top'>
+      <DropdownMenuContent align='end' side='top' className='border-0'>
         <DropdownMenuGroup>
           {items.map((item) => (
-            <DropdownMenuItem key={item}>{item}</DropdownMenuItem>
+            <DropdownMenuItem key={item} className='cursor-pointer'>
+              {item}
+            </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>

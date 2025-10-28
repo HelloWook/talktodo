@@ -1,4 +1,5 @@
 'use client';
+import Fab from '@/components/Fab/Fab';
 import SideBar from '@/components/SideBar/SideBar';
 
 export default function Home() {
@@ -26,6 +27,8 @@ export default function Home() {
           '코딩하기',
         ]}
       />
+
+      <Fab items={['item1', 'item2', 'item3']} size='small' className='absolute right-10 bottom-10' />
     </div>
   );
 }
