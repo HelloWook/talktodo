@@ -14,7 +14,7 @@ const Alert = ({ message, handleClick }: AlertProps) => {
       animate={{ opacity: 1, y: -10 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
-      <Icon name='alert' className='h-6 w-6 fill-purple-100' ariaLabel='alert' />
+      <Icon name='alert' className='h-6 w-6 fill-purple-100' />
       <Typography variant='body2-semibold' className='text-primary flex-1 text-nowrap'>
         {message}
       </Typography>
