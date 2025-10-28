@@ -1,15 +1,10 @@
 'use client';
 import SideBar from '@/components/SideBar/SideBar';
 
-import { useToast } from '@/hooks/useToast';
-
 export default function Home() {
-  const { addToast } = useToast();
-
   return (
     <div className='h-screen w-screen'>
       <SideBar
-        onFoldToggle={() => {}}
         userNickname='John Doe'
         userEmail='john.doe@example.com'
         goals={[
