@@ -2,13 +2,14 @@ import { ReactNode, ButtonHTMLAttributes } from 'react';
 
 import { cn } from '@/utils/cn';
 
-type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'disabled' | 'kakao' | 'naver' | 'google';
+type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'disabled' | 'kakao' | 'naver' | 'google' | 'quaternary';
 type ButtonSize = 'small' | 'medium' | 'large';
 
 const variantClasses = {
   primary: 'bg-primary hover:bg-purple-100 hover:!text-purple-500',
   secondary: 'bg-purple-700 hover:!bg-purple-200 hover:!text-purple-500',
   tertiary: 'bg-purple-800 hover:!bg-purple-300 hover:!text-purple-500',
+  quaternary: 'border-purple-400 bg-white hover:!bg-purple-50 active:!bg-purple-100',
   disabled: 'bg-gray-300 hover:!bg-gray-100 hover:!text-gray-400',
   kakao: 'bg-[#fee500] ',
   naver: 'bg-[#00de63]',
@@ -26,11 +27,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: ButtonVariant;
   size?: ButtonSize;
   className?: string;
-  disabled?: boolean;
-  onClick?: () => void;
 }
 
-const Button = ({ children, variant = 'primary', size = 'medium', className, disabled = false, onClick, ...rest }: ButtonProps) => {
+const Button = ({ children, variant = 'primary', size = 'medium', className, ...rest }: ButtonProps) => {
   return (
     <button
       {...rest}
@@ -40,8 +39,6 @@ const Button = ({ children, variant = 'primary', size = 'medium', className, dis
         sizeClasses[size],
         className,
       )}
-      disabled={disabled}
-      onClick={onClick ? () => onClick() : () => {}}
     >
       {children}
     </button>
