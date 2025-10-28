@@ -1,7 +1,8 @@
-type Priority = 'low' | 'medium' | 'high';
-
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Priority } from '@/types/Task';
 import { cn } from '@/utils/cn';
+
+import Dot from '../Dot/Dot';
 
 interface SelectProirtyProps {
   onChange: (priority: Priority) => void;
@@ -16,16 +17,16 @@ const SelectProirty = ({ onChange, className }: SelectProirtyProps) => {
       </SelectTrigger>
       <SelectContent className='border-0'>
         <SelectGroup>
-          <SelectItem value='high'>
-            <div className='h-2 w-2 rounded-full bg-red-500' />
+          <SelectItem value='중요'>
+            <Dot priority='중요' className='h-2 w-2' />
             중요
           </SelectItem>
-          <SelectItem value='medium'>
-            <div className='h-2 w-2 rounded-full bg-yellow-500' />
+          <SelectItem value='보통'>
+            <Dot priority='보통' className='h-2 w-2' />
             보통
           </SelectItem>
-          <SelectItem value='low'>
-            <div className='h-2 w-2 rounded-full bg-green-500' />
+          <SelectItem value='낮음'>
+            <Dot priority='낮음' className='h-2 w-2' />
             낮음
           </SelectItem>
         </SelectGroup>
