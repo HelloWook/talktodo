@@ -50,9 +50,6 @@ const meta: Meta<typeof Icon> = {
     className: {
       control: { type: 'text' },
     },
-    ariaLabel: {
-      control: { type: 'text' },
-    },
   },
 };
 
@@ -63,7 +60,6 @@ type Story = StoryObj<typeof Icon>;
 export const Playground: Story = {
   args: {
     name: 'home',
-    ariaLabel: '홈 아이콘',
   },
 };
 
@@ -166,10 +162,10 @@ export const Colors: Story = {
 export const NavigationIcons: Story = {
   render: () => (
     <div className='flex items-center gap-4'>
-      <Icon name='home' ariaLabel='홈' />
-      <Icon name='calendar' ariaLabel='캘린더' />
-      <Icon name='timeline' ariaLabel='타임라인' />
-      <Icon name='profile' ariaLabel='프로필' />
+      <Icon name='home' />
+      <Icon name='calendar' />
+      <Icon name='timeline' />
+      <Icon name='profile' />
     </div>
   ),
 };
@@ -177,10 +173,10 @@ export const NavigationIcons: Story = {
 export const ActionIcons: Story = {
   render: () => (
     <div className='flex items-center gap-4'>
-      <Icon name='plus' ariaLabel='추가' />
-      <Icon name='delete' ariaLabel='삭제' />
-      <Icon name='close' ariaLabel='닫기' />
-      <Icon name='send' ariaLabel='전송' />
+      <Icon name='plus' aria-label='추가' />
+      <Icon name='delete' aria-label='삭제' />
+      <Icon name='close' aria-label='닫기' />
+      <Icon name='send' aria-label='전송' />
     </div>
   ),
 };
@@ -188,9 +184,9 @@ export const ActionIcons: Story = {
 export const SocialIcons: Story = {
   render: () => (
     <div className='flex items-center gap-4'>
-      <Icon name='google' ariaLabel='구글' />
-      <Icon name='kakao' ariaLabel='카카오' />
-      <Icon name='naver' ariaLabel='네이버' />
+      <Icon name='google' aria-label='구글' />
+      <Icon name='kakao' aria-label='카카오' />
+      <Icon name='naver' aria-label='네이버' />
     </div>
   ),
 };

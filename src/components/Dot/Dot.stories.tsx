@@ -29,15 +29,15 @@ export const AllPriorities: Story = {
   render: () => (
     <div className='flex items-center gap-4'>
       <div className='flex flex-col items-center gap-2'>
-        <Dot priority='low' className='h-4 w-4' />
+        <Dot priority='낮음' className='h-4 w-4' />
         <span className='text-xs text-gray-600'>낮음</span>
       </div>
       <div className='flex flex-col items-center gap-2'>
-        <Dot priority='medium' className='h-4 w-4' />
+        <Dot priority='보통' className='h-4 w-4' />
         <span className='text-xs text-gray-600'>보통</span>
       </div>
       <div className='flex flex-col items-center gap-2'>
-        <Dot priority='high' className='h-4 w-4' />
+        <Dot priority='중요' className='h-4 w-4' />
         <span className='text-xs text-gray-600'>중요</span>
       </div>
     </div>
@@ -55,15 +55,15 @@ export const CustomSize: Story = {
   render: () => (
     <div className='flex items-center gap-4'>
       <div className='flex flex-col items-center gap-2'>
-        <Dot priority='high' className='h-2 w-2' />
+        <Dot priority='중요' className='h-2 w-2' />
         <span className='text-xs text-gray-600'>Small</span>
       </div>
       <div className='flex flex-col items-center gap-2'>
-        <Dot priority='high' className='h-4 w-4' />
+        <Dot priority='보통' className='h-4 w-4' />
         <span className='text-xs text-gray-600'>Medium</span>
       </div>
       <div className='flex flex-col items-center gap-2'>
-        <Dot priority='high' className='h-6 w-6' />
+        <Dot priority='중요' className='h-6 w-6' />
         <span className='text-xs text-gray-600'>Large</span>
       </div>
     </div>
@@ -79,7 +79,7 @@ export const CustomSize: Story = {
 
 export const Interactive: Story = {
   args: {
-    priority: 'medium',
+    priority: '보통',
     className: 'h-4 w-4',
   },
   parameters: {
