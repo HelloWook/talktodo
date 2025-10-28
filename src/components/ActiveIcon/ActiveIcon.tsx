@@ -9,7 +9,7 @@ interface ActiveIconProps {
 
 const ActiveIcon = ({ active, className }: ActiveIconProps) => {
   const activeStyle = active ? 'fill-purple-200 text-purple-500' : 'fill-white text-purple-500';
-  return <Icon name={'active'} className={cn(activeStyle, className)} />;
+  return <Icon role='status' name={'active'} className={cn(activeStyle, className)} />;
 };
 
 export default ActiveIcon;

@@ -46,15 +46,16 @@ const Card = ({ className, children }: CardProps) => {
   const { task } = useCardContext();
 
   return (
-    <div
+    <article
       className={cn(
         'flex flex-col gap-2 rounded-lg border border-transparent p-4 shadow hover:border hover:border-purple-300',
         task.isDone ? 'bg-purple-200' : 'bg-white',
         className,
       )}
+      aria-label={`작업: ${task.title}`}
     >
       {children}
-    </div>
+    </article>
   );
 };
 
@@ -129,10 +130,15 @@ const CardItem = ({ className }: CardItemProps) => {
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      <button onClick={handleOpenMemo} className='cursor-pointer'>
+      <button onClick={handleOpenMemo} className='cursor-pointer' aria-label={`${task.title} 메모 열기`}>
         <Icon name='memo' className='fill-white' />
       </button>
-      <button onClick={handleToggleDone} className='cursor-pointer'>
+      <button
+        onClick={handleToggleDone}
+        className='cursor-pointer'
+        aria-label={`${task.title} ${task.isDone ? '완료 취소' : '완료 처리'}`}
+        aria-pressed={task.isDone}
+      >
         <ActiveIcon active={task.isDone} />
       </button>
     </div>

@@ -13,7 +13,7 @@ interface DotProps {
 }
 
 const Dot = ({ priority, className }: DotProps) => {
-  return <div className={cn('h-2 w-2 rounded-full', COLOR_MAP[priority], className)} />;
+  return <div role='status' className={cn('h-2 w-2 rounded-full', COLOR_MAP[priority], className)} />;
 };
 
 export default Dot;
