@@ -27,10 +27,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   className?: string;
   disabled?: boolean;
-  onClick?: () => void;
 }
 
-const Button = ({ children, variant = 'primary', size = 'medium', className, disabled = false, onClick, ...rest }: ButtonProps) => {
+const Button = ({ children, variant = 'primary', size = 'medium', className, disabled = false, ...rest }: ButtonProps) => {
   return (
     <button
       {...rest}
@@ -41,7 +40,6 @@ const Button = ({ children, variant = 'primary', size = 'medium', className, dis
         className,
       )}
       disabled={disabled}
-      onClick={onClick ? () => onClick() : () => {}}
     >
       {children}
     </button>

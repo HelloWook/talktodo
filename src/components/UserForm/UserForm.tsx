@@ -60,9 +60,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-const FormButton = ({ children, onClick, ...props }: ButtonProps) => {
+const FormButton = ({ children, ...props }: ButtonProps) => {
   return (
-    <Button variant='primary' size='medium' className='mt-4' onClick={onClick} {...props} type='submit'>
+    <Button variant='primary' size='medium' className='mt-4' {...props} type='submit'>
       <Typography variant='body2-bold' as='span' className='text-white'>
         {children}
       </Typography>

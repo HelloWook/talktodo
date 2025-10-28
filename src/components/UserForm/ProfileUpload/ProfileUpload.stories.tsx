@@ -27,7 +27,7 @@ export default meta;
 type Story = StoryObj<typeof ProfileUpload>;
 
 // Wrapper component for stories that need ref
-const ProfileUploadWrapper = (args: ProfileUploadProps) => {
+const ProfileUploadWrapper = (args: Partial<ProfileUploadProps>) => {
   const imageRef = useRef<HTMLInputElement>(null);
   const [currentImageUrl, setCurrentImageUrl] = useState(args.currentImageUrl);
 
