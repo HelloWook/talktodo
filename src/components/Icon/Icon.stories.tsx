@@ -13,8 +13,7 @@ const meta: Meta<typeof Icon> = {
     name: {
       control: { type: 'select' },
       options: [
-        'active-off',
-        'active-on',
+        'active',
         'alert',
         'all',
         'calendar',
@@ -72,8 +71,7 @@ export const AllIcons: Story = {
   render: () => (
     <div className='grid grid-cols-6 gap-4 p-4'>
       {[
-        'active-off',
-        'active-on',
+        'active',
         'alert',
         'all',
         'calendar',
