@@ -103,22 +103,3 @@ export const Empty: Story = {
     </Header.Provider>
   ),
 };
-
-export const CustomLayout: Story = {
-  render: () => (
-    <Header.Provider tasks={mockTasks.slice(0, 3)}>
-      <Header>
-        <div className='flex w-full flex-row lg:flex-row lg:gap-11'>
-          <div className='relative flex flex-1 flex-col gap-3'>
-            <div className='flex items-start justify-between'>
-              <Header.Title />
-              <Header.TodoStats />
-            </div>
-            <Header.ProgressBar />
-          </div>
-          <Header.Character />
-        </div>
-      </Header>
-    </Header.Provider>
-  ),
-};

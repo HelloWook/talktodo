@@ -4,11 +4,15 @@ import Image from 'next/image';
 import { createContext, useContext } from 'react';
 
 import { Task } from '@/types/Task';
+import { cn } from '@/utils/cn';
+import { getTodoStats } from '@/utils/taskStats';
 
+import Typography from '../Typography/Typography';
 import { Progress } from '../ui/progress';
 
 type HeaderContextProps = {
   tasks: Task[];
+  stats: ReturnType<typeof getTodoStats>;
 };
 
 const HeaderContext = createContext<HeaderContextProps | undefined>(undefined);
@@ -27,7 +31,12 @@ interface HeaderProviderProps {
 }
 
 const HeaderProvider = ({ tasks, children }: HeaderProviderProps) => {
-  return <HeaderContext.Provider value={{ tasks }}>{children}</HeaderContext.Provider>;
+  const stats = getTodoStats(tasks);
+  return <HeaderContext.Provider value={{ tasks, stats }}>{children}</HeaderContext.Provider>;
+};
+
+type CommonProps = {
+  className?: string;
 };
 
 interface HeaderProps {
@@ -35,49 +44,39 @@ interface HeaderProps {
 }
 
 const Header = ({ children }: HeaderProps) => {
-  return (
-    <header className='mx-auto flex w-full flex-col items-start rounded-[40px] bg-purple-500 px-6 py-6 sm:px-8 sm:py-6 lg:w-[100%] lg:max-w-[1168px] lg:px-11 lg:pt-7 lg:pb-9'>
-      {children}
-    </header>
-  );
+  return <header className='mx-auto flex w-full flex-col items-start rounded-[40px] bg-purple-500 px-6 py-6'>{children}</header>;
 };
 
-interface TitleProps {
-  className?: string;
-}
-
-const Title = ({ className }: TitleProps) => {
-  const { tasks } = useHeaderContext();
-  const totalTodo = tasks.length;
-  const completedTodo = tasks.filter((task) => task.isDone).length;
-  const percent = totalTodo > 0 ? Math.round((completedTodo / totalTodo) * 100) : 0;
-  const isCompleted = percent === 100;
+const Title = ({ className }: CommonProps) => {
+  const { stats } = useHeaderContext();
+  const totalTodo = stats.total;
+  const isCompleted = stats.isCompleted;
 
   return (
-    <p className={`font-title3-bold sm:font-title2-bold lg:font-title1-bold text-purple-300 ${className || ''}`}>
+    <Typography as='p' variant='title2-bold' className={cn('text-purple-300', className)}>
       오늘
       <br />
       {isCompleted ? (
-        <span className='font-title3-bold sm:font-title2-bold lg:font-title1-bold text-white'>할 일을 모두 완료했어요!</span>
+        <Typography as='span' variant='title2-bold' className='text-white'>
+          할 일을 모두 완료했어요!
+        </Typography>
       ) : (
         <>
-          <span className='font-title3-bold sm:font-title2-bold lg:font-title1-bold text-white'>총 {totalTodo}건</span>
-          <span>의 할 일이 있어요</span>
+          <Typography as='span' variant='title2-bold' className='text-white'>
+            총 {totalTodo}건
+          </Typography>
+          <Typography as='span' variant='title2-bold'>
+            의 할 일이 있어요
+          </Typography>
         </>
       )}
-    </p>
+    </Typography>
   );
 };
 
-interface TodoStatsProps {
-  className?: string;
-}
-
-const TodoStats = ({ className }: TodoStatsProps) => {
-  const { tasks } = useHeaderContext();
-  const totalTodo = tasks.length;
-  const completedTodo = tasks.filter((task) => task.isDone).length;
-  const incompleteTodo = totalTodo - completedTodo;
+const TodoStats = ({ className }: CommonProps) => {
+  const { stats } = useHeaderContext();
+  const { total: totalTodo, completed: completedTodo, incomplete: incompleteTodo } = stats;
 
   const todoItems = [
     { value: totalTodo, label: '총 일정' },
@@ -86,51 +85,54 @@ const TodoStats = ({ className }: TodoStatsProps) => {
   ];
 
   return (
-    <div className={`flex items-center gap-5 ${className || ''}`}>
+    <div className={cn('flex items-center gap-5', className)}>
       {todoItems.map((item) => (
         <div key={item.label} className='flex flex-col items-center gap-1'>
-          <div className='font-count text-center text-white'>{item.value}</div>
-          <div className='font-body2-medium text-base text-purple-200'>{item.label}</div>
+          <Typography as='span' variant='title2-bold' className='text-center text-white'>
+            {item.value}
+          </Typography>
+          <Typography as='span' variant='body2-medium-loose' className='text-purple-200'>
+            {item.label}
+          </Typography>
         </div>
       ))}
     </div>
   );
 };
 
-interface CharacterProps {
-  className?: string;
-}
-
-const Character = ({ className }: CharacterProps) => {
+const Character = ({ className }: CommonProps) => {
+  const { stats } = useHeaderContext();
+  const isCompleted = stats.isCompleted;
   return (
-    <div className={`relative flex items-end justify-end overflow-hidden ${className || ''}`}>
-      <Image src='/img/InCompletedCharacter.png' width={180} height={166} alt='character' />
+    <div className={cn('relative flex items-end justify-end overflow-hidden', className)}>
+      <Image src={isCompleted ? '/img/CompletedCharacter.png' : '/img/InCompletedCharacter.png'} width={180} height={166} alt='character' />
     </div>
   );
 };
 
-interface ProgressBarProps {
-  className?: string;
-}
+const ProgressBar = ({ className }: CommonProps) => {
+  const { stats } = useHeaderContext();
+  const percent = stats.percent;
 
-const ProgressBar = ({ className }: ProgressBarProps) => {
-  const { tasks } = useHeaderContext();
-  const totalTodo = tasks.length;
-  const completedTodo = tasks.filter((task) => task.isDone).length;
-  const percent = totalTodo > 0 ? Math.round((completedTodo / totalTodo) * 100) : 0;
-
-  return <Progress value={percent} className={`h-4 ${className || ''}`} />;
+  return (
+    <div className='flex flex-col gap-2'>
+      <Typography as='p' variant='body2-medium-loose' className='text-purple-200'>
+        <Typography as='span' variant='body2-medium-loose' className='text-purple-203 mr-3'>
+          오늘의 진행률
+        </Typography>
+        <Typography as='span' variant='body2-medium-loose' className='text-white'>
+          {percent}%
+        </Typography>
+      </Typography>
+      <Progress value={percent} className={cn('h-4', className)} />
+    </div>
+  );
 };
 
-interface ContentProps {
-  className?: string;
-}
-
-const Content = ({ className }: ContentProps) => {
+const Content = ({ className }: CommonProps) => {
   return (
-    <div className={`flex w-full flex-row lg:flex-row lg:gap-11 ${className || ''}`}>
-      {/* 왼쪽 영역 */}
-      <div className='relative flex flex-1 flex-col gap-3'>
+    <div className={cn('flex w-full flex-row lg:flex-row lg:gap-11', className)}>
+      <div className='relative flex flex-1 flex-col justify-between gap-3'>
         <div className='flex items-start justify-between'>
           <Title />
           <TodoStats />
@@ -138,7 +140,6 @@ const Content = ({ className }: ContentProps) => {
         <ProgressBar />
       </div>
 
-      {/* 캐릭터 이미지 영역 */}
       <Character />
     </div>
   );
