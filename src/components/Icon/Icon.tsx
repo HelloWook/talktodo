@@ -2,11 +2,12 @@ import { cn } from '@/utils/cn';
 
 interface IconProps extends React.SVGAttributes<SVGSVGElement> {
   name: string;
+  className?: string;
 }
 
-const Icon = ({ name, ...props }: IconProps) => {
+const Icon = ({ name, className, ...props }: IconProps) => {
   return (
-    <svg className={cn('h-6 w-6')} aria-label={name} {...props}>
+    <svg className={cn('h-6 w-6', className)} aria-label={name} {...props}>
       <use href={`/sprite.svg#${name}`} />
     </svg>
   );
