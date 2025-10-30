@@ -25,6 +25,7 @@ const mockTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     isDone: true,
+    goal: { id: 'g1', name: '건강' },
   },
   {
     id: '2',
@@ -36,6 +37,7 @@ const mockTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     isDone: true,
+    goal: { id: 'g1', name: '건강' },
   },
   {
     id: '3',
@@ -47,6 +49,7 @@ const mockTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     isDone: false,
+    goal: { id: 'g1', name: '건강' },
   },
   {
     id: '4',
@@ -58,6 +61,7 @@ const mockTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     isDone: false,
+    goal: { id: 'g1', name: '건강' },
   },
   {
     id: '5',
@@ -69,6 +73,7 @@ const mockTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     isDone: false,
+    goal: { id: 'g1', name: '건강' },
   },
 ];
 

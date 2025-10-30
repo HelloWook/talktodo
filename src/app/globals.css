@@ -361,6 +361,10 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  label {
+    display: inline-block;
+    margin-bottom: 4px;
+  }
 }
 
 @layer utilities {

@@ -7,12 +7,13 @@ import Dot from '../Dot/Dot';
 interface SelectProirtyProps {
   onChange: (priority: Priority) => void;
   className?: string;
+  triggerProps?: React.ComponentProps<typeof SelectTrigger>;
 }
 
-const SelectProirty = ({ onChange, className }: SelectProirtyProps) => {
+const SelectProirty = ({ onChange, className, triggerProps }: SelectProirtyProps) => {
   return (
     <Select onValueChange={onChange}>
-      <SelectTrigger className={cn(className)}>
+      <SelectTrigger className={cn(className)} {...triggerProps}>
         <SelectValue placeholder='우선 순위를 선택해주세요.' />
       </SelectTrigger>
       <SelectContent className='border-0'>
