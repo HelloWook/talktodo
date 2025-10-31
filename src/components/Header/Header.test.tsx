@@ -14,6 +14,7 @@ const makeTask = (overrides?: Partial<Task>): Task => ({
   createdAt: overrides?.createdAt ?? new Date(),
   updatedAt: overrides?.updatedAt ?? new Date(),
   isDone: overrides?.isDone ?? false,
+  goal: overrides?.goal ?? { id: 'g1', name: '건강' },
 });
 
 describe('Header', () => {

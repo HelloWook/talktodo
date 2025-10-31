@@ -13,7 +13,10 @@ const sizeClasses = {
 } as const satisfies Record<FabSize, string>;
 
 interface FabProps {
-  items: string[];
+  items: {
+    label: string;
+    onClick: () => void;
+  }[];
   size: FabSize;
   className?: string;
 }
@@ -38,8 +41,8 @@ const Fab = ({ items, size, className }: FabProps) => {
       <DropdownMenuContent align='end' side='top' className='border-0'>
         <DropdownMenuGroup>
           {items.map((item) => (
-            <DropdownMenuItem key={item} className='cursor-pointer'>
-              {item}
+            <DropdownMenuItem key={item.label} className='cursor-pointer p-3 text-center' onClick={() => item.onClick()}>
+              {item.label}
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>

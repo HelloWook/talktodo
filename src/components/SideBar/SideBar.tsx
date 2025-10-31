@@ -3,6 +3,8 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 
+import { cn } from '@/utils/cn';
+
 import MenuGroup from './_components/MenuGroup';
 import NewGoalButton from './_components/NewGoalButton';
 import SidebarHeader from './_components/SidebarHeader';
@@ -18,9 +20,10 @@ interface SidebarProps {
   userNickname: string;
   userEmail: string;
   goals: Goal[] | string[];
+  className?: string;
 }
 
-const SideBar = ({ userNickname, userEmail, goals }: SidebarProps) => {
+const SideBar = ({ userNickname, userEmail, goals, className }: SidebarProps) => {
   const [isFold, setIsFold] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -51,7 +54,7 @@ const SideBar = ({ userNickname, userEmail, goals }: SidebarProps) => {
   };
 
   return (
-    <aside className={'absolute top-0 left-0 h-full p-5'}>
+    <aside className={cn('h-full p-5', className)}>
       <div
         className={`scrollbar-hide box-border flex h-full flex-col items-center justify-between ${!isFold && 'overflow-y-scroll'} rounded-[20px] bg-white shadow-[0px_0px_12px_0px_rgba(235,235,235,1.00)] transition-all duration-300 ${isFold ? 'w-20' : 'w-64'}`}
       >

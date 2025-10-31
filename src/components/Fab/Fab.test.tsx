@@ -20,13 +20,31 @@ describe('Fab', () => {
   });
 
   it('Fab이 렌더링된다.', () => {
-    render(<Fab items={['item1', 'item2', 'item3']} size='small' />);
+    render(
+      <Fab
+        items={[
+          { label: 'item1', onClick: jest.fn() },
+          { label: 'item2', onClick: jest.fn() },
+          { label: 'item3', onClick: jest.fn() },
+        ]}
+        size='small'
+      />,
+    );
     const buttonElement = screen.getByLabelText('Open Menu');
     expect(buttonElement).toBeInTheDocument();
   });
 
   it('Fab 버튼이 올바른 속성을 가진다.', () => {
-    render(<Fab items={['item1', 'item2', 'item3']} size='small' />);
+    render(
+      <Fab
+        items={[
+          { label: 'item1', onClick: jest.fn() },
+          { label: 'item2', onClick: jest.fn() },
+          { label: 'item3', onClick: jest.fn() },
+        ]}
+        size='small'
+      />,
+    );
     const buttonElement = screen.getByLabelText('Open Menu');
 
     expect(buttonElement).toHaveAttribute('aria-label', 'Open Menu');
@@ -35,7 +53,16 @@ describe('Fab', () => {
   });
 
   it('Fab 버튼이 클릭되면 드롭다운이 열린다. (userEvent)', async () => {
-    render(<Fab items={['item1', 'item2', 'item3']} size='small' />);
+    render(
+      <Fab
+        items={[
+          { label: 'item1', onClick: jest.fn() },
+          { label: 'item2', onClick: jest.fn() },
+          { label: 'item3', onClick: jest.fn() },
+        ]}
+        size='small'
+      />,
+    );
 
     const buttonElement = screen.getByLabelText('Open Menu');
 
@@ -49,7 +76,16 @@ describe('Fab', () => {
   });
 
   it('올바른 크기 클래스가 적용된다.', () => {
-    render(<Fab items={['item1', 'item2', 'item3']} size='small' />);
+    render(
+      <Fab
+        items={[
+          { label: 'item1', onClick: jest.fn() },
+          { label: 'item2', onClick: jest.fn() },
+          { label: 'item3', onClick: jest.fn() },
+        ]}
+        size='small'
+      />,
+    );
     const buttonElement = screen.getByLabelText('Open Menu');
 
     expect(buttonElement).toHaveClass('h-[64px]', 'w-[64px]');

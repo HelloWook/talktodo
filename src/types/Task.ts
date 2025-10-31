@@ -12,4 +12,10 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
   isDone: boolean;
+  goal: Goal;
+}
+
+export interface Goal {
+  id: string;
+  name: string;
 }

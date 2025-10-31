@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 
 import './globals.css';
 import AlertContainer from '@/components/Alert/AlertContainer';
+import DialogContainer from '@/components/DialogManager/DialogContainer';
 import ToastContainer from '@/components/Toast/ToastContainer';
 
 import { Providers } from './providers';
@@ -49,10 +50,12 @@ export default function RootLayout({
       <body className={`${pretendard.variable} antialiased`}>
         <Providers>{children}</Providers>
 
-        <div id='toast-container' />
+        <div id='toast-root' />
         <div id='alert-root' />
+        <div id='dialog-root' />
         <ToastContainer />
         <AlertContainer />
+        <DialogContainer />
       </body>
     </html>
   );

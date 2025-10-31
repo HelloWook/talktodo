@@ -29,6 +29,7 @@ export const Default: Story = {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDone: false,
+      goal: { id: 'g1', name: '건강' },
     };
 
     return (
@@ -56,6 +57,7 @@ export const HighPriority: Story = {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDone: false,
+      goal: { id: 'g1', name: '건강' },
     };
 
     return (
@@ -83,6 +85,7 @@ export const LowPriority: Story = {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDone: false,
+      goal: { id: 'g1', name: '건강' },
     };
 
     return (
@@ -110,6 +113,7 @@ export const CompletedTask: Story = {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDone: true,
+      goal: { id: 'g1', name: '건강' },
     };
 
     return (
