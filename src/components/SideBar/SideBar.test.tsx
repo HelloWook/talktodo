@@ -11,13 +11,26 @@ jest.mock('next/navigation', () => ({
 
 // Mock sub-components
 jest.mock('./_components/MenuGroup', () => {
-  return function MockMenuGroup({ title, items, isFold, onTitleClick }: any) {
+  interface MenuItem {
+    id: string;
+    label: string;
+    onClick: () => void;
+  }
+
+  interface MenuGroupProps {
+    title: string;
+    items: MenuItem[];
+    isFold: boolean;
+    onTitleClick?: () => void;
+  }
+
+  return function MockMenuGroup({ title, items, onTitleClick }: MenuGroupProps) {
     return (
       <div data-testid='menu-group'>
         <button onClick={onTitleClick} data-testid={`menu-group-title-${title}`}>
           {title}
         </button>
-        {items.map((item: any) => (
+        {items.map((item) => (
           <button key={item.id} onClick={item.onClick} data-testid={`menu-item-${item.id}`}>
             {item.label}
           </button>
@@ -28,7 +41,12 @@ jest.mock('./_components/MenuGroup', () => {
 });
 
 jest.mock('./_components/NewGoalButton', () => {
-  return function MockNewGoalButton({ onClick, isFold }: any) {
+  interface NewGoalButtonProps {
+    onClick: () => void;
+    isFold: boolean;
+  }
+
+  return function MockNewGoalButton({ onClick }: NewGoalButtonProps) {
     return (
       <button onClick={onClick} data-testid='new-goal-button'>
         새 목표
@@ -38,7 +56,12 @@ jest.mock('./_components/NewGoalButton', () => {
 });
 
 jest.mock('./_components/SidebarHeader', () => {
-  return function MockSidebarHeader({ isFold, onFoldToggle }: any) {
+  interface SidebarHeaderProps {
+    isFold: boolean;
+    onFoldToggle: () => void;
+  }
+
+  return function MockSidebarHeader({ isFold, onFoldToggle }: SidebarHeaderProps) {
     return (
       <button onClick={onFoldToggle} data-testid='fold-toggle'>
         {isFold ? 'Folded' : 'Unfolded'}
@@ -48,7 +71,13 @@ jest.mock('./_components/SidebarHeader', () => {
 });
 
 jest.mock('./_components/SidebarProfileSection', () => {
-  return function MockSidebarProfileSection({ userNickname, userEmail, isFold }: any) {
+  interface SidebarProfileSectionProps {
+    userNickname: string;
+    userEmail: string;
+    isFold: boolean;
+  }
+
+  return function MockSidebarProfileSection({ userNickname, userEmail }: SidebarProfileSectionProps) {
     return (
       <div data-testid='profile-section'>
         <div>{userNickname}</div>
@@ -73,7 +102,12 @@ describe('SideBar', () => {
     jest.clearAllMocks();
     mockUseRouter.mockReturnValue({
       push: mockPush,
-    } as any);
+      back: jest.fn(),
+      forward: jest.fn(),
+      refresh: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+    });
     mockUsePathname.mockReturnValue('/');
   });
 
