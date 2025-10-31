@@ -41,7 +41,7 @@ const Fab = ({ items, size, className }: FabProps) => {
       <DropdownMenuContent align='end' side='top' className='border-0'>
         <DropdownMenuGroup>
           {items.map((item) => (
-            <DropdownMenuItem key={item.label} className='cursor-pointer p-3' onClick={() => item.onClick()}>
+            <DropdownMenuItem key={item.label} className='cursor-pointer p-3 text-center' onClick={() => item.onClick()}>
               {item.label}
             </DropdownMenuItem>
           ))}

@@ -39,12 +39,14 @@ type CommonProps = {
   className?: string;
 };
 
-interface HeaderProps {
+interface HeaderProps extends CommonProps {
   children: React.ReactNode;
 }
 
-const Header = ({ children }: HeaderProps) => {
-  return <header className='mx-auto flex w-full flex-col items-start rounded-[40px] bg-purple-500 px-6 py-6'>{children}</header>;
+const Header = ({ children, className }: HeaderProps) => {
+  return (
+    <header className={cn('mx-auto flex w-full flex-col items-start rounded-[40px] bg-purple-500 px-6 py-6', className)}>{children}</header>
+  );
 };
 
 const Title = ({ className }: CommonProps) => {
