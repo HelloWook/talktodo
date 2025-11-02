@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { DateSubHeader } from '@/components/DateSubHeader';
 import Fab from '@/components/Fab/Fab';
 import TaskHeader from '@/components/Header/TaskHeader/TaskHeader';
+import MemoDrawer from '@/components/MemoDrawer/MemoDrawer';
 import SideBar from '@/components/SideBar/SideBar';
 import { TaskBoard } from '@/components/TaskBoard';
 import TaskFormDialog from '@/components/TaskFormDialog/TaskFormDialog';
@@ -91,6 +92,9 @@ const mockTasks: Task[] = [
 export default function Home() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [layout, setLayout] = useState<LayoutType>('card');
+  const [tasks, setTasks] = useState<Task[]>(mockTasks);
+  const [selectedTaskForMemo, setSelectedTaskForMemo] = useState<Task | null>(null);
+  const [isMemoDrawerOpen, setIsMemoDrawerOpen] = useState(false);
   const { openDialog, closeDialog } = useDialog();
 
   const handleDate = (date: Date) => {
@@ -103,12 +107,33 @@ export default function Home() {
     setLayout(newLayout);
   };
 
+  const handleOpenMemo = (taskId: string) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      setSelectedTaskForMemo(task);
+      setIsMemoDrawerOpen(true);
+    }
+  };
+
+  const handleCloseMemo = () => {
+    setIsMemoDrawerOpen(false);
+    setSelectedTaskForMemo(null);
+  };
+
+  const handleSaveMemo = (taskId: string, memo: string) => {
+    setTasks((prev) => prev.map((task) => (task.id === taskId ? { ...task, memo, updatedAt: new Date() } : task)));
+  };
+
+  const handleToggleDone = (taskId: string) => {
+    setTasks((prev) => prev.map((task) => (task.id === taskId ? { ...task, isDone: !task.isDone, updatedAt: new Date() } : task)));
+  };
+
   return (
     <div className='flex h-screen w-screen overflow-hidden bg-purple-50'>
       <SideBar userNickname='John Doe' userEmail='john.doe@example.com' goals={[]} />
 
       <main className='relative mx-auto flex h-full w-full max-w-[1080px] flex-col p-4'>
-        <TaskHeader tasks={mockTasks} />
+        <TaskHeader tasks={tasks} />
 
         <DateSubHeader
           className='py-4'
@@ -118,7 +143,13 @@ export default function Home() {
           onLayoutChange={handleLayoutChange}
         />
 
-        <TaskBoard className='flex-1 overflow-hidden' tasks={mockTasks} layout={layout} onToggleDone={() => {}} onOpenMemo={() => {}} />
+        <TaskBoard
+          className='flex-1 overflow-hidden'
+          tasks={tasks}
+          layout={layout}
+          onToggleDone={handleToggleDone}
+          onOpenMemo={handleOpenMemo}
+        />
       </main>
       <Fab
         size='small'
@@ -132,6 +163,7 @@ export default function Home() {
         ]}
         className='absolute right-10 bottom-10'
       />
+      <MemoDrawer isOpen={isMemoDrawerOpen} onClose={handleCloseMemo} task={selectedTaskForMemo} onSaveMemo={handleSaveMemo} />
     </div>
   );
 }
