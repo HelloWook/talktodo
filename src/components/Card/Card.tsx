@@ -1,17 +1,18 @@
 import { createContext, useContext } from 'react';
 
+import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
 import { Task } from '@/types/Task';
 import { cn } from '@/utils/cn';
 
 import { getRepeatData } from '@/utils/getRepeatData';
 
-import ActiveIcon from '../ActiveIcon/ActiveIcon';
 import Dot from '../Dot/Dot';
 import Icon from '../Icon/Icon';
 import Typography from '../Typography/Typography';
 
 type CardContextProps = {
   task: Task;
+  layout: LayoutType;
   onToggleDone: (taskId: string) => void;
   onOpenMemo: (taskId: string) => void;
 };
@@ -28,13 +29,14 @@ const useCardContext = () => {
 
 interface CardProviderProps {
   task: Task;
+  layout: LayoutType;
   onToggleDone: (taskId: string) => void;
   onOpenMemo: (taskId: string) => void;
   children: React.ReactNode;
 }
 
-const CardProvider = ({ task, onToggleDone, onOpenMemo, children }: CardProviderProps) => {
-  return <CardContext.Provider value={{ task, onToggleDone, onOpenMemo }}>{children}</CardContext.Provider>;
+const CardProvider = ({ task, layout, onToggleDone, onOpenMemo, children }: CardProviderProps) => {
+  return <CardContext.Provider value={{ task, layout, onToggleDone, onOpenMemo }}>{children}</CardContext.Provider>;
 };
 
 interface CardProps {
@@ -43,12 +45,15 @@ interface CardProps {
 }
 
 const Card = ({ className, children }: CardProps) => {
-  const { task } = useCardContext();
+  const { task, layout } = useCardContext();
+
+  const isListView = layout === 'list';
 
   return (
     <article
       className={cn(
-        'flex flex-col gap-2 rounded-lg border border-transparent p-4 shadow hover:border hover:border-purple-300',
+        'flex rounded-lg border border-transparent shadow hover:border hover:border-purple-300',
+        isListView ? 'h-[110px] flex-row items-center gap-4 p-4' : 'h-full flex-col gap-1.5 p-3',
         task.isDone ? 'bg-purple-200' : 'bg-white',
         className,
       )}
@@ -101,12 +106,12 @@ const CardData = ({ className }: CardDataProps) => {
   const { task } = useCardContext();
 
   return (
-    <div className={cn('flex w-full items-center gap-2 text-ellipsis whitespace-nowrap', className)}>
-      <Typography variant='caption-medium' className={cn('flex items-center gap-1', TEXT_COLOR_MAP[task.priority])}>
+    <div className={cn('flex w-full items-center gap-2', className)}>
+      <Typography variant='caption-medium' className={cn('flex items-center gap-1 whitespace-nowrap', TEXT_COLOR_MAP[task.priority])}>
         <Dot priority={task.priority} />
         {task.priority}
       </Typography>
-      <Typography variant='caption-medium' className='text-gray-400'>
+      <Typography variant='caption-medium' className='truncate text-gray-400'>
         {getRepeatData(task.repeatDays)}
       </Typography>
     </div>
@@ -131,7 +136,7 @@ const CardItem = ({ className }: CardItemProps) => {
   return (
     <div className={cn('flex items-center gap-2', className)}>
       <button onClick={handleOpenMemo} className='cursor-pointer' aria-label={`${task.title} 메모 열기`}>
-        <Icon name='memo' className='fill-white' />
+        <Icon name='memo' className={cn(task.isDone ? 'fill-purple-200' : 'fill-white')} />
       </button>
       <button
         onClick={handleToggleDone}
@@ -139,7 +144,7 @@ const CardItem = ({ className }: CardItemProps) => {
         aria-label={`${task.title} ${task.isDone ? '완료 취소' : '완료 처리'}`}
         aria-pressed={task.isDone}
       >
-        <ActiveIcon active={task.isDone} />
+        <Icon role='status' name={'active'} className={cn('text-purple-500', task.isDone ? 'fill-purple-200' : 'fill-white')} />
       </button>
     </div>
   );
