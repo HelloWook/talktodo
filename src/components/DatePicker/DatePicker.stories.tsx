@@ -11,11 +11,11 @@ const meta = {
 export default meta;
 
 export const Single = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date>(new Date());
 
   useEffect(() => {
     console.log('DatePicker mounted with initial date:', date);
   }, [date]);
 
-  return <DatePicker setDate={setDate} closeSelector={() => {}} date={date} />;
+  return <DatePicker date={date} onDateChange={setDate} closeSelector={() => {}} />;
 };

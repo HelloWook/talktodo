@@ -1,20 +1,17 @@
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import DatePicker from '@/components/DatePicker/DatePicker';
 import Icon from '@/components/Icon/Icon';
 
-import { formatDateToPath } from './dateUtils';
+interface DatePickerButtonProps {
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
+}
 
-export default function DatePickerButton() {
-  const router = useRouter();
-  const [date, setDate] = useState<Date | undefined>(new Date());
+export default function DatePickerButton({ selectedDate, onDateChange }: DatePickerButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
-    if (isOpen && date) {
-      router.push(formatDateToPath(date));
-    }
     setIsOpen((prev) => !prev);
   };
 
@@ -48,7 +45,7 @@ export default function DatePickerButton() {
           />
 
           <div className='absolute top-full left-0 z-50 mt-2'>
-            <DatePicker setDate={setDate} closeSelector={handleToggle} date={date} />
+            <DatePicker date={selectedDate} onDateChange={onDateChange} closeSelector={handleToggle} />
           </div>
         </>
       )}

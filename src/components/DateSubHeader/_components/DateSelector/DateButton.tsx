@@ -8,7 +8,7 @@ export default function DateButton({ dateInfo, isSelected, onClick }: DateButton
     <button
       onClick={onClick}
       className={cn(
-        'flex h-[84px] w-[60px] flex-col items-center justify-center transition-colors',
+        'flex h-[84px] w-[60px] cursor-pointer flex-col items-center justify-center',
         isSelected && 'rounded-[1000px] bg-gray-800 p-4',
       )}
       aria-label={`${dateInfo.month}월 ${dateInfo.day}일`}

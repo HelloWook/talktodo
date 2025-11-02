@@ -1,39 +1,37 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import DateButton from './DateButton';
-import { MOVE_DAYS_COUNT, formatDateToPath, getNearbyDates, moveDateByDays, parseDateParam } from './dateUtils';
+import { MOVE_DAYS_COUNT, formatDateToPath, getNearbyDates, isSameDate, moveDateByDays } from './dateUtils';
 import NavigationButton from './NavigationButton';
 
-export default function DateList() {
-  const router = useRouter();
-  const params = useParams<{ date: string }>();
+interface DateListProps {
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
+}
 
-  const [selectedDate, setSelectedDate] = useState(() => parseDateParam(params.date));
-
+export default function DateList({ selectedDate, onDateChange }: DateListProps) {
   const visibleDates = useMemo(() => getNearbyDates(selectedDate), [selectedDate]);
 
   const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-    router.push(`/${formatDateToPath(date)}`);
+    onDateChange(date);
   };
 
   const handleMoveDays = (days: number) => {
     const newDate = moveDateByDays(selectedDate, days);
-    setSelectedDate(newDate);
+    onDateChange(newDate);
   };
 
   return (
     <div className='inline-flex gap-3'>
       <NavigationButton direction='prev' onClick={() => handleMoveDays(-MOVE_DAYS_COUNT)} />
 
-      {visibleDates.map((dateInfo, index) => (
+      {visibleDates.map((dateInfo) => (
         <DateButton
           key={formatDateToPath(dateInfo.date)}
           dateInfo={dateInfo}
-          isSelected={index === Math.floor(visibleDates.length / 2)}
+          isSelected={isSameDate(dateInfo.date, selectedDate)}
           onClick={() => handleDateSelect(dateInfo.date)}
         />
       ))}

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { useState } from 'react';
 
 import DatePickerButton from './DatePickerButton';
 
@@ -23,15 +24,21 @@ export default meta;
 type Story = StoryObj<typeof DatePickerButton>;
 
 export const Default: Story = {
-  render: () => <DatePickerButton />,
+  render: () => {
+    const [selectedDate, setSelectedDate] = useState(new Date('2025-01-15'));
+    return <DatePickerButton selectedDate={selectedDate} onDateChange={setSelectedDate} />;
+  },
 };
 
 export const WithOpenModal: Story = {
-  render: () => (
-    <div className='h-[400px] w-[400px]'>
-      <DatePickerButton />
-    </div>
-  ),
+  render: () => {
+    const [selectedDate, setSelectedDate] = useState(new Date('2025-01-15'));
+    return (
+      <div className='h-[400px] w-[400px]'>
+        <DatePickerButton selectedDate={selectedDate} onDateChange={setSelectedDate} />
+      </div>
+    );
+  },
   parameters: {
     docs: {
       description: {

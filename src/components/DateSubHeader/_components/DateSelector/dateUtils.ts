@@ -49,3 +49,7 @@ export const getNearbyDates = (baseDate: Date, count: number = VISIBLE_DATES_COU
 export const moveDateByDays = (date: Date, days: number): Date => {
   return addDays(date, days);
 };
+
+export const isSameDate = (date1: Date, date2: Date): boolean => {
+  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
+};
