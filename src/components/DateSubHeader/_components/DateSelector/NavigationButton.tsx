@@ -8,7 +8,7 @@ export default function NavigationButton({ direction, onClick }: NavigationButto
 
   return (
     <button onClick={onClick} aria-label={label} className='transition-opacity hover:opacity-70'>
-      <Icon name={iconName} className='h-6 w-6 fill-white' />
+      <Icon name={iconName} className='h-6 w-6 cursor-pointer fill-white' />
     </button>
   );
 }
