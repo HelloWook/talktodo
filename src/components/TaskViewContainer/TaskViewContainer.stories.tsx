@@ -29,7 +29,7 @@ const meta: Meta<typeof TaskViewContainer> = {
   argTypes: {
     layout: {
       control: { type: 'select' },
-      options: ['square', 'rectangle'],
+      options: ['card', 'list'],
     },
     type: {
       control: { type: 'select' },
@@ -75,7 +75,7 @@ const mockTasks = [
 export const TodoSquareLayout: Story = {
   args: {
     items: mockTasks,
-    layout: 'square',
+    layout: 'card',
     type: 'todo',
   },
 };
@@ -83,7 +83,7 @@ export const TodoSquareLayout: Story = {
 export const TodoRectangleLayout: Story = {
   args: {
     items: mockTasks,
-    layout: 'rectangle',
+    layout: 'list',
     type: 'todo',
   },
 };
@@ -91,7 +91,7 @@ export const TodoRectangleLayout: Story = {
 export const DoneSquareLayout: Story = {
   args: {
     items: mockTasks.slice(0, 3).map((task) => ({ ...task, isDone: true })),
-    layout: 'square',
+    layout: 'card',
     type: 'done',
   },
 };
@@ -99,7 +99,7 @@ export const DoneSquareLayout: Story = {
 export const DoneRectangleLayout: Story = {
   args: {
     items: mockTasks.slice(0, 3).map((task) => ({ ...task, isDone: true })),
-    layout: 'rectangle',
+    layout: 'list',
     type: 'done',
   },
 };
@@ -107,7 +107,7 @@ export const DoneRectangleLayout: Story = {
 export const EmptyTodoState: Story = {
   args: {
     items: [],
-    layout: 'square',
+    layout: 'card',
     type: 'todo',
   },
 };
@@ -115,7 +115,7 @@ export const EmptyTodoState: Story = {
 export const EmptyDoneState: Story = {
   args: {
     items: [],
-    layout: 'rectangle',
+    layout: 'list',
     type: 'done',
   },
 };
@@ -123,7 +123,7 @@ export const EmptyDoneState: Story = {
 export const ManyTasksSquare: Story = {
   args: {
     items: Array.from({ length: 12 }, (_, i) => createMockTask(`${i + 1}`)),
-    layout: 'square',
+    layout: 'card',
     type: 'todo',
   },
 };
@@ -131,7 +131,7 @@ export const ManyTasksSquare: Story = {
 export const ManyTasksRectangle: Story = {
   args: {
     items: Array.from({ length: 12 }, (_, i) => createMockTask(`${i + 1}`)),
-    layout: 'rectangle',
+    layout: 'list',
     type: 'todo',
   },
 };

@@ -1,6 +1,6 @@
 import type { Task } from '@/types/Task';
 
-export type LayoutType = 'square' | 'rectangle';
+export type LayoutType = 'card' | 'list';
 export type TaskType = 'todo' | 'done';
 
 export interface EmptyTaskStateProps {

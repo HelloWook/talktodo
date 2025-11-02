@@ -25,11 +25,6 @@ jest.mock('@/components/Dot/Dot', () => {
   return ({ priority }: { priority: string }) => <div data-testid={`dot-${priority}`} />;
 });
 
-jest.mock('@/components/ActiveIcon/ActiveIcon', () => {
-  // eslint-disable-next-line react/display-name
-  return ({ active }: { active: boolean }) => <div data-testid={`active-icon-${active}`} />;
-});
-
 // Mock Typography component
 jest.mock('@/components/Typography/Typography', () => {
   // eslint-disable-next-line react/display-name

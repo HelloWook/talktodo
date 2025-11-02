@@ -328,6 +328,10 @@ body {
   box-shadow: 0px 0px 12px 0px rgba(235, 235, 235, 1);
 }
 
+.line {
+  background: repeating-linear-gradient(to bottom, var(--color-gray-300) 0, var(--color-gray-300) 4px, transparent 4px, transparent 8px);
+}
+
 --color-bg-purple-gradient:
   .bg-white {background-color: var(--color-white) ;} .bg-purple-50 {background-color: var(--color-purple-50) ;} .bg-purple-100
     {background-color: var(--color-purple-100) ;} .bg-purple-150 {background-color: var(--color-purple-150) ;} .bg-purple-200
@@ -350,9 +354,6 @@ body {
     .text-gray-800 {color: var(--color-gray-800) ;} .text-gray-900 {color: var(--color-gray-900) ;} @layer base {* {@apply border-border
     outline-ring/50;} body {@apply bg-background text-foreground;} button: not(: disabled),
   [role= 'button']: not(: disabled) {cursor: pointer;}};
-
-.dark {
-}
 
 @layer base {
   * {

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import Toggle from './Toggle';
+import Icon from '../Icon/Icon';
 
 const meta: Meta<typeof Toggle> = {
   title: 'Components/Toggle',
@@ -12,16 +13,11 @@ const meta: Meta<typeof Toggle> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'tertiary'],
-    },
-    size: {
-      control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
+      options: ['primary', 'secondary'],
     },
     checked: {
       control: { type: 'boolean' },
     },
-
     onChange: { action: 'changed' },
     onChecked: { action: 'checked' },
     onUnchecked: { action: 'unchecked' },
@@ -35,7 +31,6 @@ type Story = StoryObj<typeof Toggle>;
 export const Playground: Story = {
   args: {
     variant: 'primary',
-    size: 'medium',
     checked: false,
   },
 };
@@ -51,20 +46,33 @@ export const Variants: Story = {
       ))}
     </div>
   ),
-  args: {
-    size: 'medium',
-  },
 };
 
-export const Sizes: Story = {
+export const WithIcons: Story = {
   render: (args) => (
-    <div className='flex items-center gap-4'>
-      {(['small', 'medium', 'large'] as const).map((size) => (
-        <div key={size} className='flex flex-col items-center gap-2'>
-          <Toggle {...args} size={size} />
-          <span className='text-sm text-gray-600'>{size}</span>
-        </div>
-      ))}
+    <div className='flex gap-4'>
+      <div className='flex flex-col items-center gap-2'>
+        <Toggle
+          {...args}
+          checked={false}
+          icons={{
+            left: <Icon name='calendar' />,
+            right: <Icon name='timeline' />,
+          }}
+        />
+        <span className='text-sm text-gray-600'>Left Selected</span>
+      </div>
+      <div className='flex flex-col items-center gap-2'>
+        <Toggle
+          {...args}
+          checked={true}
+          icons={{
+            left: <Icon name='calendar' />,
+            right: <Icon name='timeline' />,
+          }}
+        />
+        <span className='text-sm text-gray-600'>Right Selected</span>
+      </div>
     </div>
   ),
   args: {
@@ -77,16 +85,15 @@ export const States: Story = {
     <div className='flex gap-4'>
       <div className='flex flex-col items-center gap-2'>
         <Toggle {...args} checked={false} />
-        <span className='text-sm text-gray-600'>Unchecked</span>
+        <span className='text-sm text-gray-600'>Left (Unchecked)</span>
       </div>
       <div className='flex flex-col items-center gap-2'>
         <Toggle {...args} checked={true} />
-        <span className='text-sm text-gray-600'>Checked</span>
+        <span className='text-sm text-gray-600'>Right (Checked)</span>
       </div>
     </div>
   ),
   args: {
     variant: 'primary',
-    size: 'medium',
   },
 };
