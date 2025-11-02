@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import Icon from '../Icon/Icon';
 
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuGroup, DropdownMenuContent } from '../ui/dropdown-menu';
+
 type FabSize = 'small' | 'large';
 
 const sizeClasses = {
@@ -12,16 +13,18 @@ const sizeClasses = {
   large: 'h-[80px] w-[80px]',
 } as const satisfies Record<FabSize, string>;
 
+export interface FabItem {
+  label: string;
+  onClick: () => void;
+}
+
 interface FabProps {
-  items: {
-    label: string;
-    onClick: () => void;
-  }[];
   size: FabSize;
+  items: FabItem[];
   className?: string;
 }
 
-const Fab = ({ items, size, className }: FabProps) => {
+const Fab = ({ size, items, className }: FabProps) => {
   const [showItems, setShowItems] = useState(false);
 
   return (

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DayPicker, getDefaultClassNames } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import { ko } from 'react-day-picker/locale';
@@ -40,23 +40,29 @@ const commonProps = {
 type SingleDate = Date | undefined;
 
 interface DatePickerProps {
-  date: SingleDate;
-  setDate: React.Dispatch<React.SetStateAction<SingleDate>>;
+  date: Date;
+  onDateChange: (date: Date) => void;
   closeSelector: () => void;
 }
 
-const DatePicker = ({ setDate, closeSelector, date }: DatePickerProps) => {
+const DatePicker = ({ date, onDateChange, closeSelector }: DatePickerProps) => {
   const [datePickerDate, setPickerDate] = useState<SingleDate>(date);
 
+  useEffect(() => {
+    setPickerDate(date);
+  }, [date]);
+
   const handleSetDate = () => {
-    setDate(datePickerDate);
+    if (datePickerDate) {
+      onDateChange(datePickerDate);
+    }
     closeSelector();
   };
 
   const handleReset = () => {
     const now = new Date();
     setPickerDate(now);
-    setDate(now);
+    onDateChange(now);
     closeSelector();
   };
 

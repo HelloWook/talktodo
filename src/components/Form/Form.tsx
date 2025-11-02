@@ -249,7 +249,10 @@ const DateField = () => {
         <PopoverContent align='start' sideOffset={8} className='w-auto border-none bg-white p-0 shadow-none'>
           <DatePicker
             date={new Date(task.createdAt)}
-            setDate={(date) => updateTask((prev) => ({ ...prev, createdAt: date as Date }))}
+            onDateChange={(date) => {
+              updateTask((prev) => ({ ...prev, createdAt: date }));
+              setOpen(false);
+            }}
             closeSelector={() => setOpen(false)}
           />
         </PopoverContent>

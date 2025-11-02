@@ -33,7 +33,7 @@ export const Default: Story = {
     };
 
     return (
-      <Card.Provider task={mockTask} onToggleDone={() => {}} onOpenMemo={() => {}}>
+      <Card.Provider task={mockTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
         <Card className='min-w-[184px]'>
           <Card.Title />
           <Card.Description />
@@ -61,7 +61,7 @@ export const HighPriority: Story = {
     };
 
     return (
-      <Card.Provider task={mockTask} onToggleDone={() => {}} onOpenMemo={() => {}}>
+      <Card.Provider task={mockTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
         <Card className='min-w-[184px]'>
           <Card.Title />
           <Card.Description />
@@ -89,7 +89,7 @@ export const LowPriority: Story = {
     };
 
     return (
-      <Card.Provider task={mockTask} onToggleDone={() => {}} onOpenMemo={() => {}}>
+      <Card.Provider task={mockTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
         <Card className='min-w-[184px]'>
           <Card.Title />
           <Card.Description />
@@ -117,7 +117,7 @@ export const CompletedTask: Story = {
     };
 
     return (
-      <Card.Provider task={mockTask} onToggleDone={() => {}} onOpenMemo={() => {}}>
+      <Card.Provider task={mockTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
         <Card className='min-w-[184px]'>
           <Card.Title />
           <Card.Description />
