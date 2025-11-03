@@ -22,7 +22,7 @@ const ToastContainer = () => {
           <Toast key={toast.id} id={toast.id} content={toast.content} />
         ))}
     </div>,
-    document.getElementById('toast-container') as HTMLElement,
+    document.getElementById('toast-root') as HTMLElement,
   );
 };
 

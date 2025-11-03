@@ -182,4 +182,6 @@ export interface TypographyProps {
   children: React.ReactNode;
   className?: string;
   as?: keyof React.JSX.IntrinsicElements;
+  htmlFor?: string;
+  id?: string;
 }

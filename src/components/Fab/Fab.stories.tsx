@@ -26,7 +26,11 @@ type Story = StoryObj<typeof Fab>;
 
 export const Playground: Story = {
   args: {
-    items: ['add', 'edit', 'delete'],
+    items: [
+      { label: 'add', onClick: () => {} },
+      { label: 'edit', onClick: () => {} },
+      { label: 'delete', onClick: () => {} },
+    ],
     size: 'large',
   },
 };
@@ -43,24 +47,10 @@ export const Sizes: Story = {
     </div>
   ),
   args: {
-    items: ['add', 'edit', 'delete'],
-  },
-};
-
-export const WithDifferentItems: Story = {
-  render: (args) => (
-    <div className='flex gap-4'>
-      <div className='flex flex-col items-center gap-2'>
-        <Fab {...args} items={['add', 'edit']} />
-        <span className='text-sm text-gray-600'>2 items</span>
-      </div>
-      <div className='flex flex-col items-center gap-2'>
-        <Fab {...args} items={['add', 'edit', 'delete', 'share']} />
-        <span className='text-sm text-gray-600'>4 items</span>
-      </div>
-    </div>
-  ),
-  args: {
-    size: 'large',
+    items: [
+      { label: 'add', onClick: () => {} },
+      { label: 'edit', onClick: () => {} },
+      { label: 'delete', onClick: () => {} },
+    ],
   },
 };

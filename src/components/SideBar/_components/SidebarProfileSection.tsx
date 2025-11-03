@@ -21,7 +21,7 @@ export default function ProfileSection({ isFold, userNickname, userEmail }: Prof
     <div className='w-full'>
       <div className='mb-4 w-full border-b border-gray-200' />
       <button className='flex cursor-pointer items-center gap-3' onClick={handleProfileClick}>
-        <Image src='/img/profile.png' alt='profile' width={32} height={32} />
+        <Image src='/img/Profile.png' alt='profile' width={32} height={32} />
         {!isFold && (
           <div className='flex flex-1 flex-col items-start self-stretch'>
             <span className='font-body3-semibold text-gray-900'>{userNickname}</span>

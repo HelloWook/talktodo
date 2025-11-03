@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import Icon from '../Icon/Icon';
 
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuGroup, DropdownMenuContent } from '../ui/dropdown-menu';
+
 type FabSize = 'small' | 'large';
 
 const sizeClasses = {
@@ -12,13 +13,18 @@ const sizeClasses = {
   large: 'h-[80px] w-[80px]',
 } as const satisfies Record<FabSize, string>;
 
+export interface FabItem {
+  label: string;
+  onClick: () => void;
+}
+
 interface FabProps {
-  items: string[];
   size: FabSize;
+  items: FabItem[];
   className?: string;
 }
 
-const Fab = ({ items, size, className }: FabProps) => {
+const Fab = ({ size, items, className }: FabProps) => {
   const [showItems, setShowItems] = useState(false);
 
   return (
@@ -35,10 +41,12 @@ const Fab = ({ items, size, className }: FabProps) => {
           <Icon name='plus' className={cn('text-white transition-transform duration-200', showItems && 'rotate-[45deg]')} />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' side='top'>
+      <DropdownMenuContent align='end' side='top' className='border-0'>
         <DropdownMenuGroup>
           {items.map((item) => (
-            <DropdownMenuItem key={item}>{item}</DropdownMenuItem>
+            <DropdownMenuItem key={item.label} className='cursor-pointer p-3 text-center' onClick={() => item.onClick()}>
+              {item.label}
+            </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>

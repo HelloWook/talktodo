@@ -32,14 +32,38 @@ describe('Toggle', () => {
 
     const toggle = screen.getByRole('switch');
 
-    // 첫 번째 클릭 - checked
+    // 첫 번째 클릭 - checked (right)
     await user.click(toggle);
     expect(onChecked).toHaveBeenCalledTimes(1);
     expect(onUnchecked).not.toHaveBeenCalled();
 
-    // 두 번째 클릭 - unchecked
+    // 두 번째 클릭 - unchecked (left)
     await user.click(toggle);
     expect(onChecked).toHaveBeenCalledTimes(1);
     expect(onUnchecked).toHaveBeenCalledTimes(1);
+  });
+
+  it('왼쪽/오른쪽 아이콘이 렌더링된다.', () => {
+    render(
+      <Toggle
+        icons={{
+          left: <span data-testid='left-icon'>Left</span>,
+          right: <span data-testid='right-icon'>Right</span>,
+        }}
+      />,
+    );
+
+    expect(screen.getByTestId('left-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('right-icon')).toBeInTheDocument();
+  });
+
+  it('variant prop이 올바르게 적용된다.', () => {
+    const { rerender } = render(<Toggle variant='primary' />);
+    let toggle = screen.getByRole('switch');
+    expect(toggle).toHaveClass('bg-primary');
+
+    rerender(<Toggle variant='secondary' />);
+    toggle = screen.getByRole('switch');
+    expect(toggle).toHaveClass('bg-purple-200');
   });
 });
