@@ -3,14 +3,16 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { useSidebar } from '@/components/SideBar/SideBar';
+
 interface ProfileSectionType {
-  isFold: boolean;
   userNickname: string;
   userEmail: string;
 }
 
-export default function ProfileSection({ isFold, userNickname, userEmail }: ProfileSectionType) {
+export default function ProfileSection({ userNickname, userEmail }: ProfileSectionType) {
   const router = useRouter();
+  const { isFold } = useSidebar();
 
   // 마이페이지로 이동하는 라우팅
   const handleProfileClick = () => {

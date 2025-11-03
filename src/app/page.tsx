@@ -6,7 +6,7 @@ import { DateSubHeader } from '@/components/DateSubHeader';
 import Fab from '@/components/Fab/Fab';
 import TaskHeader from '@/components/Header/TaskHeader/TaskHeader';
 import MemoDrawer from '@/components/MemoDrawer/MemoDrawer';
-import SideBar from '@/components/SideBar/SideBar';
+import MenuSideBar from '@/components/MenuSideBar';
 import { TaskBoard } from '@/components/TaskBoard';
 import TaskFormDialog from '@/components/TaskFormDialog/TaskFormDialog';
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
@@ -130,7 +130,7 @@ export default function Home() {
 
   return (
     <div className='flex h-screen w-screen overflow-hidden bg-purple-50'>
-      <SideBar userNickname='John Doe' userEmail='john.doe@example.com' goals={[]} />
+      <MenuSideBar />
 
       <main className='relative mx-auto flex h-full w-full max-w-[1080px] flex-col p-4'>
         <TaskHeader tasks={tasks} />

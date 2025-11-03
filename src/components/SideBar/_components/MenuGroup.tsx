@@ -1,26 +1,20 @@
+import { ReactNode } from 'react';
+
 import Icon from '@/components/Icon/Icon';
-
-import MenuItem from './MenuItem';
-
-interface MenuItem {
-  id: string;
-  label: string;
-  icon?: string;
-  isActive?: boolean;
-  onClick?: () => void;
-}
+import { useSidebar } from '@/components/SideBar/SideBar';
 
 interface MenuGroupProps {
   title: string;
   icon: string;
-  items: MenuItem[];
-  isFold: boolean;
   onTitleClick?: () => void;
+  children?: ReactNode;
 }
 
-export default function MenuGroup({ title, icon, items, isFold, onTitleClick }: MenuGroupProps) {
+export default function MenuGroup({ title, icon, onTitleClick, children }: MenuGroupProps) {
+  const { isFold } = useSidebar();
+
   return (
-    <div className={`flex w-full flex-col justify-center border-b border-gray-200 py-5 ${items.length > 0 && !isFold && `gap-3`}`}>
+    <div className={`flex w-full flex-col justify-center border-b border-gray-200 py-5 ${children && !isFold && `gap-3`}`}>
       {/* 메뉴 그룹 헤더 */}
       <button className={`flex cursor-pointer items-center ${isFold ? 'justify-center' : 'gap-1'}`} onClick={onTitleClick}>
         <Icon name={icon} className='h-8 w-8' />
@@ -29,12 +23,7 @@ export default function MenuGroup({ title, icon, items, isFold, onTitleClick }: 
       </button>
 
       {/* 메뉴 아이템들 */}
-      <div className='flex h-full flex-col gap-2'>
-        {!isFold &&
-          items.map((item) => (
-            <MenuItem key={item.id} icon={item.icon} label={item.label} isActive={item.isActive} onClick={item.onClick} />
-          ))}
-      </div>
+      {!isFold && children && <div className='flex h-full flex-col gap-2'>{children}</div>}
     </div>
   );
 }

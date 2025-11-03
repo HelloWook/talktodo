@@ -1,37 +1,27 @@
+import Icon from '@/components/Icon/Icon';
+import { useSidebar } from '@/components/SideBar/SideBar';
+
 interface MenuItemProps {
-  icon?: string;
   label: string;
+  icon?: string;
   isActive?: boolean;
   onClick?: () => void;
 }
 
-export default function MenuItem({ icon, label, isActive = false, onClick }: MenuItemProps) {
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onClick?.();
-    }
-  };
+const MenuItem = ({ label, icon, isActive = false, onClick }: MenuItemProps) => {
+  const { isFold } = useSidebar();
 
   return (
-    <div
-      className={`flex h-[43px] w-[230px] cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors duration-200 ${
-        isActive ? 'bg-purple-50' : 'hover:bg-purple-50'
-      }`}
+    <button
       onClick={onClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-      role='button'
-      aria-label={label}
+      className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 transition-colors ${
+        isActive ? 'bg-purple-100 font-semibold text-purple-600' : 'text-gray-700 hover:bg-gray-100'
+      }`}
     >
-      {icon && (
-        <div className='flex h-6 w-6 items-center justify-center'>
-          <span className='text-lg'>{icon}</span>
-        </div>
-      )}
-      <span className={`font-body2-regular truncate text-left tracking-[-0.32px] ${isActive ? 'text-purple-600' : 'text-gray-500'}`}>
-        {label}
-      </span>
-    </div>
+      {icon && <Icon name={icon} className='h-6 w-6' />}
+      {!isFold && <span className='text-sm'>{label}</span>}
+    </button>
   );
-}
+};
+
+export default MenuItem;
