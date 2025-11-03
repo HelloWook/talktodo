@@ -1,12 +1,18 @@
 'use client';
 
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import Image from 'next/image';
+import { useState } from 'react';
 
+import CardView from '@/components/Card/CardView';
 import { TaskViewContainer } from '@/components/TaskViewContainer';
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
+import useMount from '@/hooks/useMount';
 import type { Task } from '@/types/Task';
 import { cn } from '@/utils/cn';
 import { filterTasksByStatus } from '@/utils/filterTasks';
+
+import ListView from '../Card/ListView';
 
 export interface TaskBoardProps {
   tasks: Task[];
@@ -24,26 +30,109 @@ const EmptyTaskState = ({ mode }: { mode: 'todo' | 'done' }) => {
 
 export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpenMemo, className }: TaskBoardProps) {
   const { doneTasks, undoneTasks } = filterTasksByStatus(tasks);
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const isMounted = useMount();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+  );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const taskId = event.active.id as string;
+    const task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      setActiveTask(task);
+    }
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveTask(null);
+
+    if (!over) return;
+
+    const taskId = active.id as string;
+    const targetZone = over.id as string;
+    const task = tasks.find((t) => t.id === taskId);
+
+    if (!task) return;
+
+    // 드래그한 카드를 다른 영역으로 옮겼을 때만 상태 변경
+    if (targetZone === 'done' && !task.isDone) {
+      onToggleDone(taskId);
+    } else if (targetZone === 'todo' && task.isDone) {
+      onToggleDone(taskId);
+    }
+  };
+
+  const handleDragCancel = () => {
+    setActiveTask(null);
+  };
+
+  if (!isMounted) {
+    return (
+      <div className={cn('flex h-full w-full gap-2', className)}>
+        <TaskViewContainer
+          items={undoneTasks}
+          layout={layout}
+          type='todo'
+          EmptyTaskState={EmptyTaskState}
+          onToggleDone={onToggleDone}
+          onOpenMemo={onOpenMemo}
+          isDragEnabled={false}
+        />
+        <div className='line mt-16 w-[3px]' />
+        <TaskViewContainer
+          items={doneTasks}
+          layout={layout}
+          type='done'
+          EmptyTaskState={EmptyTaskState}
+          onToggleDone={onToggleDone}
+          onOpenMemo={onOpenMemo}
+          isDragEnabled={false}
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className={cn('flex h-full w-full gap-2', className)}>
-      <TaskViewContainer
-        items={undoneTasks}
-        layout={layout}
-        type='todo'
-        EmptyTaskState={EmptyTaskState}
-        onToggleDone={onToggleDone}
-        onOpenMemo={onOpenMemo}
-      />
-      <div className='line mt-16 w-[3px]' />
-      <TaskViewContainer
-        items={doneTasks}
-        layout={layout}
-        type='done'
-        EmptyTaskState={EmptyTaskState}
-        onToggleDone={onToggleDone}
-        onOpenMemo={onOpenMemo}
-      />
-    </div>
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
+      <div className={cn('flex h-full w-full gap-2', className)}>
+        <TaskViewContainer
+          items={undoneTasks}
+          layout={layout}
+          type='todo'
+          EmptyTaskState={EmptyTaskState}
+          onToggleDone={onToggleDone}
+          onOpenMemo={onOpenMemo}
+          isDragEnabled={true}
+        />
+        <div className='line mt-16 w-[3px]' />
+        <TaskViewContainer
+          items={doneTasks}
+          layout={layout}
+          type='done'
+          EmptyTaskState={EmptyTaskState}
+          onToggleDone={onToggleDone}
+          onOpenMemo={onOpenMemo}
+          isDragEnabled={true}
+        />
+      </div>
+      <DragOverlay>
+        {activeTask ? (
+          <div className='rotate-3 opacity-80'>
+            {layout === 'card' ? (
+              <CardView task={activeTask} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} />
+            ) : (
+              <ListView task={activeTask} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} />
+            )}
+          </div>
+        ) : null}
+      </DragOverlay>
+    </DndContext>
   );
 }

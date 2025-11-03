@@ -14,6 +14,7 @@ export interface TaskViewContainerProps {
   EmptyTaskState: React.ComponentType<EmptyTaskStateProps>;
   onToggleDone: (taskId: string) => void;
   onOpenMemo: (taskId: string) => void;
+  isDragEnabled?: boolean;
 }
 
 export type { Task };
