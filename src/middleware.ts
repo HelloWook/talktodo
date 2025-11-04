@@ -2,12 +2,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-import { auth } from '@/auth';
+import { getAuthSession } from '@/utils/auth.middleware';
 
 const protectedPaths = ['/mypage', '/'];
 
 export async function middleware(request: NextRequest) {
-  const session = await auth();
+  const session = await getAuthSession(request);
   const pathname = request.nextUrl.pathname;
 
   const isProtectedPath = protectedPaths.includes(pathname);
