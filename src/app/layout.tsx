@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import './globals.css';
+import { Suspense } from 'react';
+
 import AlertContainer from '@/components/Alert/AlertContainer';
 import DialogContainer from '@/components/DialogManager/DialogContainer';
 import ToastContainer from '@/components/Toast/ToastContainer';
@@ -55,7 +57,9 @@ export default function RootLayout({
         <div id='toast-root' />
         <div id='alert-root' />
         <div id='dialog-root' />
-        <ToastHandler />
+        <Suspense fallback={null}>
+          <ToastHandler />
+        </Suspense>
         <ToastContainer />
         <AlertContainer />
         <DialogContainer />
