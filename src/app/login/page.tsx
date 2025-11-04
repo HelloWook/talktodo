@@ -4,10 +4,10 @@ import React from 'react';
 
 import LoginForm from '@/components/LoginForm/LoginForm';
 
-const page = () => {
+const LoginPage = () => {
   return (
     <div className='gradient-bg flex min-h-screen w-full items-center justify-center p-4'>
-      <div className='flex w-full max-w-md flex-col items-center gap-[130px] sm:gap-[150px]'>
+      <div className='flex w-full max-w-md flex-col items-center gap-[50px] sm:gap-[80px]'>
         <Image src='/img/logo.png' alt='logo' width={220} height={270} className='h-auto w-full max-w-[220px]' />
         <LoginForm />
       </div>
@@ -15,4 +15,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LoginPage;

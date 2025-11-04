@@ -2,9 +2,13 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import './globals.css';
+import { Suspense } from 'react';
+
 import AlertContainer from '@/components/Alert/AlertContainer';
 import DialogContainer from '@/components/DialogManager/DialogContainer';
 import ToastContainer from '@/components/Toast/ToastContainer';
+
+import ToastHandler from '@/components/Toast/ToastHandler';
 
 import { Providers } from './providers';
 
@@ -53,6 +57,9 @@ export default function RootLayout({
         <div id='toast-root' />
         <div id='alert-root' />
         <div id='dialog-root' />
+        <Suspense fallback={null}>
+          <ToastHandler />
+        </Suspense>
         <ToastContainer />
         <AlertContainer />
         <DialogContainer />

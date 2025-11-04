@@ -2,12 +2,15 @@
 
 import Button from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
+import { useSidebar } from '@/components/SideBar/SideBar';
+
 interface NewGoalButtonProps {
-  isFold: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
-export default function NewGoalButton({ isFold, onClick }: NewGoalButtonProps) {
+export default function NewGoalButton({ onClick }: NewGoalButtonProps) {
+  const { isFold } = useSidebar();
+
   if (isFold) {
     return (
       <Button variant='quaternary' onClick={onClick} className='mt-6 w-full border-1 border-purple-600 px-0'>

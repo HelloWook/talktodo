@@ -3,14 +3,11 @@
 import { useRouter } from 'next/navigation';
 
 import Icon from '@/components/Icon/Icon';
+import { useSidebar } from '@/components/SideBar/SideBar';
 
-interface SidebarHeaderProps {
-  isFold: boolean;
-  onFoldToggle: () => void;
-}
-
-export default function SidebarHeader({ isFold, onFoldToggle }: SidebarHeaderProps) {
+export default function SidebarHeader() {
   const router = useRouter();
+  const { isFold, toggleFold } = useSidebar();
 
   const handleLogoClick = () => {
     router.push('/');
@@ -21,7 +18,7 @@ export default function SidebarHeader({ isFold, onFoldToggle }: SidebarHeaderPro
       <button className='flex cursor-pointer items-center justify-center' onClick={handleLogoClick}>
         <Icon name='logo' className='h-8 w-8' />
       </button>
-      <button className='relative cursor-pointer' onClick={onFoldToggle}>
+      <button className='relative cursor-pointer' onClick={toggleFold}>
         {!isFold && <Icon name='fold' className='h-6 w-6' />}
 
         {isFold && (

@@ -1,102 +1,41 @@
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import SideBar from './SideBar';
 
 // Mock next/navigation
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
-  usePathname: jest.fn(),
 }));
 
-// Mock sub-components
-jest.mock('./_components/MenuGroup', () => {
-  interface MenuItem {
-    id: string;
-    label: string;
-    onClick: () => void;
-  }
-
-  interface MenuGroupProps {
-    title: string;
-    items: MenuItem[];
-    isFold: boolean;
-    onTitleClick?: () => void;
-  }
-
-  return function MockMenuGroup({ title, items, onTitleClick }: MenuGroupProps) {
-    return (
-      <div data-testid='menu-group'>
-        <button onClick={onTitleClick} data-testid={`menu-group-title-${title}`}>
-          {title}
-        </button>
-        {items.map((item) => (
-          <button key={item.id} onClick={item.onClick} data-testid={`menu-item-${item.id}`}>
-            {item.label}
-          </button>
-        ))}
-      </div>
-    );
+// Mock Icon component
+jest.mock('@/components/Icon/Icon', () => {
+  return function MockIcon({ name }: { name: string }) {
+    return <span data-testid={`icon-${name}`}>{name}</span>;
   };
 });
 
-jest.mock('./_components/NewGoalButton', () => {
-  interface NewGoalButtonProps {
-    onClick: () => void;
-    isFold: boolean;
-  }
-
-  return function MockNewGoalButton({ onClick }: NewGoalButtonProps) {
+// Mock Button component
+jest.mock('@/components/Button/Button', () => {
+  return function MockButton({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) {
     return (
-      <button onClick={onClick} data-testid='new-goal-button'>
-        새 목표
+      <button onClick={onClick} data-testid='button'>
+        {children}
       </button>
     );
   };
 });
 
-jest.mock('./_components/SidebarHeader', () => {
-  interface SidebarHeaderProps {
-    isFold: boolean;
-    onFoldToggle: () => void;
-  }
-
-  return function MockSidebarHeader({ isFold, onFoldToggle }: SidebarHeaderProps) {
-    return (
-      <button onClick={onFoldToggle} data-testid='fold-toggle'>
-        {isFold ? 'Folded' : 'Unfolded'}
-      </button>
-    );
+// Mock Image component
+jest.mock('next/image', () => {
+  return function MockImage({ src, alt }: { src: string; alt: string }) {
+    return <img src={src} alt={alt} />;
   };
 });
 
-jest.mock('./_components/SidebarProfileSection', () => {
-  interface SidebarProfileSectionProps {
-    userNickname: string;
-    userEmail: string;
-    isFold: boolean;
-  }
-
-  return function MockSidebarProfileSection({ userNickname, userEmail }: SidebarProfileSectionProps) {
-    return (
-      <div data-testid='profile-section'>
-        <div>{userNickname}</div>
-        <div>{userEmail}</div>
-      </div>
-    );
-  };
-});
-
-jest.mock('./_components/SidebarSeparator', () => {
-  return function MockSidebarSeparator() {
-    return <div data-testid='separator'>Separator</div>;
-  };
-});
-
-describe('SideBar', () => {
+describe('SideBar - 컴파운드 패턴', () => {
   const mockPush = jest.fn();
   const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
-  const mockUsePathname = usePathname as jest.MockedFunction<typeof usePathname>;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -108,56 +47,93 @@ describe('SideBar', () => {
       replace: jest.fn(),
       prefetch: jest.fn(),
     });
-    mockUsePathname.mockReturnValue('/');
   });
 
   afterEach(() => {
     cleanup();
   });
 
-  it('사용자 정보와 목표 목록을 표시한다', () => {
-    const goals = [
-      { id: 'g1', goalName: '운동' },
-      { id: 'g2', goalName: '독서' },
-    ];
-
-    render(<SideBar userNickname='홍길동' userEmail='hong@example.com' goals={goals} />);
+  it('사용자 정보와 메뉴 아이템을 표시한다', () => {
+    render(
+      <SideBar>
+        <SideBar.Content>
+          <SideBar.Header />
+          <SideBar.MenuGroup title='목표' icon='flag'>
+            <SideBar.MenuItem label='운동' onClick={() => {}} />
+            <SideBar.MenuItem label='독서' onClick={() => {}} />
+          </SideBar.MenuGroup>
+        </SideBar.Content>
+        <SideBar.Footer>
+          <SideBar.ProfileSection userNickname='홍길동' userEmail='hong@example.com' />
+        </SideBar.Footer>
+      </SideBar>,
+    );
 
     expect(screen.getByText('홍길동')).toBeInTheDocument();
     expect(screen.getByText('hong@example.com')).toBeInTheDocument();
-    expect(screen.getByTestId('menu-item-g1')).toBeInTheDocument();
-    expect(screen.getByTestId('menu-item-g2')).toBeInTheDocument();
+    expect(screen.getByText('운동')).toBeInTheDocument();
+    expect(screen.getByText('독서')).toBeInTheDocument();
   });
 
-  it('목표를 클릭하면 해당 목표 페이지로 이동한다', () => {
-    const goals = [{ id: 'g1', goalName: '운동' }];
+  it('메뉴 아이템을 클릭하면 onClick 핸들러가 실행된다', () => {
+    const handleClick = jest.fn();
 
-    render(<SideBar userNickname='홍길동' userEmail='hong@example.com' goals={goals} />);
+    render(
+      <SideBar>
+        <SideBar.Content>
+          <SideBar.Header />
+          <SideBar.MenuGroup title='목표' icon='flag'>
+            <SideBar.MenuItem label='운동' onClick={handleClick} />
+          </SideBar.MenuGroup>
+        </SideBar.Content>
+        <SideBar.Footer>
+          <SideBar.ProfileSection userNickname='홍길동' userEmail='hong@example.com' />
+        </SideBar.Footer>
+      </SideBar>,
+    );
 
-    fireEvent.click(screen.getByTestId('menu-item-g1'));
+    fireEvent.click(screen.getByText('운동'));
 
-    expect(mockPush).toHaveBeenCalledWith('/goal/g1');
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('새 목표 버튼을 클릭하면 모달을 연다', () => {
-    const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+  it('새 목표 버튼을 클릭하면 onClick 핸들러가 실행된다', () => {
+    const handleNewGoal = jest.fn();
 
-    render(<SideBar userNickname='홍길동' userEmail='hong@example.com' goals={[]} />);
+    render(
+      <SideBar>
+        <SideBar.Content>
+          <SideBar.Header />
+          <SideBar.NewGoalButton onClick={handleNewGoal} />
+        </SideBar.Content>
+        <SideBar.Footer>
+          <SideBar.ProfileSection userNickname='홍길동' userEmail='hong@example.com' />
+        </SideBar.Footer>
+      </SideBar>,
+    );
 
-    fireEvent.click(screen.getByTestId('new-goal-button'));
+    const button = screen.getByTestId('button');
+    fireEvent.click(button);
 
-    expect(consoleSpy).toHaveBeenCalledWith('새 목표 모달 열기');
-
-    consoleSpy.mockRestore();
+    expect(handleNewGoal).toHaveBeenCalledTimes(1);
   });
 
-  it('접기/펼치기 버튼으로 사이드바를 축소할 수 있다', () => {
-    render(<SideBar userNickname='홍길동' userEmail='hong@example.com' goals={[]} />);
+  it('프로필을 클릭하면 마이페이지로 이동한다', () => {
+    render(
+      <SideBar>
+        <SideBar.Content>
+          <SideBar.Header />
+        </SideBar.Content>
+        <SideBar.Footer>
+          <SideBar.ProfileSection userNickname='홍길동' userEmail='hong@example.com' />
+        </SideBar.Footer>
+      </SideBar>,
+    );
 
-    expect(screen.getByText('Unfolded')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByTestId('fold-toggle'));
-
-    expect(screen.getByText('Folded')).toBeInTheDocument();
+    const profile = screen.getByAltText('profile').parentElement;
+    if (profile) {
+      fireEvent.click(profile);
+      expect(mockPush).toHaveBeenCalledWith('/mypage');
+    }
   });
 });
