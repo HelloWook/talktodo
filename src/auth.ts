@@ -6,6 +6,7 @@ import NaverProvider from 'next-auth/providers/naver';
 import { userService } from './services/user.service';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
