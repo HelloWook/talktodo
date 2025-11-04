@@ -6,6 +6,8 @@ import AlertContainer from '@/components/Alert/AlertContainer';
 import DialogContainer from '@/components/DialogManager/DialogContainer';
 import ToastContainer from '@/components/Toast/ToastContainer';
 
+import ToastHandler from '@/components/Toast/ToastHandler';
+
 import { Providers } from './providers';
 
 const pretendard = localFont({
@@ -53,6 +55,7 @@ export default function RootLayout({
         <div id='toast-root' />
         <div id='alert-root' />
         <div id='dialog-root' />
+        <ToastHandler />
         <ToastContainer />
         <AlertContainer />
         <DialogContainer />

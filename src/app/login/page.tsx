@@ -4,7 +4,7 @@ import React from 'react';
 
 import LoginForm from '@/components/LoginForm/LoginForm';
 
-const page = () => {
+const LoginPage = () => {
   return (
     <div className='gradient-bg flex min-h-screen w-full items-center justify-center p-4'>
       <div className='flex w-full max-w-md flex-col items-center gap-[50px] sm:gap-[80px]'>
@@ -15,4 +15,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LoginPage;
