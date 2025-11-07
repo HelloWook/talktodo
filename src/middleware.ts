@@ -8,6 +8,7 @@ const protectedPaths = ['/mypage', '/'];
 
 export async function middleware(request: NextRequest) {
   const session = await getAuthSession(request);
+
   const pathname = request.nextUrl.pathname;
 
   const isProtectedPath = protectedPaths.includes(pathname);

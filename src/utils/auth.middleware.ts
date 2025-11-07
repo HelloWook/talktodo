@@ -1,11 +1,10 @@
 import { NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 export async function getAuthSession(request: NextRequest) {
-  const token = await getToken({
-    req: request,
-    secret: process.env.AUTH_SECRET,
-  });
+  const sessionToken =
+    process.env.NODE_ENV === 'production'
+      ? request.cookies.get('__Secure-authjs.session-token')?.value
+      : request.cookies.get('authjs.session-token')?.value;
 
-  return token ? { user: { id: token.userId } } : null;
+  return sessionToken ? { user: { id: 'authenticated' } } : null;
 }

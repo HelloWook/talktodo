@@ -10,7 +10,7 @@ export default function ToastHandler() {
 
   useEffect(() => {
     const message = searchParams.get('message');
-    console.log('ad');
+
     if (message) {
       addToast(decodeURIComponent(message));
 
