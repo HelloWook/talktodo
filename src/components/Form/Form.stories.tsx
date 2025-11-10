@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
-import type { Task } from '@/types';
+import { taskSchema } from '@/lib/validation/task';
+import { mockEmptyTask } from '@/stories/mock/mockTask';
 
 import Form from './Form';
 
@@ -12,17 +14,19 @@ const meta = {
 export default meta;
 
 export const Light = () => {
-  const [task, setTask] = useState<Task>({
-    id: 't1',
-    title: '',
-    description: '',
-    memo: '',
-    priority: '보통',
-    repeatDays: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isDone: false,
-    goal: { id: 'g1', name: '건강' },
+  const form = useForm({
+    resolver: zodResolver(taskSchema),
+    defaultValues: {
+      title: mockEmptyTask.title,
+      description: mockEmptyTask.description,
+      memo: mockEmptyTask.memo,
+      priority: mockEmptyTask.priority,
+      startDate: mockEmptyTask.startDate,
+      repeatDays: mockEmptyTask.repeatDays,
+      isDone: mockEmptyTask.isDone,
+      userId: mockEmptyTask.userId,
+      goalId: mockEmptyTask.goal?.id,
+    },
   });
 
   const goals = [
@@ -33,7 +37,7 @@ export const Light = () => {
 
   return (
     <div className='m-6 flex w-full justify-center'>
-      <Form task={task} onTaskChange={(t) => setTask({ ...t, updatedAt: new Date() })}>
+      <Form form={form}>
         <Form.Header title='할 일 편집' onClose={() => {}} />
         <div className='mb-4'>
           <Form.TitleField label='할 일' placeholder='할 일을 입력하세요' />

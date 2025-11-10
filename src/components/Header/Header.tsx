@@ -32,6 +32,7 @@ interface HeaderProviderProps {
 
 const HeaderProvider = ({ tasks, children }: HeaderProviderProps) => {
   const stats = getTodoStats(tasks);
+
   return <HeaderContext.Provider value={{ tasks, stats }}>{children}</HeaderContext.Provider>;
 };
 
@@ -107,7 +108,13 @@ const Character = ({ className }: CommonProps) => {
   const isCompleted = stats.isCompleted;
   return (
     <div className={cn('relative flex items-end justify-end overflow-hidden', className)}>
-      <Image src={isCompleted ? '/img/CompletedCharacter.png' : '/img/InCompletedCharacter.png'} width={180} height={166} alt='character' />
+      <Image
+        src={isCompleted ? '/img/CompletedCharacter.png' : '/img/InCompletedCharacter.png'}
+        width={180}
+        height={166}
+        alt='character'
+        priority
+      />
     </div>
   );
 };

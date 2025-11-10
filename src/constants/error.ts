@@ -72,11 +72,6 @@ export const ERRORS: Record<ErrorKey, ErrorInfo> = {
     code: 'ERR_50007',
     statusCode: 500,
   },
-  UNAUTHORIZED: {
-    message: '인증이 필요합니다.',
-    code: 'ERR_40100',
-    statusCode: 401,
-  },
   NOT_FOUND: {
     message: '요청한 리소스를 찾을 수 없습니다.',
     code: 'ERR_40400',

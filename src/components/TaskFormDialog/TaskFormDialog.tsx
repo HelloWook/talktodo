@@ -27,8 +27,6 @@ export default function TaskFormDialog({ onTaskChange, onClose }: TaskFormDialog
       priority: '보통',
       startDate: new Date(),
       repeatDays: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
       isDone: false,
       userId: user?.id,
       goalId: undefined,
@@ -36,11 +34,8 @@ export default function TaskFormDialog({ onTaskChange, onClose }: TaskFormDialog
   });
 
   const handleSubmit = form.handleSubmit((data) => {
-    const now = new Date();
     const payload: TaskPayload = {
       ...data,
-      createdAt: now,
-      updatedAt: now,
     };
 
     mutate(payload, {

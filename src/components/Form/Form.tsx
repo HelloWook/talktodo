@@ -266,7 +266,7 @@ const DateField = () => {
                 date={field.value ? new Date(field.value) : new Date()}
                 onDateChange={(date) => {
                   field.onChange(date);
-                  form.setValue('createdAt', date);
+                  form.setValue('startDate', date);
                   setOpen(false);
                 }}
                 closeSelector={() => setOpen(false)}
