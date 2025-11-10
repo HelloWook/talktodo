@@ -57,7 +57,7 @@ const useCreateTask = () => {
 
 const useUpdateTask = () => {
   const queryClient = useQueryClient();
-  const { addToast } = useToast();
+
   const { mutate, error } = useMutation({
     mutationFn: (params: UpdateTaskParams) => updateTask(params),
     onMutate: async (variables) => {

@@ -4,19 +4,15 @@ import { format, addDays, subDays } from 'date-fns';
 
 import { useEffect, useState } from 'react';
 
-import { DateSubHeader } from '@/components/DateSubHeader';
-
 import TaskHeader from '@/components/Header/TaskHeader/TaskHeader';
 
-import { TaskBoard } from '@/components/TaskBoard';
-import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
+import TaskLayout from '@/components/TaskLayout/TaskLayout';
 
 import { useMemoDrawer } from '@/hooks/useMemoDrawer';
 import { useGetTasks, useUpdateTask, prefetchTasks } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
 import type { Task } from '@/types';
 const TaskContainer = () => {
-  const [layout, setLayout] = useState<LayoutType>('card');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const queryClient = useQueryClient();
   const { openMemoDrawer } = useMemoDrawer();
@@ -30,7 +26,6 @@ const TaskContainer = () => {
 
   const { mutate: updateTask } = useUpdateTask();
 
-  // 날짜 변경 시 이전/다음 날짜의 데이터를 prefetch
   useEffect(() => {
     if (!user?.id) return;
 
@@ -47,10 +42,6 @@ const TaskContainer = () => {
       startDate: format(nextDate, 'yyyy-MM-dd'),
     });
   }, [selectedDate, user?.id, queryClient]);
-
-  const handleLayoutChange = (newLayout: LayoutType) => {
-    setLayout(newLayout);
-  };
 
   const handleOpenMemo = (taskId: string) => {
     const task = tasks?.find((task: Task) => task.id === taskId);
@@ -90,10 +81,6 @@ const TaskContainer = () => {
     handleUpdateTask(taskId, { memo });
   };
 
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
-  };
-
   if (tasks === undefined) {
     return <div>Loading...</div>;
   }
@@ -102,18 +89,10 @@ const TaskContainer = () => {
     <main className='relative mx-auto flex h-full w-full max-w-[1080px] flex-col p-4'>
       <TaskHeader tasks={tasks} />
 
-      <DateSubHeader
-        className='py-4'
-        selectedDate={selectedDate}
-        onDateChange={handleDateChange}
-        layout={layout}
-        onLayoutChange={handleLayoutChange}
-      />
-
-      <TaskBoard
-        className='flex-1 overflow-hidden'
+      <TaskLayout
         tasks={tasks}
-        layout={layout}
+        selectedDate={selectedDate}
+        onDateChange={setSelectedDate}
         onToggleDone={handleToggleDone}
         onOpenMemo={handleOpenMemo}
       />
