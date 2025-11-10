@@ -7,25 +7,19 @@ import { useEffect, useState } from 'react';
 import { DateSubHeader } from '@/components/DateSubHeader';
 
 import TaskHeader from '@/components/Header/TaskHeader/TaskHeader';
-import MemoDrawer from '@/components/MemoDrawer/MemoDrawer';
 
 import { TaskBoard } from '@/components/TaskBoard';
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
 
+import { useMemoDrawer } from '@/hooks/useMemoDrawer';
 import { useGetTasks, useUpdateTask, prefetchTasks } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
 import type { Task } from '@/types';
 const TaskContainer = () => {
   const [layout, setLayout] = useState<LayoutType>('card');
-  const [selectedTaskForMemo, setSelectedTaskForMemo] = useState<Task | null>(null);
-  const [isMemoDrawerOpen, setIsMemoDrawerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const queryClient = useQueryClient();
-
-  const handleCloseMemo = () => {
-    setIsMemoDrawerOpen(false);
-    setSelectedTaskForMemo(null);
-  };
+  const { openMemoDrawer } = useMemoDrawer();
 
   const user = useUserStore((state) => state.user);
 
@@ -61,8 +55,7 @@ const TaskContainer = () => {
   const handleOpenMemo = (taskId: string) => {
     const task = tasks?.find((task: Task) => task.id === taskId);
     if (task) {
-      setSelectedTaskForMemo(task);
-      setIsMemoDrawerOpen(true);
+      openMemoDrawer(task, handleSaveMemo);
     }
   };
 
@@ -124,7 +117,6 @@ const TaskContainer = () => {
         onToggleDone={handleToggleDone}
         onOpenMemo={handleOpenMemo}
       />
-      <MemoDrawer isOpen={isMemoDrawerOpen} onClose={handleCloseMemo} task={selectedTaskForMemo} onSaveMemo={handleSaveMemo} />
     </main>
   );
 };

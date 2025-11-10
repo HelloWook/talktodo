@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 
 import AlertContainer from '@/components/Alert/AlertContainer';
 import DialogContainer from '@/components/DialogManager/DialogContainer';
+import MemoDrawerContainer from '@/components/MemoDrawer/MemoDrawerContainer';
 import ToastContainer from '@/components/Toast/ToastContainer';
 import ToastHandler from '@/components/Toast/ToastHandler';
 import UserProvider from '@/components/UserProvider/UserProvider';
@@ -59,12 +60,14 @@ export default function RootLayout({
           <div id='toast-root' />
           <div id='alert-root' />
           <div id='dialog-root' />
+          <div id='memo-drawer-root' />
           <Suspense fallback={null}>
             <ToastHandler />
           </Suspense>
           <ToastContainer />
           <AlertContainer />
           <DialogContainer />
+          <MemoDrawerContainer />
         </Providers>
       </body>
     </html>
