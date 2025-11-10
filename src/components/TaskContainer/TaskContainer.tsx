@@ -4,7 +4,7 @@ import { format, addDays, subDays } from 'date-fns';
 
 import { useEffect, useState } from 'react';
 
-import TaskHeader from '@/components/Header/TaskHeader/TaskHeader';
+import TaskHeader from '@/components/TaskHeader/TaskHeader';
 
 import TaskLayout from '@/components/TaskLayout/TaskLayout';
 

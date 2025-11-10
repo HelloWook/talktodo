@@ -106,15 +106,11 @@ const TodoStats = ({ className }: CommonProps) => {
 const Character = ({ className }: CommonProps) => {
   const { stats } = useHeaderContext();
   const isCompleted = stats.isCompleted;
+  console.log(isCompleted);
+  const imageUrl = isCompleted ? '/img/CompletedCharacter.png' : '/img/UnCompletedCharacter.png';
   return (
     <div className={cn('relative flex items-end justify-end overflow-hidden', className)}>
-      <Image
-        src={isCompleted ? '/img/CompletedCharacter.png' : '/img/InCompletedCharacter.png'}
-        width={180}
-        height={166}
-        alt='character'
-        priority
-      />
+      <Image src={imageUrl} width={180} height={166} alt='character' />
     </div>
   );
 };

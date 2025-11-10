@@ -1,6 +1,6 @@
 import type { Task } from '@/types';
 
-import Header from '../Header';
+import Header from '../Header/Header';
 
 interface TaskHeaderProps {
   tasks: Task[];
