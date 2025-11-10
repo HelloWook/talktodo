@@ -15,4 +15,46 @@ model User {
   image     String?         
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  tasks Task[]
+}
+
+
+model Task {
+  id        String   @id @default(uuid())
+  title     String
+  description String?
+  memo String?
+  priority Priority
+  repeatDays RepeatDay[]
+  startDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isDone Boolean @default(false)
+  goalId String?
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  goal Goal? @relation(fields: [goalId], references: [id])
+}
+
+model Goal {
+  id String @id @default(uuid())
+  name String
+  tasks Task[]
+}
+
+enum Priority {
+  낮음
+  보통
+  중요
+}
+
+enum RepeatDay {
+  월
+  화
+  수
+  목
+  금
+  토
+  일
 }
