@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 
 import TaskViewContainer from './TaskViewContainer';
 import { EmptyTaskStateProps } from './TaskViewContainer.types';

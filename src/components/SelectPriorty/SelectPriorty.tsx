@@ -1,18 +1,19 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Priority } from '@/types/Task';
+import { Priority } from '@/types';
 import { cn } from '@/utils/cn';
 
 import Dot from '../Dot/Dot';
 
 interface SelectProirtyProps {
+  value?: Priority;
   onChange: (priority: Priority) => void;
   className?: string;
   triggerProps?: React.ComponentProps<typeof SelectTrigger>;
 }
 
-const SelectProirty = ({ onChange, className, triggerProps }: SelectProirtyProps) => {
+const SelectProirty = ({ value, onChange, className, triggerProps }: SelectProirtyProps) => {
   return (
-    <Select onValueChange={onChange}>
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger className={cn(className)} {...triggerProps}>
         <SelectValue placeholder='우선 순위를 선택해주세요.' />
       </SelectTrigger>

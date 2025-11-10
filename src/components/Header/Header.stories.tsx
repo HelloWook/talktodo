@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 
 import Header from './Header';
 

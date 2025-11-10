@@ -1,4 +1,4 @@
-import { RepeatDay } from '@/types/Task';
+import { RepeatDay } from '@/types';
 
 const WEEK_DAYS: RepeatDay[] = ['월', '화', '수', '목', '금', '토', '일'];
 

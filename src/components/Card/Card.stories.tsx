@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { Priority, RepeatDay } from '@/types/Task';
+import { Priority, RepeatDay } from '@/types';
 
 import Card from './Card';
 

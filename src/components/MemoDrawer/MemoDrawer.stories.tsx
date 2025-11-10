@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 
 import MemoDrawer from './MemoDrawer';
 

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { createContext, useContext } from 'react';
 
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 import { cn } from '@/utils/cn';
 import { getTodoStats } from '@/utils/taskStats';
 

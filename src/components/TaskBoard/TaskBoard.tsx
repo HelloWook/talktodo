@@ -8,7 +8,7 @@ import CardView from '@/components/Card/CardView';
 import { TaskViewContainer } from '@/components/TaskViewContainer';
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
 import useMount from '@/hooks/useMount';
-import type { Task } from '@/types/Task';
+import type { Task } from '@/types';
 import { cn } from '@/utils/cn';
 import { filterTasksByStatus } from '@/utils/filterTasks';
 

@@ -1,4 +1,4 @@
-import { Priority } from '@/types/Task';
+import { Priority } from '@/types';
 import { cn } from '@/utils/cn';
 
 const COLOR_MAP = {

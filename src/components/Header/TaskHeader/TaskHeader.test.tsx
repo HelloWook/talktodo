@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import type { Task } from '@/types/Task';
+import type { Task } from '@/types';
 
 import TaskHeader from './TaskHeader';
 

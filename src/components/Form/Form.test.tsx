@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import type { Task, Goal } from '@/types/Task';
+import type { Task, Goal } from '@/types';
 
 import Form from './Form';
 

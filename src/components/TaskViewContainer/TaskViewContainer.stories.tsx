@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import type { Priority, RepeatDay } from '@/types/Task';
+import type { Priority, RepeatDay } from '@/types';
 
 import TaskViewContainer from './TaskViewContainer';
 import type { EmptyTaskStateProps, Task } from './TaskViewContainer.types';

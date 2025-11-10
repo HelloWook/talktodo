@@ -1,4 +1,4 @@
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 
 export function countCompletedTasks(tasks: Task[]): number {
   return tasks.filter((task) => task.isDone).length;

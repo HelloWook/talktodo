@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm';
 
 import Icon from '@/components/Icon/Icon';
 import Typography from '@/components/Typography/Typography';
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 import { cn } from '@/utils/cn';
 
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from '../ui/drawer';

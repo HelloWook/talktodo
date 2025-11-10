@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 import { cn } from '@/utils/cn';
 
 import { getRepeatData } from '@/utils/getRepeatData';

@@ -1,4 +1,4 @@
-import type { Task } from '@/types/Task';
+import type { Task } from '@/types';
 
 import { cn } from '@/utils/cn';
 
