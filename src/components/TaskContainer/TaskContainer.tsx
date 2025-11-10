@@ -5,8 +5,10 @@ import { format, addDays, subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import TaskHeader from '@/components/TaskHeader/TaskHeader';
+import TaskHeaderSkeleton from '@/components/TaskHeader/TaskHeaderSkeleton';
 
 import TaskLayout from '@/components/TaskLayout/TaskLayout';
+import TaskLayoutSkeleton from '@/components/TaskLayout/TaskLayoutSkeleton';
 
 import { useMemoDrawer } from '@/hooks/useMemoDrawer';
 import { useGetTasks, useUpdateTask, prefetchTasks } from '@/quries/useTask';
@@ -19,7 +21,7 @@ const TaskContainer = () => {
 
   const user = useUserStore((state) => state.user);
 
-  const { data: tasks } = useGetTasks({
+  const { data: tasks, isLoading } = useGetTasks({
     startDate: format(selectedDate, 'yyyy-MM-dd'),
     userId: user?.id ?? '',
   });
@@ -81,21 +83,20 @@ const TaskContainer = () => {
     handleUpdateTask(taskId, { memo });
   };
 
-  if (tasks === undefined) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <main className='relative mx-auto flex h-full w-full max-w-[1080px] flex-col p-4'>
-      <TaskHeader tasks={tasks} />
-
-      <TaskLayout
-        tasks={tasks}
-        selectedDate={selectedDate}
-        onDateChange={setSelectedDate}
-        onToggleDone={handleToggleDone}
-        onOpenMemo={handleOpenMemo}
-      />
+      {isLoading ? <TaskHeaderSkeleton /> : <TaskHeader tasks={tasks ?? []} />}
+      {isLoading ? (
+        <TaskLayoutSkeleton />
+      ) : (
+        <TaskLayout
+          tasks={tasks ?? []}
+          selectedDate={selectedDate}
+          onDateChange={setSelectedDate}
+          onToggleDone={handleToggleDone}
+          onOpenMemo={handleOpenMemo}
+        />
+      )}
     </main>
   );
 };
