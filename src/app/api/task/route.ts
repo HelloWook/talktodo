@@ -91,3 +91,26 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: false, error: ERRORS.UPDATE_TASK_ERROR.message }, { status: ERRORS.UPDATE_TASK_ERROR.statusCode });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+    }
+
+    await taskService.delete(id);
+
+    return NextResponse.json({ success: true }, { status: HttpStatusCode.Ok });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: ERRORS.DELETE_TASK_ERROR.message }, { status: ERRORS.DELETE_TASK_ERROR.statusCode });
+  }
+}

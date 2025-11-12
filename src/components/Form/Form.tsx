@@ -153,6 +153,24 @@ const FormActions = ({ className }: FormActionsProps) => {
   );
 };
 
+interface EditFormActionsProps {
+  onEdit: () => void;
+  onDelete: () => void;
+  className?: string;
+}
+const EditFormActions = ({ onEdit, onDelete, className }: EditFormActionsProps) => {
+  return (
+    <div className={cn('flex justify-between gap-2', className)}>
+      <Button variant='primary' type='button' onClick={onEdit} className='w-full'>
+        수정하기
+      </Button>
+      <Button variant='quaternary' type='button' onClick={onDelete} className='!text-primary !hover:bg-white w-full !bg-white'>
+        삭제하기
+      </Button>
+    </div>
+  );
+};
+
 interface GoalSelectorProps {
   goals: Goal[];
   className?: string;
@@ -160,6 +178,8 @@ interface GoalSelectorProps {
 const GoalSelector = ({ goals, className }: GoalSelectorProps) => {
   const { form } = useFormContext();
   const triggerId = React.useId();
+  const hasGoals = goals.length > 0;
+
   return (
     <div className={cn('w-full', className)}>
       <label htmlFor={triggerId}>
@@ -171,10 +191,11 @@ const GoalSelector = ({ goals, className }: GoalSelectorProps) => {
         name='goalId'
         control={form.control}
         render={({ field }) => (
-          <Select value={field.value || ''} onValueChange={(value) => field.onChange(value || undefined)}>
-            <SelectTrigger className='mt-2 w-full' id={triggerId}>
-              <SelectValue placeholder='목표를 선택하세요.' />
+          <Select value={field.value || ''} onValueChange={(value) => field.onChange(value || undefined)} disabled={!hasGoals}>
+            <SelectTrigger className='mt-2 w-full' id={triggerId} disabled={!hasGoals}>
+              <SelectValue placeholder={hasGoals ? '목표를 선택하세요.' : '목표가 없습니다.'} />
             </SelectTrigger>
+
             <SelectContent className='border-0'>
               <SelectGroup>
                 {goals.map((g) => (
@@ -292,5 +313,5 @@ Form.GoalSelector = GoalSelector;
 Form.RepeatButtonGroup = RepeatButtonGroup;
 Form.FormActions = FormActions;
 Form.DateField = DateField;
-
+Form.EditFormActions = EditFormActions;
 export default Form;

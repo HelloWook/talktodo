@@ -2,6 +2,8 @@ import type { Preview } from '@storybook/nextjs-vite';
 import '../src/app/globals.css';
 import './preview.css';
 import { AppRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { Providers } from '../src/app/providers';
+import React from 'react';
 
 const preview: Preview = {
   parameters: {
@@ -27,9 +29,13 @@ const preview: Preview = {
       };
 
       return (
-        <AppRouterContext.Provider value={mockedRouter}>
-          <Story />
-        </AppRouterContext.Provider>
+        <>
+          <Providers>
+            <AppRouterContext.Provider value={mockedRouter}>
+              <Story />
+            </AppRouterContext.Provider>
+          </Providers>
+        </>
       );
     },
   ],

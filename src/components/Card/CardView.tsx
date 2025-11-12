@@ -1,18 +1,10 @@
-import type { Task } from '@/types';
-
 import Card from './Card';
+import type { ViewProps } from './type';
 
-interface CardViewProps {
-  task: Task;
-  onToggleDone: (taskId: string) => void;
-  onOpenMemo: (taskId: string) => void;
-  className?: string;
-}
-
-export default function CardView({ task, onToggleDone, onOpenMemo, className }: CardViewProps) {
+export default function CardView({ task, onToggleDone, onOpenMemo, className, onOpenEditDialog }: ViewProps) {
   return (
     <Card.Provider task={task} layout='card' onToggleDone={onToggleDone} onOpenMemo={onOpenMemo}>
-      <Card className={className}>
+      <Card className={className} handleClick={() => onOpenEditDialog(task)}>
         <Card.Title className='line-clamp-1' />
         <Card.Description className='line-clamp-2 flex-1' />
         <Card.Data className='overflow-hidden text-xs' />

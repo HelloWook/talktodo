@@ -4,9 +4,12 @@ import CardView from '@/components/Card/CardView';
 import DraggableWrapper from '@/components/Card/DraggableWrapper';
 import ListView from '@/components/Card/ListView';
 import Typography from '@/components/Typography/Typography';
+import { Task } from '@/types';
 import { cn } from '@/utils/cn';
 
 import type { TaskViewContainerProps } from './TaskViewContainer.types';
+import { useDialog } from '../DialogManager';
+import TaskEditDialog from '../TaskEditDialog/TaskEditDialog';
 
 export default function TaskViewContainer({
   items,
@@ -17,6 +20,8 @@ export default function TaskViewContainer({
   onOpenMemo,
   isDragEnabled = true,
 }: TaskViewContainerProps) {
+  const { openDialog, closeDialog } = useDialog();
+
   const title = type === 'todo' ? '해야할 일' : '완료한 일';
   const isListView = layout === 'list';
 
@@ -24,6 +29,10 @@ export default function TaskViewContainer({
     id: type,
     disabled: !isDragEnabled,
   });
+
+  const handleOpenEditDialog = (task: Task) => {
+    const id = openDialog(<TaskEditDialog task={task} onClose={() => closeDialog(id)} />);
+  };
 
   return (
     <div ref={setNodeRef} className='flex h-full w-full flex-col gap-2'>
@@ -47,9 +56,15 @@ export default function TaskViewContainer({
           {items.map((item) => (
             <DraggableWrapper key={item.id} id={item.id} isDragEnabled={isDragEnabled}>
               {isListView ? (
-                <ListView task={item} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} className='w-full' />
+                <ListView
+                  task={item}
+                  onToggleDone={onToggleDone}
+                  onOpenMemo={onOpenMemo}
+                  className='w-full'
+                  onOpenEditDialog={handleOpenEditDialog}
+                />
               ) : (
-                <CardView task={item} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} />
+                <CardView task={item} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} onOpenEditDialog={handleOpenEditDialog} />
               )}
             </DraggableWrapper>
           ))}

@@ -1,5 +1,3 @@
-'use client';
-
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -17,7 +15,6 @@ import ListView from '../Card/ListView';
 export interface TaskBoardProps {
   tasks: Task[];
   layout?: LayoutType;
-
   onToggleDone: (taskId: string) => void;
   onOpenMemo: (taskId: string) => void;
   className?: string;
@@ -73,32 +70,6 @@ export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpen
     setActiveTask(null);
   };
 
-  if (!isMounted) {
-    return (
-      <div className={cn('flex h-full w-full gap-2', className)}>
-        <TaskViewContainer
-          items={undoneTasks}
-          layout={layout}
-          type='todo'
-          EmptyTaskState={EmptyTaskState}
-          onToggleDone={onToggleDone}
-          onOpenMemo={onOpenMemo}
-          isDragEnabled={false}
-        />
-        <div className='line mt-16 w-[3px]' />
-        <TaskViewContainer
-          items={doneTasks}
-          layout={layout}
-          type='done'
-          EmptyTaskState={EmptyTaskState}
-          onToggleDone={onToggleDone}
-          onOpenMemo={onOpenMemo}
-          isDragEnabled={false}
-        />
-      </div>
-    );
-  }
-
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
       <div className={cn('flex h-full w-full gap-2', className)}>
@@ -123,15 +94,15 @@ export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpen
         />
       </div>
       <DragOverlay>
-        {activeTask ? (
-          <div className='rotate-3 opacity-80'>
+        {activeTask && (
+          <div className='h-[170px]'>
             {layout === 'card' ? (
-              <CardView task={activeTask} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} />
+              <CardView task={activeTask} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} onOpenEditDialog={() => {}} />
             ) : (
-              <ListView task={activeTask} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} />
+              <ListView task={activeTask} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} onOpenEditDialog={() => {}} />
             )}
           </div>
-        ) : null}
+        )}
       </DragOverlay>
     </DndContext>
   );

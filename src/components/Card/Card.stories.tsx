@@ -21,7 +21,7 @@ export const Default: Story = {
   render: () => {
     return (
       <Card.Provider task={mockDefaultTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
-        <Card className='min-w-[184px]'>
+        <Card className='min-w-[184px]' handleClick={() => {}}>
           <Card.Title />
           <Card.Description />
           <Card.Data className='border-b border-gray-300 pb-3' />
@@ -36,7 +36,7 @@ export const HighPriority: Story = {
   render: () => {
     return (
       <Card.Provider task={mockHighPriorityTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
-        <Card className='min-w-[184px]'>
+        <Card className='min-w-[184px]' handleClick={() => {}}>
           <Card.Title />
           <Card.Description />
           <Card.Data className='border-b border-gray-300 pb-3' />
@@ -51,7 +51,7 @@ export const LowPriority: Story = {
   render: () => {
     return (
       <Card.Provider task={mockLowPriorityTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
-        <Card className='min-w-[184px]'>
+        <Card className='min-w-[184px]' handleClick={() => {}}>
           <Card.Title />
           <Card.Description />
           <Card.Data className='border-b border-gray-300 pb-3' />
@@ -66,7 +66,7 @@ export const CompletedTask: Story = {
   render: () => {
     return (
       <Card.Provider task={mockCompletedTask} layout='card' onToggleDone={() => {}} onOpenMemo={() => {}}>
-        <Card className='min-w-[184px]'>
+        <Card className='min-w-[184px]' handleClick={() => {}}>
           <Card.Title />
           <Card.Description />
           <Card.Data className='border-b border-gray-300 pb-3' />

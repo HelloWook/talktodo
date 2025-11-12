@@ -15,6 +15,10 @@ export class TaskService {
   async update(params: UpdateTaskParams): Promise<Task> {
     return await taskRepository.update(params);
   }
+
+  async delete(id: string): Promise<Task> {
+    return await taskRepository.delete(id);
+  }
 }
 
 export const taskService = new TaskService();

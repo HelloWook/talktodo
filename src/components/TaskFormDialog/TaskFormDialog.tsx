@@ -9,11 +9,10 @@ import { useCreateTask } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
 
 interface TaskFormDialogProps {
-  onTaskChange?: () => void;
   onClose: () => void;
 }
 
-export default function TaskFormDialog({ onTaskChange, onClose }: TaskFormDialogProps) {
+export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
   const { mutate } = useCreateTask();
 
   const user = useUserStore((state) => state.user);
@@ -39,9 +38,8 @@ export default function TaskFormDialog({ onTaskChange, onClose }: TaskFormDialog
     };
 
     mutate(payload, {
-      onSuccess: () => {
+      onSettled: () => {
         form.reset();
-        onTaskChange?.();
         onClose();
       },
     });

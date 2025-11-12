@@ -8,8 +8,6 @@ import { useDialog } from '@/hooks/useDialog';
 export default function Home() {
   const { openDialog, closeDialog } = useDialog();
 
-  const handleTaskChange = () => {};
-
   return (
     <div className='flex h-screen w-screen overflow-hidden bg-purple-50'>
       <MenuSideBar />
@@ -20,7 +18,7 @@ export default function Home() {
           {
             label: '할 일 생성하기',
             onClick: () => {
-              const id = openDialog(<TaskFormDialog onTaskChange={handleTaskChange} onClose={() => closeDialog(id)} />);
+              const id = openDialog(<TaskFormDialog onClose={() => closeDialog(id)} />);
             },
           },
         ]}

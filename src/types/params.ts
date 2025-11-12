@@ -10,4 +10,8 @@ type UpdateTaskParams = {
   data: TaskPayload;
 };
 
-export type { GetTaskParams, UpdateTaskParams };
+type DeleteTaskParams = {
+  id: string;
+};
+
+export type { GetTaskParams, UpdateTaskParams, DeleteTaskParams };

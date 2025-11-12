@@ -4,10 +4,10 @@ import { format } from 'date-fns';
 
 import { useToast } from '@/hooks/useToast';
 
-import { getTasks, createTask, updateTask } from '@/lib/axios/task.axios';
+import { getTasks, createTask, updateTask, deleteTask } from '@/lib/axios/task.axios';
 import { tasks } from '@/quries/queryKey/queryKeys';
 import { Task } from '@/types';
-import { GetTaskParams, UpdateTaskParams } from '@/types/params';
+import { GetTaskParams, UpdateTaskParams, DeleteTaskParams } from '@/types/params';
 
 import { TaskPayload } from '../lib/validation/task';
 
@@ -41,7 +41,39 @@ const useCreateTask = () => {
   const { addToast } = useToast();
   const { mutate, error } = useMutation({
     mutationFn: (task: TaskPayload) => createTask(task),
-    onSuccess: (data, variables) => {
+    onMutate: async (variables) => {
+      const startDate = format(variables.startDate, 'yyyy-MM-dd');
+      const queryKey = tasks.list({
+        userId: variables.userId,
+        startDate,
+      }).queryKey;
+
+      await queryClient.cancelQueries({ queryKey });
+
+      const previousTasks = queryClient.getQueryData<Task[]>(queryKey);
+
+      const optimisticTask: Task = {
+        ...variables,
+        id: `temp-${Date.now()}`,
+        goal: undefined,
+      };
+
+      queryClient.setQueryData<Task[]>(queryKey, (old) => {
+        if (!old) return [optimisticTask];
+        return [...old, optimisticTask];
+      });
+
+      return { previousTasks, queryKey };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousTasks !== undefined) {
+        queryClient.setQueryData(context.queryKey, context.previousTasks);
+      }
+    },
+    onSuccess: () => {
+      addToast('🎉 할 일이 생성되었습니다.');
+    },
+    onSettled: (data, error, variables) => {
       const startDate = format(variables.startDate, 'yyyy-MM-dd');
       queryClient.invalidateQueries({
         queryKey: tasks.list({
@@ -49,9 +81,9 @@ const useCreateTask = () => {
           startDate,
         }).queryKey,
       });
-      addToast('🎉 할 일이 생성되었습니다.');
     },
   });
+
   return { mutate, error };
 };
 
@@ -83,7 +115,6 @@ const useUpdateTask = () => {
         queryClient.setQueryData(context.queryKey, context.previousTasks);
       }
     },
-    onSuccess: () => {},
     onSettled: (data, error, variables) => {
       const startDate = format(variables.data.startDate, 'yyyy-MM-dd');
       queryClient.invalidateQueries({
@@ -97,4 +128,24 @@ const useUpdateTask = () => {
   return { mutate, error };
 };
 
-export { useGetTasks, useCreateTask, useUpdateTask };
+const useDeleteTask = () => {
+  const queryClient = useQueryClient();
+  const { addToast } = useToast();
+
+  const { mutate, error } = useMutation({
+    mutationFn: (params: DeleteTaskParams) => deleteTask(params.id),
+    onError: () => {},
+    onSuccess: () => {
+      addToast('🗑️ 할 일이 삭제되었습니다.');
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey[0] === 'tasks';
+        },
+      });
+    },
+  });
+
+  return { mutate, error };
+};
+
+export { useGetTasks, useCreateTask, useUpdateTask, useDeleteTask };

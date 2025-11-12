@@ -28,3 +28,10 @@ export const updateTask = async (params: UpdateTaskParams) => {
   });
   return response.data.data;
 };
+
+export const deleteTask = async (id: string) => {
+  const response = await axiosInstance.delete('/api/task', {
+    params: { id },
+  });
+  return response.data;
+};
