@@ -13,7 +13,7 @@ const AlertContainer = () => {
   const [Alerts, setAlerts] = useState<AlertType[]>([]);
 
   const Alert_LIMIT = 1;
-  const Alert_DURATION = 10000000;
+  const Alert_DURATION = 3000;
 
   const isMounted = useMount();
 
@@ -26,8 +26,9 @@ const AlertContainer = () => {
         return;
       }
 
+      const alertId = id || Date.now();
       const newAlert = {
-        id: id || Date.now(),
+        id: alertId,
         message,
         handleClick,
       };
@@ -38,7 +39,7 @@ const AlertContainer = () => {
       });
 
       setTimeout(() => {
-        setAlerts((prev) => prev.filter((Alert) => Alert.id !== newAlert.id));
+        setAlerts((prev) => prev.filter((alert) => alert.id !== alertId));
       }, Alert_DURATION);
     };
 
@@ -51,13 +52,18 @@ const AlertContainer = () => {
 
   if (!isMounted) return null;
 
-  // 차후에 Alert 등장 위치 조정 필요
   return createPortal(
-    <div className='fixed bottom-[30px] left-1/2 z-50 flex w-full -translate-x-1/2 items-center'>
+    <div className='pointer-events-none fixed bottom-[30px] left-1/2 z-[60] flex w-full -translate-x-1/2 items-center'>
       {Alerts.slice()
         .reverse()
         .map(({ id, message, handleClick }) => (
-          <Alert key={id} message={message} handleClick={handleClick} />
+          <Alert
+            key={id}
+            id={id}
+            message={message}
+            handleClick={handleClick}
+            onClose={() => setAlerts((prev) => prev.filter((alert) => alert.id !== id))}
+          />
         ))}
     </div>,
     document.getElementById('alert-root') || document.body,

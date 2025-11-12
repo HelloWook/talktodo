@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import type { Priority, RepeatDay } from '@/types/Task';
+import { createMockTask } from '@/stories/mock/mockTask';
 
 import TaskViewContainer from './TaskViewContainer';
-import type { EmptyTaskStateProps, Task } from './TaskViewContainer.types';
+import type { EmptyTaskStateProps } from './TaskViewContainer.types';
 
 const MockEmptyTaskState = ({ mode }: EmptyTaskStateProps) => (
   <div className='flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50'>
@@ -46,22 +46,6 @@ const meta: Meta<typeof TaskViewContainer> = {
 export default meta;
 
 type Story = StoryObj<typeof TaskViewContainer>;
-
-const createMockTask = (id: string): Task => ({
-  id,
-  title: `할 일 ${id}`,
-  description: `할 일 ${id}의 설명입니다`,
-  memo: '',
-  priority: '보통' as Priority,
-  repeatDays: ['월', '화', '수', '목', '금'] as RepeatDay[],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  isDone: false,
-  goal: {
-    id: 'goal-1',
-    name: '목표',
-  },
-});
 
 const mockTasks = [
   createMockTask('1'),

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm';
 
 import Icon from '@/components/Icon/Icon';
 import Typography from '@/components/Typography/Typography';
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 import { cn } from '@/utils/cn';
 
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from '../ui/drawer';
@@ -22,9 +22,9 @@ interface MemoDrawerProps {
 
 const MemoDrawer = ({ isOpen, onClose, task, onSaveMemo }: MemoDrawerProps) => {
   const [memo, setMemo] = useState(task?.memo || '');
-  const [isEditMode, setIsEditMode] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (task) {
       setMemo(task.memo || '');
     }
@@ -63,18 +63,7 @@ const MemoDrawer = ({ isOpen, onClose, task, onSaveMemo }: MemoDrawerProps) => {
             </div>
           </div>
 
-          {/* 탭 스타일 버튼 */}
           <div className='mt-4 flex gap-1'>
-            <button
-              onClick={() => setIsEditMode(true)}
-              className={cn(
-                'flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all',
-                isEditMode ? 'bg-purple-500 text-white shadow-sm' : 'bg-transparent text-gray-600 hover:bg-gray-100',
-              )}
-              type='button'
-            >
-              편집
-            </button>
             <button
               onClick={() => setIsEditMode(false)}
               className={cn(
@@ -84,6 +73,16 @@ const MemoDrawer = ({ isOpen, onClose, task, onSaveMemo }: MemoDrawerProps) => {
               type='button'
             >
               미리보기
+            </button>
+            <button
+              onClick={() => setIsEditMode(true)}
+              className={cn(
+                'flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all',
+                isEditMode ? 'bg-purple-500 text-white shadow-sm' : 'bg-transparent text-gray-600 hover:bg-gray-100',
+              )}
+              type='button'
+            >
+              편집
             </button>
           </div>
         </DrawerHeader>
@@ -136,14 +135,14 @@ const MemoDrawer = ({ isOpen, onClose, task, onSaveMemo }: MemoDrawerProps) => {
           <div className='flex justify-end gap-2'>
             <button
               onClick={handleCancel}
-              className='rounded-lg px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100'
+              className='cursor-pointer rounded-lg px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100'
               type='button'
             >
               취소
             </button>
             <button
               onClick={handleSave}
-              className='rounded-lg bg-purple-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-purple-600'
+              className='cursor-pointer rounded-lg bg-purple-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-purple-600'
               type='button'
             >
               저장

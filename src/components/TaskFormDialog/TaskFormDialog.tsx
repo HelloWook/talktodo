@@ -1,40 +1,53 @@
 'use client';
 
-import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
 import Form from '@/components/Form/Form';
-import { Task } from '@/types/Task';
+import { taskSchema, TaskPayload } from '@/lib/validation/task';
+import { useCreateTask } from '@/quries/useTask';
+import { useUserStore } from '@/stores/user';
 
 interface TaskFormDialogProps {
-  onTaskChange: (task: Task) => void;
   onClose: () => void;
 }
 
-const createInitialTask = (): Task => ({
-  id: '',
-  title: '',
-  description: '',
-  memo: '',
-  priority: '보통',
-  repeatDays: [],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  isDone: false,
-  goal: { id: '', name: '' },
-});
+export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
+  const { mutate } = useCreateTask();
 
-export default function TaskFormDialog({ onTaskChange, onClose }: TaskFormDialogProps) {
-  const [task, setTask] = useState<Task>(createInitialTask());
+  const user = useUserStore((state) => state.user);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onTaskChange(task);
-    onClose();
-  };
+  const form = useForm<TaskPayload>({
+    resolver: zodResolver(taskSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      memo: '',
+      priority: '보통',
+      startDate: new Date(),
+      repeatDays: [],
+      isDone: false,
+      userId: user?.id,
+      goalId: undefined,
+    },
+  });
+
+  const handleSubmit = form.handleSubmit((data) => {
+    const payload: TaskPayload = {
+      ...data,
+    };
+
+    mutate(payload, {
+      onSettled: () => {
+        form.reset();
+        onClose();
+      },
+    });
+  });
 
   return (
     <div className='m-6 flex w-full justify-center'>
-      <Form task={task} onTaskChange={setTask} onSubmit={handleSubmit}>
+      <Form form={form} onSubmit={handleSubmit}>
         <Form.Header title='할 일 생성' onClose={onClose} />
         <div className='mb-4'>
           <Form.TitleField label='할 일' placeholder='할 일을 입력하세요' />

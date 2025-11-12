@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 
 import Header from './Header';
 
@@ -11,8 +11,8 @@ const makeTask = (overrides?: Partial<Task>): Task => ({
   memo: overrides?.memo ?? '',
   priority: overrides?.priority ?? '보통',
   repeatDays: overrides?.repeatDays ?? [],
-  createdAt: overrides?.createdAt ?? new Date(),
-  updatedAt: overrides?.updatedAt ?? new Date(),
+  startDate: overrides?.startDate ?? new Date(),
+  userId: overrides?.userId ?? '1',
   isDone: overrides?.isDone ?? false,
   goal: overrides?.goal ?? { id: 'g1', name: '건강' },
 });
@@ -77,7 +77,7 @@ describe('Header', () => {
     );
 
     const img = screen.getByAltText('character') as HTMLImageElement;
-    expect(img.getAttribute('src') || '').toContain('InCompletedCharacter.png');
+    expect(img.getAttribute('src') || '').toContain('UnCompletedCharacter.png');
 
     rerender(
       <Header.Provider tasks={[makeTask({ id: '1', isDone: true })]}>

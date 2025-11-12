@@ -1,4 +1,4 @@
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 import { computeCompletionPercent, countCompletedTasks, getTodoStats } from '@/utils/taskStats';
 
 const makeTask = (id: string, isDone: boolean): Task => ({

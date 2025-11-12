@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 import { cn } from '@/utils/cn';
 
 import { getRepeatData } from '@/utils/getRepeatData';
@@ -42,25 +42,35 @@ const CardProvider = ({ task, layout, onToggleDone, onOpenMemo, children }: Card
 interface CardProps {
   children: React.ReactNode;
   className?: string;
+  handleClick: () => void;
 }
 
-const Card = ({ className, children }: CardProps) => {
+const Card = ({ className, children, handleClick }: CardProps) => {
   const { task, layout } = useCardContext();
 
   const isListView = layout === 'list';
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   return (
-    <article
-      className={cn(
-        'flex rounded-lg border border-transparent shadow hover:border hover:border-purple-300',
-        isListView ? 'h-[110px] flex-row items-center gap-4 p-4' : 'h-full flex-col gap-1.5 p-3',
-        task.isDone ? 'bg-purple-200' : 'bg-white',
-        className,
-      )}
-      aria-label={`작업: ${task.title}`}
-    >
-      {children}
-    </article>
+    <div onClick={handleClick} onKeyDown={handleKeyDown} role='button' tabIndex={0} className='h-full w-full cursor-pointer text-left'>
+      <article
+        className={cn(
+          'flex rounded-lg border border-transparent shadow hover:border hover:border-purple-300',
+          isListView ? 'h-[110px] flex-row items-center gap-4 p-4' : 'h-full flex-col gap-1.5 p-3',
+          task.isDone ? 'bg-purple-200' : 'bg-white',
+          className,
+        )}
+        aria-label={`작업: ${task.title}`}
+      >
+        {children}
+      </article>
+    </div>
   );
 };
 
@@ -135,11 +145,21 @@ const CardItem = ({ className }: CardItemProps) => {
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      <button onClick={handleOpenMemo} className='cursor-pointer' aria-label={`${task.title} 메모 열기`}>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpenMemo();
+        }}
+        className='cursor-pointer'
+        aria-label={`${task.title} 메모 열기`}
+      >
         <Icon name='memo' className={cn(task.isDone ? 'fill-purple-200' : 'fill-white')} />
       </button>
       <button
-        onClick={handleToggleDone}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleToggleDone();
+        }}
         className='cursor-pointer'
         aria-label={`${task.title} ${task.isDone ? '완료 취소' : '완료 처리'}`}
         aria-pressed={task.isDone}

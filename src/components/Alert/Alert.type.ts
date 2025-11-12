@@ -3,4 +3,7 @@ export interface Alert {
   message: string;
   handleClick?: () => void;
 }
-export type AlertProps = Omit<Alert, 'id'>;
+export type AlertProps = Omit<Alert, 'id'> & {
+  id?: number;
+  onClose?: () => void;
+};

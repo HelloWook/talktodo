@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { createContext, useContext } from 'react';
 
-import { Task } from '@/types/Task';
+import { Task } from '@/types';
 import { cn } from '@/utils/cn';
 import { getTodoStats } from '@/utils/taskStats';
 
@@ -32,6 +32,7 @@ interface HeaderProviderProps {
 
 const HeaderProvider = ({ tasks, children }: HeaderProviderProps) => {
   const stats = getTodoStats(tasks);
+
   return <HeaderContext.Provider value={{ tasks, stats }}>{children}</HeaderContext.Provider>;
 };
 
@@ -105,9 +106,11 @@ const TodoStats = ({ className }: CommonProps) => {
 const Character = ({ className }: CommonProps) => {
   const { stats } = useHeaderContext();
   const isCompleted = stats.isCompleted;
+  console.log(isCompleted);
+  const imageUrl = isCompleted ? '/img/CompletedCharacter.png' : '/img/UnCompletedCharacter.png';
   return (
     <div className={cn('relative flex items-end justify-end overflow-hidden', className)}>
-      <Image src={isCompleted ? '/img/CompletedCharacter.png' : '/img/InCompletedCharacter.png'} width={180} height={166} alt='character' />
+      <Image src={imageUrl} width={180} height={166} alt='character' />
     </div>
   );
 };

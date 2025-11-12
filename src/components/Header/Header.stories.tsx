@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { Task } from '@/types/Task';
+import { mockCodeReviewTask, mockDocumentTask, mockMeetingTask, mockProjectTask, mockTestTask } from '@/stories/mock/mockTask';
+import { Task } from '@/types';
 
 import Header from './Header';
 
@@ -14,68 +15,7 @@ export default meta;
 
 type Story = StoryObj<typeof Header>;
 
-const mockTasks: Task[] = [
-  {
-    id: '1',
-    title: '프로젝트 기획서 작성',
-    description: '새로운 프로젝트의 기획서를 작성해야 합니다.',
-    memo: '',
-    priority: '중요',
-    repeatDays: ['월', '화', '수', '목', '금'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isDone: true,
-    goal: { id: 'g1', name: '건강' },
-  },
-  {
-    id: '2',
-    title: '코드 리뷰',
-    description: '팀원들의 코드를 리뷰하고 피드백을 제공합니다.',
-    memo: '',
-    priority: '보통',
-    repeatDays: ['월', '수', '금'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isDone: true,
-    goal: { id: 'g1', name: '건강' },
-  },
-  {
-    id: '3',
-    title: '회의 준비',
-    description: '내일 있을 회의 자료를 준비합니다.',
-    memo: '',
-    priority: '낮음',
-    repeatDays: ['화', '목'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isDone: false,
-    goal: { id: 'g1', name: '건강' },
-  },
-  {
-    id: '4',
-    title: '문서 정리',
-    description: '프로젝트 문서들을 정리하고 업데이트합니다.',
-    memo: '',
-    priority: '보통',
-    repeatDays: ['월', '금'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isDone: false,
-    goal: { id: 'g1', name: '건강' },
-  },
-  {
-    id: '5',
-    title: '테스트 케이스 작성',
-    description: '새로운 기능에 대한 테스트 케이스를 작성합니다.',
-    memo: '',
-    priority: '중요',
-    repeatDays: ['화', '목'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isDone: false,
-    goal: { id: 'g1', name: '건강' },
-  },
-];
+const mockTasks: Task[] = [mockProjectTask, mockCodeReviewTask, mockMeetingTask, mockDocumentTask, mockTestTask];
 
 const completedTasks: Task[] = mockTasks.map((task) => ({ ...task, isDone: true }));
 

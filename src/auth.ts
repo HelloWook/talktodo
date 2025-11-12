@@ -63,15 +63,55 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return true;
     },
-    jwt: async ({ token, user, account }) => {
-      if (account && user) {
+    jwt: async ({ token, account, profile }) => {
+      if (account && profile) {
         token.accessToken = account.access_token;
-        token.userId = user.id;
+
+        let dbUser;
+        if (account.provider === 'google') {
+          const { email, name, picture } = profile as { email: string; name: string; picture: string };
+          dbUser = await userService.findOrCreateUser({
+            email: email + '@google.com',
+            nickname: name,
+            image: picture,
+          });
+        } else if (account.provider === 'naver') {
+          const { email, name, image } = profile?.response as { email: string; name: string; image: string };
+          dbUser = await userService.findOrCreateUser({
+            email: email + '@naver.com',
+            nickname: name,
+            image: image,
+          });
+        } else if (account.provider === 'kakao') {
+          const { nickname, profile_image } = profile?.properties as { nickname: string; profile_image: string };
+          const { email } = profile?.kakao_account as { email: string };
+          dbUser = await userService.findOrCreateUser({
+            email: email + '@kakao.com',
+            nickname: nickname,
+            image: profile_image,
+          });
+        }
+
+        if (dbUser) {
+          token.userId = dbUser.id;
+          token.email = dbUser.email;
+          token.nickname = dbUser.nickname;
+          token.image = dbUser.image;
+        }
       }
 
       return token;
     },
-    session: async ({ session }) => {
+    session: async ({ session, token }) => {
+      if (token.userId) {
+        session.user = {
+          ...session.user,
+          id: token.userId as string,
+          email: token.email as string,
+          name: token.nickname as string,
+          image: token.image as string | undefined,
+        };
+      }
       return session;
     },
   },

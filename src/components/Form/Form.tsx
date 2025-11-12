@@ -1,11 +1,13 @@
 import { format } from 'date-fns';
-import React, { createContext, useCallback, useContext, useMemo } from 'react';
+import React, { createContext, useContext } from 'react';
+import { UseFormReturn, Controller } from 'react-hook-form';
 
 import Button from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
 import SelectProirty from '@/components/SelectPriorty/SelectPriorty';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Goal, Priority, RepeatDay, Task } from '@/types/Task';
+import { TaskPayload } from '@/lib/validation/task';
+import { Goal, Priority, RepeatDay } from '@/types';
 import { cn } from '@/utils/cn';
 
 import DatePicker from '../DatePicker/DatePicker';
@@ -14,36 +16,24 @@ import Typography from '../Typography/Typography';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 
 interface FormState {
-  task: Task;
-  updateTask: (updater: (prev: Task) => Task) => void;
+  form: UseFormReturn<TaskPayload>;
 }
 
 const FormContext = createContext<FormState | null>(null);
 const useFormContext = () => {
   const ctx = useContext(FormContext);
-  if (!ctx) throw new Error('Form components must be used within <Form>');
+  if (!ctx) throw new Error('폼 컴포넌트는 Form 컴포넌트 내부에서 사용되어야 합니다.');
   return ctx;
 };
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
-  task: Task;
-  onTaskChange: (task: Task) => void;
+  form: UseFormReturn<TaskPayload>;
 }
 
-const Form = ({ children, task, onTaskChange, ...props }: FormProps) => {
-  const updateTask = useCallback<FormState['updateTask']>(
-    (updater) => {
-      const next = updater(task);
-      onTaskChange(next);
-    },
-    [task, onTaskChange],
-  );
-
-  const value = useMemo<FormState>(() => ({ task, updateTask }), [task, updateTask]);
-
+const Form = ({ children, form, ...props }: FormProps) => {
   return (
-    <FormContext.Provider value={value}>
+    <FormContext.Provider value={{ form }}>
       <form {...props} className={cn('mx-auto w-full max-w-[480px] rounded-[40px] bg-white p-6 shadow', props.className)}>
         {children}
       </form>
@@ -77,9 +67,8 @@ interface TaskFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const TitleField = ({ label, ...props }: TaskFieldProps) => {
-  const { updateTask } = useFormContext();
+  const { form } = useFormContext();
   const inputId = React.useId();
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => updateTask((prev) => ({ ...prev, title: e.target.value }));
   return (
     <>
       <label htmlFor={inputId}>
@@ -87,15 +76,19 @@ const TitleField = ({ label, ...props }: TaskFieldProps) => {
           {label}
         </Typography>
       </label>
-      <Input id={inputId} {...props} onChange={handleChange} />
+      <Controller name='title' control={form.control} render={({ field }) => <Input id={inputId} {...props} {...field} />} />
+      {form.formState.errors.title && (
+        <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
+          {form.formState.errors.title.message}
+        </Typography>
+      )}
     </>
   );
 };
 
 const DescriptionField = ({ label, ...props }: TaskFieldProps) => {
-  const { updateTask } = useFormContext();
+  const { form } = useFormContext();
   const inputId = React.useId();
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => updateTask((prev) => ({ ...prev, description: e.target.value }));
   return (
     <>
       <label htmlFor={inputId}>
@@ -103,7 +96,11 @@ const DescriptionField = ({ label, ...props }: TaskFieldProps) => {
           {label}
         </Typography>
       </label>
-      <Input id={inputId} {...props} onChange={handleChange} />
+      <Controller
+        name='description'
+        control={form.control}
+        render={({ field }) => <Input id={inputId} {...props} {...field} value={field.value || ''} />}
+      />
     </>
   );
 };
@@ -113,7 +110,7 @@ interface SelectPriortyFieldProps {
 }
 
 const SelectPriortyField = ({ className }: SelectPriortyFieldProps) => {
-  const { updateTask } = useFormContext();
+  const { form } = useFormContext();
   const triggerId = React.useId();
 
   return (
@@ -123,11 +120,23 @@ const SelectPriortyField = ({ className }: SelectPriortyFieldProps) => {
           우선순위
         </Typography>
       </label>
-      <SelectProirty
-        onChange={(p) => updateTask((prev) => ({ ...prev, priority: p as Priority }))}
-        className='w-full'
-        triggerProps={{ id: triggerId }}
+      <Controller
+        name='priority'
+        control={form.control}
+        render={({ field }) => (
+          <SelectProirty
+            value={field.value}
+            onChange={(p) => field.onChange(p as Priority)}
+            className='w-full'
+            triggerProps={{ id: triggerId }}
+          />
+        )}
       />
+      {form.formState.errors.priority && (
+        <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
+          {form.formState.errors.priority.message}
+        </Typography>
+      )}
     </div>
   );
 };
@@ -144,13 +153,33 @@ const FormActions = ({ className }: FormActionsProps) => {
   );
 };
 
+interface EditFormActionsProps {
+  onEdit: () => void;
+  onDelete: () => void;
+  className?: string;
+}
+const EditFormActions = ({ onEdit, onDelete, className }: EditFormActionsProps) => {
+  return (
+    <div className={cn('flex justify-between gap-2', className)}>
+      <Button variant='primary' type='button' onClick={onEdit} className='w-full'>
+        수정하기
+      </Button>
+      <Button variant='quaternary' type='button' onClick={onDelete} className='!text-primary !hover:bg-white w-full !bg-white'>
+        삭제하기
+      </Button>
+    </div>
+  );
+};
+
 interface GoalSelectorProps {
   goals: Goal[];
   className?: string;
 }
 const GoalSelector = ({ goals, className }: GoalSelectorProps) => {
-  const { updateTask } = useFormContext();
+  const { form } = useFormContext();
   const triggerId = React.useId();
+  const hasGoals = goals.length > 0;
+
   return (
     <div className={cn('w-full', className)}>
       <label htmlFor={triggerId}>
@@ -158,25 +187,27 @@ const GoalSelector = ({ goals, className }: GoalSelectorProps) => {
           목표
         </Typography>
       </label>
-      <Select
-        onValueChange={(goalId) => {
-          const goal = goals.find((g) => g.id === goalId);
-          updateTask((prev) => ({ ...prev, goal: goal ? { id: goal.id, name: goal.name } : prev.goal }));
-        }}
-      >
-        <SelectTrigger className='mt-2 w-full' id={triggerId}>
-          <SelectValue placeholder='목표를 선택하세요.' />
-        </SelectTrigger>
-        <SelectContent className='border-0'>
-          <SelectGroup>
-            {goals.map((g) => (
-              <SelectItem key={g.id} value={g.id}>
-                {g.name}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <Controller
+        name='goalId'
+        control={form.control}
+        render={({ field }) => (
+          <Select value={field.value || ''} onValueChange={(value) => field.onChange(value || undefined)} disabled={!hasGoals}>
+            <SelectTrigger className='mt-2 w-full' id={triggerId} disabled={!hasGoals}>
+              <SelectValue placeholder={hasGoals ? '목표를 선택하세요.' : '목표가 없습니다.'} />
+            </SelectTrigger>
+
+            <SelectContent className='border-0'>
+              <SelectGroup>
+                {goals.map((g) => (
+                  <SelectItem key={g.id} value={g.id}>
+                    {g.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        )}
+      />
     </div>
   );
 };
@@ -184,7 +215,9 @@ const GoalSelector = ({ goals, className }: GoalSelectorProps) => {
 const REPEAT_DAYS: RepeatDay[] = ['월', '화', '수', '목', '금', '토', '일'];
 
 const RepeatButtonGroup = ({ className }: { className?: string }) => {
-  const { task, updateTask } = useFormContext();
+  const { form } = useFormContext();
+  const repeatDays = form.watch('repeatDays') || [];
+
   return (
     <fieldset className={cn('w-full', className)}>
       <legend>
@@ -194,18 +227,16 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
       </legend>
       <div className={cn('flex flex-wrap justify-between')}>
         {REPEAT_DAYS.map((day) => {
-          const isSelected = task.repeatDays.includes(day);
+          const isSelected = repeatDays.includes(day);
 
           return (
             <Button
               key={day}
-              onClick={() =>
-                updateTask((prev) =>
-                  prev.repeatDays.includes(day)
-                    ? { ...prev, repeatDays: prev.repeatDays.filter((d) => d !== day) }
-                    : { ...prev, repeatDays: [...prev.repeatDays, day] },
-                )
-              }
+              onClick={() => {
+                const currentDays = form.getValues('repeatDays') || [];
+                const newDays = currentDays.includes(day) ? currentDays.filter((d) => d !== day) : [...currentDays, day];
+                form.setValue('repeatDays', newDays);
+              }}
               variant='quaternary'
               className={cn(
                 '!hover:text-purple-500 !hover:bg-purple-300 h-[39px] active:bg-purple-300 active:text-purple-500',
@@ -225,9 +256,10 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
 };
 
 const DateField = () => {
-  const { task, updateTask } = useFormContext();
+  const { form } = useFormContext();
   const [open, setOpen] = React.useState(false);
   const triggerId = React.useId();
+
   return (
     <div className='w-full'>
       <label htmlFor={triggerId}>
@@ -235,28 +267,40 @@ const DateField = () => {
           날짜
         </Typography>
       </label>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <button
-            type='button'
-            className='w-full rounded-2xl border border-gray-300 bg-white px-3 py-2 text-left'
-            onClick={() => setOpen(!open)}
-            id={triggerId}
-          >
-            {task.createdAt ? format(new Date(task.createdAt), 'yyyy-MM-dd') : '날짜 선택'}
-          </button>
-        </PopoverTrigger>
-        <PopoverContent align='start' sideOffset={8} className='w-auto border-none bg-white p-0 shadow-none'>
-          <DatePicker
-            date={new Date(task.createdAt)}
-            onDateChange={(date) => {
-              updateTask((prev) => ({ ...prev, createdAt: date }));
-              setOpen(false);
-            }}
-            closeSelector={() => setOpen(false)}
-          />
-        </PopoverContent>
-      </Popover>
+      <Controller
+        name='startDate'
+        control={form.control}
+        render={({ field }) => (
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <button
+                type='button'
+                className='w-full rounded-2xl border border-gray-300 bg-white px-3 py-2 text-left'
+                onClick={() => setOpen(!open)}
+                id={triggerId}
+              >
+                {field.value ? format(new Date(field.value), 'yyyy-MM-dd') : '날짜 선택'}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align='start' sideOffset={8} className='w-auto border-none bg-white p-0 shadow-none'>
+              <DatePicker
+                date={field.value ? new Date(field.value) : new Date()}
+                onDateChange={(date) => {
+                  field.onChange(date);
+                  form.setValue('startDate', date);
+                  setOpen(false);
+                }}
+                closeSelector={() => setOpen(false)}
+              />
+            </PopoverContent>
+          </Popover>
+        )}
+      />
+      {form.formState.errors.startDate && (
+        <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
+          {form.formState.errors.startDate.message}
+        </Typography>
+      )}
     </div>
   );
 };
@@ -269,5 +313,5 @@ Form.GoalSelector = GoalSelector;
 Form.RepeatButtonGroup = RepeatButtonGroup;
 Form.FormActions = FormActions;
 Form.DateField = DateField;
-
+Form.EditFormActions = EditFormActions;
 export default Form;

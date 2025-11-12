@@ -1,20 +1,12 @@
-import type { Task } from '@/types/Task';
-
 import { cn } from '@/utils/cn';
 
 import Card from './Card';
+import type { ViewProps } from './type';
 
-interface ListViewProps {
-  task: Task;
-  onToggleDone: (taskId: string) => void;
-  onOpenMemo: (taskId: string) => void;
-  className?: string;
-}
-
-export default function ListView({ task, onToggleDone, onOpenMemo, className }: ListViewProps) {
+export default function ListView({ task, onToggleDone, onOpenMemo, className, onOpenEditDialog }: ViewProps) {
   return (
     <Card.Provider task={task} layout='list' onToggleDone={onToggleDone} onOpenMemo={onOpenMemo}>
-      <Card className={cn('block w-full', className)}>
+      <Card className={cn('block w-full', className)} handleClick={() => onOpenEditDialog(task)}>
         <div className='flex w-full items-center justify-between gap-2'>
           <div className='flex flex-1 flex-col gap-2'>
             <Card.Title />
