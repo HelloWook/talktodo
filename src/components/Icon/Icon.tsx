@@ -8,7 +8,7 @@ interface IconProps extends React.SVGAttributes<SVGSVGElement> {
 const Icon = ({ name, className, ...props }: IconProps) => {
   return (
     <svg className={cn('h-6 w-6', className)} aria-label={name} {...props}>
-      <use href={`/sprite.svg#${name}`} />
+      <use href={`#${name}`} />
     </svg>
   );
 };
