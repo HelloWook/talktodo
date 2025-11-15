@@ -25,8 +25,8 @@ const GoalFormDialog = ({ onClose }: GoalFormDialogProps) => {
     <div>
       <Form form={form} onSubmit={handleSubmit} className='max-w-[300px]'>
         <Form.Header title='목표 생성' onClose={onClose} titleClassName='!text-xl text-center' />
-        <Form.InputField name='name' placeholder='목표를 입력하세요 ' className='mb-4 h-[50px]' />
-        <Form.FormActions />
+        <Form.InputField name='name' placeholder='목표를 입력하세요 ' />
+        <Form.FormActions className='mt-4' />
       </Form>
     </div>
   );
