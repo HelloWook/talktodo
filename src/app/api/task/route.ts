@@ -112,7 +112,7 @@ export async function DELETE(request: NextRequest) {
     await taskService.delete(id);
 
     return NextResponse.json({ success: true }, { status: HttpStatusCode.Ok });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: false, error: ERRORS.DELETE_TASK_ERROR.message }, { status: ERRORS.DELETE_TASK_ERROR.statusCode });
   }
 }

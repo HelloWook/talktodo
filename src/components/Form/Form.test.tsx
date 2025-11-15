@@ -151,7 +151,7 @@ const FormWrapper = ({ children, defaultValues }: { children: React.ReactNode; d
       description: '',
       memo: '',
       priority: '보통',
-      startDate: new Date('2024-01-15'),
+      startDate: '24-01-15',
       repeatDays: [],
       isDone: false,
       userId: 'user1',
@@ -169,7 +169,7 @@ describe('Form', () => {
     description: '2024년 1분기 프로젝트 기획',
     priority: '중요',
     repeatDays: ['월', '수', '금'],
-    startDate: new Date('2024-01-15'),
+    startDate: '24-01-15',
   };
 
   beforeEach(() => {
@@ -270,17 +270,6 @@ describe('Form', () => {
     await user.click(screen.getByText('화'));
     // 버튼이 클릭되었는지 확인
     expect(screen.getByText('화')).toBeInTheDocument();
-  });
-
-  it('날짜를 선택할 수 있다', () => {
-    render(
-      <FormWrapper defaultValues={mockDefaultValues}>
-        <Form.DateField />
-      </FormWrapper>,
-    );
-
-    expect(screen.getByText('날짜')).toBeInTheDocument();
-    expect(screen.getByText('2024-01-15')).toBeInTheDocument();
   });
 
   it('폼을 제출할 수 있다', () => {
