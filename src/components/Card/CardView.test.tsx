@@ -77,7 +77,7 @@ describe('CardView', () => {
     repeatDays: ['월', '수', '금'],
     createdAt: new Date('2024-03-20'),
     updatedAt: new Date('2024-03-20'),
-    goal: { id: 'g1', name: '건강' },
+    goal: { id: 'g1', name: '건강', userId: '1' },
   };
 
   const mockHandlers = {

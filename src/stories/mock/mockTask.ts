@@ -2,6 +2,8 @@ import { format } from 'date-fns';
 
 import { Priority, RepeatDay, Task } from '@/types';
 
+import { mockGoal1 } from './mockGoal';
+
 export const mockDefaultTask: Task = {
   id: '1',
   title: '매일 아침 산책하기',
@@ -10,7 +12,7 @@ export const mockDefaultTask: Task = {
   priority: '보통' as Priority,
   repeatDays: ['월', '화', '수', '목', '금', '토', '일'] as RepeatDay[],
   isDone: false,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -23,7 +25,7 @@ export const mockHighPriorityTask: Task = {
   priority: '중요' as Priority,
   repeatDays: ['월', '수', '금'] as RepeatDay[],
   isDone: false,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -36,7 +38,7 @@ export const mockLowPriorityTask: Task = {
   priority: '낮음' as Priority,
   repeatDays: ['토', '일'] as RepeatDay[],
   isDone: false,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -49,7 +51,7 @@ export const mockCompletedTask: Task = {
   priority: '보통' as Priority,
   repeatDays: ['월', '화', '수', '목', '금'] as RepeatDay[],
   isDone: true,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -63,7 +65,7 @@ export const mockProjectTask: Task = {
   priority: '중요' as Priority,
   repeatDays: ['월', '화', '수', '목', '금'] as RepeatDay[],
   isDone: true,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -76,7 +78,7 @@ export const mockCodeReviewTask: Task = {
   priority: '보통' as Priority,
   repeatDays: ['월', '수', '금'] as RepeatDay[],
   isDone: true,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -89,7 +91,7 @@ export const mockMeetingTask: Task = {
   priority: '낮음' as Priority,
   repeatDays: ['화', '목'] as RepeatDay[],
   isDone: false,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -102,7 +104,7 @@ export const mockDocumentTask: Task = {
   priority: '보통' as Priority,
   repeatDays: ['월', '금'] as RepeatDay[],
   isDone: false,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -115,7 +117,7 @@ export const mockTestTask: Task = {
   priority: '중요' as Priority,
   repeatDays: ['화', '목'] as RepeatDay[],
   isDone: false,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -151,7 +153,7 @@ console.log(greeting);
   priority: '중요' as Priority,
   repeatDays: ['월', '수', '금'] as RepeatDay[],
   isDone: false,
-  goal: { id: 'g1', name: '업무' },
+  goal: { id: 'g4', name: '업무', userId: '1' },
   startDate: format(new Date('2024-01-15'), 'yy-MM-dd'),
   userId: '1',
 };
@@ -229,7 +231,7 @@ export const mockEmptyTask: Task = {
   priority: '보통' as Priority,
   repeatDays: [],
   isDone: false,
-  goal: { id: 'g1', name: '건강' },
+  goal: mockGoal1,
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',
 };
@@ -246,6 +248,7 @@ export const createMockTask = (id: string, overrides?: Partial<Task>): Task => (
   goal: {
     id: 'goal-1',
     name: '목표',
+    userId: '1',
   },
   startDate: format(new Date(), 'yy-MM-dd'),
   userId: '1',

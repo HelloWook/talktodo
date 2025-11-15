@@ -43,7 +43,7 @@ const mockTask: Task = {
   repeatDays: ['월', '화'],
   createdAt: new Date(),
   updatedAt: new Date(),
-  goal: { id: 'g1', name: '목표1' },
+  goal: { id: 'g1', name: '목표1', userId: '1' },
 };
 
 const mockTask2: Task = {
@@ -56,7 +56,7 @@ const mockTask2: Task = {
   repeatDays: ['수', '목'],
   createdAt: new Date(),
   updatedAt: new Date(),
-  goal: { id: 'g2', name: '목표2' },
+  goal: { id: 'g2', name: '목표2', userId: '1' },
 };
 
 const MockEmptyTaskState = ({ mode }: EmptyTaskStateProps) => (

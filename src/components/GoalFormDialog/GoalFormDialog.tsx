@@ -1,0 +1,47 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
+import Form from '@/components/Form/Form';
+import { GoalPayload, goalSchema } from '@/lib/validation/goal';
+import { useCreateGoal } from '@/quries/useGoal';
+import { useUserStore } from '@/stores/user';
+
+interface GoalFormDialogProps {
+  onClose: () => void;
+}
+
+const GoalFormDialog = ({ onClose }: GoalFormDialogProps) => {
+  const { mutate } = useCreateGoal();
+  const user = useUserStore((state) => state.user);
+
+  const form = useForm<GoalPayload>({
+    resolver: zodResolver(goalSchema),
+    defaultValues: {
+      name: '',
+      userId: user?.id ?? '',
+    },
+  });
+
+  const handleSubmit = form.handleSubmit((data) => {
+    mutate(data, {
+      onSuccess: () => {
+        form.reset();
+        onClose();
+      },
+    });
+  });
+
+  return (
+    <div>
+      <Form form={form} onSubmit={handleSubmit} className='max-w-[300px]'>
+        <Form.Header title='목표 생성' onClose={onClose} titleClassName='!text-xl text-center' />
+        <Form.InputField name='name' placeholder='목표를 입력하세요 ' />
+        <Form.FormActions className='mt-4' />
+      </Form>
+    </div>
+  );
+};
+
+export default GoalFormDialog;

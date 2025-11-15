@@ -4,11 +4,10 @@ import { mockCodeReviewTask, mockDocumentTask, mockMeetingTask, mockProjectTask,
 import { Task } from '@/types';
 
 import TaskLayout from './TaskLayout';
-import TaskLayoutSkeleton from './TaskLayoutSkeleton';
 
 const meta: Meta<typeof TaskLayout> = {
   component: TaskLayout,
-  title: 'components/Skeleton/TaskLayout',
+  title: 'components/TaskLayout',
   tags: ['autodocs'],
   argTypes: {},
 };
@@ -22,8 +21,4 @@ export const Default: Story = {
   render: () => (
     <TaskLayout tasks={mockTasks} selectedDate={new Date()} onDateChange={() => {}} onToggleDone={() => {}} onOpenMemo={() => {}} />
   ),
-};
-
-export const Skeleton: Story = {
-  render: () => <TaskLayoutSkeleton />,
 };

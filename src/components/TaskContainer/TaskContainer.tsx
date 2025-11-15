@@ -1,59 +1,51 @@
 'use client';
 import { useQueryClient } from '@tanstack/react-query';
 import { format, addDays, subDays } from 'date-fns';
-
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import TaskHeader from '@/components/TaskHeader/TaskHeader';
-import TaskHeaderSkeleton from '@/components/TaskHeader/TaskHeaderSkeleton';
-
 import TaskLayout from '@/components/TaskLayout/TaskLayout';
-import TaskLayoutSkeleton from '@/components/TaskLayout/TaskLayoutSkeleton';
 
 import { useMemoDrawer } from '@/hooks/useMemoDrawer';
-import { useGetTasks, useUpdateTask, prefetchTasks } from '@/quries/useTask';
+import { prefetchTasks, useUpdateTask } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
 import type { Task } from '@/types';
-const TaskContainer = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+interface TaskContainerProps {
+  tasks: Task[];
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
+}
+
+const TaskContainer = ({ tasks, selectedDate, onDateChange }: TaskContainerProps) => {
   const queryClient = useQueryClient();
   const { openMemoDrawer } = useMemoDrawer();
-
   const user = useUserStore((state) => state.user);
-
-  const { data: tasks, isLoading } = useGetTasks({
-    startDate: format(selectedDate, 'yy-MM-dd'),
-    userId: user?.id ?? '',
-  });
-
   const { mutate: updateTask } = useUpdateTask();
 
   useEffect(() => {
     if (!user?.id) return;
 
-    const prevDate = subDays(selectedDate, 1);
-    const nextDate = addDays(selectedDate, 1);
+    // -2일, -1일, +1일, +2일 prefetch
+    const datesToPrefetch = [subDays(selectedDate, 2), subDays(selectedDate, 1), addDays(selectedDate, 1), addDays(selectedDate, 2)];
 
-    prefetchTasks(queryClient, {
-      userId: user.id,
-      startDate: format(prevDate, 'yy-MM-dd'),
-    });
-
-    prefetchTasks(queryClient, {
-      userId: user.id,
-      startDate: format(nextDate, 'yy-MM-dd'),
+    datesToPrefetch.forEach((date) => {
+      prefetchTasks(queryClient, {
+        userId: user.id,
+        startDate: format(date, 'yy-MM-dd'),
+      });
     });
   }, [selectedDate, user?.id, queryClient]);
 
   const handleOpenMemo = (taskId: string) => {
-    const task = tasks?.find((task: Task) => task.id === taskId);
+    const task = tasks.find((task: Task) => task.id === taskId);
     if (task) {
       openMemoDrawer(task, handleSaveMemo);
     }
   };
 
   const handleUpdateTask = (taskId: string, updates: Partial<Pick<Task, 'isDone' | 'memo'>>) => {
-    const task = tasks?.find((task: Task) => task.id === taskId);
+    const task = tasks.find((task: Task) => task.id === taskId);
     if (!task || !user) return;
 
     updateTask({
@@ -73,7 +65,7 @@ const TaskContainer = () => {
   };
 
   const handleToggleDone = (taskId: string) => {
-    const task = tasks?.find((task: Task) => task.id === taskId);
+    const task = tasks.find((task: Task) => task.id === taskId);
     if (task) {
       handleUpdateTask(taskId, { isDone: !task.isDone });
     }
@@ -85,18 +77,14 @@ const TaskContainer = () => {
 
   return (
     <main className='relative mx-auto flex h-full w-full max-w-[1080px] flex-col p-4'>
-      {isLoading ? <TaskHeaderSkeleton /> : <TaskHeader tasks={tasks ?? []} />}
-      {isLoading ? (
-        <TaskLayoutSkeleton />
-      ) : (
-        <TaskLayout
-          tasks={tasks ?? []}
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-          onToggleDone={handleToggleDone}
-          onOpenMemo={handleOpenMemo}
-        />
-      )}
+      <TaskHeader tasks={tasks} />
+      <TaskLayout
+        tasks={tasks}
+        selectedDate={selectedDate}
+        onDateChange={onDateChange}
+        onToggleDone={handleToggleDone}
+        onOpenMemo={handleOpenMemo}
+      />
     </main>
   );
 };

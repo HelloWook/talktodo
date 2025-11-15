@@ -53,19 +53,21 @@ const SideBar = ({ children, className }: SidebarProps) => {
 
 interface ContentProps {
   children: ReactNode;
+  className?: string;
 }
 
-const Content = ({ children }: ContentProps) => {
+const Content = ({ children, className }: ContentProps) => {
   const { isFold } = useSidebar();
-  return <div className={`box-border flex w-full flex-1 flex-col ${isFold ? `px-3` : `px-5`} `}>{children}</div>;
+  return <div className={cn(`box-border flex w-full flex-1 flex-col ${isFold ? `px-3` : `px-5`} `, className)}>{children}</div>;
 };
 
 interface FooterProps {
   children: ReactNode;
+  className?: string;
 }
 
-const Footer = ({ children }: FooterProps) => {
-  return <div className='box-border h-[120px] p-5'>{children}</div>;
+const Footer = ({ children, className }: FooterProps) => {
+  return <div className={cn('box-border h-[120px] w-full p-5', className)}>{children}</div>;
 };
 
 SideBar.Content = Content;

@@ -1,19 +1,16 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
 
+import GoalEditDialog from '@/components/GoalEditDialog/GoalEditDialog';
+import GoalFormDialog from '@/components/GoalFormDialog/GoalFormDialog';
 import SideBar from '@/components/SideBar/SideBar';
+import { useDialog } from '@/hooks/useDialog';
+import { useGetGoals } from '@/quries/useGoal';
+import { useUserStore } from '@/stores/user';
+import { formatEmail } from '@/utils/formatEmail';
 
-export interface Goal {
-  id: string;
-  name: string;
-}
-
-interface UserInfo {
-  nickname: string;
-  email: string;
-}
+import MenuSideBarSkeleton from './MenuSideBarSkeleton';
 
 interface MenuSideBarProps {
   className?: string;
@@ -22,46 +19,19 @@ interface MenuSideBarProps {
 const MenuSideBar = ({ className }: MenuSideBarProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [userInfo, setUserInfo] = useState<UserInfo>({ nickname: 'User', email: 'user@example.com' });
-  const [goals, setGoals] = useState<Goal[]>([]);
-
-  useEffect(() => {
-    // TODO: API 호출로 사용자 정보 가져오기
-    const fetchUserInfo = async () => {
-      try {
-        setUserInfo({
-          nickname: 'John Doe',
-          email: 'john.doe@example.com',
-        });
-      } catch (error) {
-        console.error('Failed to fetch user info:', error);
-      }
-    };
-
-    // TODO: API 호출로 목표 리스트 가져오기
-    const fetchGoals = async () => {
-      try {
-        setGoals([
-          { id: 'goal_001', name: '업무' },
-          { id: 'goal_002', name: '건강' },
-          { id: 'goal_003', name: '자기계발' },
-        ]);
-      } catch (error) {
-        console.error('Failed to fetch goals:', error);
-      }
-    };
-
-    fetchUserInfo();
-    fetchGoals();
-  }, []);
+  const { openDialog, closeDialog } = useDialog();
+  const user = useUserStore((state) => state.user);
+  const { data: goals = [], isLoading } = useGetGoals();
 
   const handleNewGoalClick = () => {
-    // TODO: 새 목표 생성 API 호출 및 모달 열기
-    console.log('새 목표 모달 열기');
+    const dialogId = openDialog(<GoalFormDialog onClose={() => closeDialog(dialogId)} />);
   };
 
   const handleGoalClick = (goalId: string) => {
-    router.push(`/goal/${goalId}`);
+    const goal = goals.find((g) => g.id === goalId);
+    if (goal) {
+      const dialogId = openDialog(<GoalEditDialog goal={goal} onClose={() => closeDialog(dialogId)} />);
+    }
   };
 
   const handleGoalGroupClick = () => {
@@ -71,6 +41,10 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
   const handleDashboardClick = () => {
     router.push('/');
   };
+
+  if (isLoading) {
+    return <MenuSideBarSkeleton />;
+  }
 
   return (
     <SideBar className={className}>
@@ -102,7 +76,7 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
       </SideBar.Content>
 
       <SideBar.Footer>
-        <SideBar.ProfileSection userNickname={userInfo.nickname} userEmail={userInfo.email} />
+        <SideBar.ProfileSection userNickname={user?.nickname ?? 'User'} userEmail={formatEmail(user?.email)} />
       </SideBar.Footer>
     </SideBar>
   );

@@ -9,6 +9,16 @@ export const tasks = createQueryKeys('tasks', {
   }),
 });
 
+export const goals = createQueryKeys('goals', {
+  list: () => ({
+    queryKey: ['list'],
+  }),
+  detail: (id: string) => ({
+    queryKey: [id],
+  }),
+});
+
 export const queryKeys = {
   tasks,
+  goals,
 } as const;

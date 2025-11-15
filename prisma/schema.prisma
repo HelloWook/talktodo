@@ -17,6 +17,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   tasks Task[]
+  goals Goal[]
 }
 
 
@@ -33,14 +34,16 @@ model Task {
   isDone Boolean @default(false)
   goalId String?
   userId String
-  user User @relation(fields: [userId], references: [id])
-  goal Goal? @relation(fields: [goalId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal Goal? @relation(fields: [goalId], references: [id], onDelete: SetNull)
 }
 
 model Goal {
   id String @id @default(uuid())
   name String
   tasks Task[]
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Priority {

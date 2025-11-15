@@ -4,11 +4,10 @@ import { mockCodeReviewTask, mockDocumentTask, mockMeetingTask, mockProjectTask,
 import { Task } from '@/types';
 
 import TaskHeader from './TaskHeader';
-import TaskHeaderSkeleton from './TaskHeaderSkeleton';
 
 const meta: Meta<typeof TaskHeader> = {
   component: TaskHeader,
-  title: 'components/Skeleton/TaskHeader',
+  title: 'components/TaskHeader',
   tags: ['autodocs'],
   argTypes: {},
 };
@@ -20,8 +19,4 @@ const mockTasks: Task[] = [mockProjectTask, mockCodeReviewTask, mockMeetingTask,
 
 export const Default: Story = {
   render: () => <TaskHeader tasks={mockTasks} />,
-};
-
-export const Skeleton: Story = {
-  render: () => <TaskHeaderSkeleton />,
 };

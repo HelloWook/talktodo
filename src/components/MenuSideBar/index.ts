@@ -1,2 +1,2 @@
 export { default } from './MenuSideBar';
-export type { Goal } from './MenuSideBar';
+export { default as MenuSideBarSkeleton } from './MenuSideBarSkeleton';

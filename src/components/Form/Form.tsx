@@ -1,12 +1,11 @@
 import { format } from 'date-fns';
 import React, { createContext, useContext } from 'react';
-import { UseFormReturn, Controller } from 'react-hook-form';
+import { UseFormReturn, Controller, FieldPath, FieldValues } from 'react-hook-form';
 
 import Button from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
 import SelectProirty from '@/components/SelectPriorty/SelectPriorty';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { TaskPayload } from '@/lib/validation/task';
 import { Goal, Priority, RepeatDay } from '@/types';
 import { cn } from '@/utils/cn';
 
@@ -15,42 +14,44 @@ import Input from '../Input/Input';
 import Typography from '../Typography/Typography';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 
-interface FormState {
-  form: UseFormReturn<TaskPayload>;
+interface FormState<TFieldValues extends FieldValues = FieldValues> {
+  form: UseFormReturn<TFieldValues>;
 }
 
-const FormContext = createContext<FormState | null>(null);
-const useFormContext = () => {
+const FormContext = createContext<FormState<FieldValues> | null>(null);
+const useFormContext = <TFieldValues extends FieldValues = FieldValues>() => {
   const ctx = useContext(FormContext);
   if (!ctx) throw new Error('폼 컴포넌트는 Form 컴포넌트 내부에서 사용되어야 합니다.');
-  return ctx;
+  return ctx as FormState<TFieldValues>;
 };
 
-interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+interface FormProps<TFieldValues extends FieldValues = FieldValues> extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
-  form: UseFormReturn<TaskPayload>;
+  form: UseFormReturn<TFieldValues>;
 }
 
-const Form = ({ children, form, ...props }: FormProps) => {
+function Form<TFieldValues extends FieldValues = FieldValues>({ children, form, ...props }: FormProps<TFieldValues>) {
   return (
-    <FormContext.Provider value={{ form }}>
+    <FormContext.Provider value={{ form } as FormState<FieldValues>}>
       <form {...props} className={cn('mx-auto w-full max-w-[480px] rounded-[40px] bg-white p-6 shadow', props.className)}>
         {children}
       </form>
     </FormContext.Provider>
   );
-};
+}
 
 // Header
 interface HeaderProps {
   title: string;
   onClose: () => void;
+  className?: string;
+  titleClassName?: string;
 }
-const Header = ({ title, onClose }: HeaderProps) => {
+const Header = ({ title, onClose, className, titleClassName }: HeaderProps) => {
   return (
-    <header className='mb-3 border-b border-gray-200 pb-2'>
+    <header className={cn('mb-3 border-b border-gray-200 pb-2', className)}>
       <div className='flex items-center justify-between'>
-        <Typography variant='title1-semibold' as='p'>
+        <Typography variant='title1-semibold' as='p' className={cn(titleClassName)}>
           {title}
         </Typography>
         <button type='button' className='cursor-pointer' onClick={onClose} aria-label='닫기'>
@@ -61,46 +62,36 @@ const Header = ({ title, onClose }: HeaderProps) => {
   );
 };
 
-interface TaskFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  name: string;
   className?: string;
 }
 
-const TitleField = ({ label, ...props }: TaskFieldProps) => {
+const InputField = ({ label, name, className, ...props }: InputFieldProps) => {
   const { form } = useFormContext();
   const inputId = React.useId();
+  const error = form.formState.errors[name as keyof typeof form.formState.errors];
+
   return (
     <>
-      <label htmlFor={inputId}>
-        <Typography variant='body3-semibold' as='span'>
-          {label}
-        </Typography>
-      </label>
-      <Controller name='title' control={form.control} render={({ field }) => <Input id={inputId} {...props} {...field} />} />
-      {form.formState.errors.title && (
+      {label && (
+        <label htmlFor={inputId}>
+          <Typography variant='body3-semibold' as='span'>
+            {label}
+          </Typography>
+        </label>
+      )}
+      <Controller
+        name={name as FieldPath<FieldValues>}
+        control={form.control}
+        render={({ field }) => <Input id={inputId} {...props} {...field} value={field.value || ''} className={cn(className)} />}
+      />
+      {error && (
         <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
-          {form.formState.errors.title.message}
+          {String(error?.message || '')}
         </Typography>
       )}
-    </>
-  );
-};
-
-const DescriptionField = ({ label, ...props }: TaskFieldProps) => {
-  const { form } = useFormContext();
-  const inputId = React.useId();
-  return (
-    <>
-      <label htmlFor={inputId}>
-        <Typography variant='body3-semibold' as='span'>
-          {label}
-        </Typography>
-      </label>
-      <Controller
-        name='description'
-        control={form.control}
-        render={({ field }) => <Input id={inputId} {...props} {...field} value={field.value || ''} />}
-      />
     </>
   );
 };
@@ -112,6 +103,7 @@ interface SelectPriortyFieldProps {
 const SelectPriortyField = ({ className }: SelectPriortyFieldProps) => {
   const { form } = useFormContext();
   const triggerId = React.useId();
+  const error = form.formState.errors.priority;
 
   return (
     <div className={cn('w-full', className)}>
@@ -132,9 +124,9 @@ const SelectPriortyField = ({ className }: SelectPriortyFieldProps) => {
           />
         )}
       />
-      {form.formState.errors.priority && (
+      {error && (
         <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
-          {form.formState.errors.priority.message}
+          {String(error?.message || '')}
         </Typography>
       )}
     </div>
@@ -179,6 +171,7 @@ const GoalSelector = ({ goals, className }: GoalSelectorProps) => {
   const { form } = useFormContext();
   const triggerId = React.useId();
   const hasGoals = goals.length > 0;
+  const error = form.formState.errors.goalId;
 
   return (
     <div className={cn('w-full', className)}>
@@ -208,6 +201,11 @@ const GoalSelector = ({ goals, className }: GoalSelectorProps) => {
           </Select>
         )}
       />
+      {error && (
+        <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
+          {String(error?.message || '')}
+        </Typography>
+      )}
     </div>
   );
 };
@@ -217,6 +215,7 @@ const REPEAT_DAYS: RepeatDay[] = ['월', '화', '수', '목', '금', '토', '일
 const RepeatButtonGroup = ({ className }: { className?: string }) => {
   const { form } = useFormContext();
   const repeatDays = form.watch('repeatDays') || [];
+  const error = form.formState.errors.repeatDays;
 
   return (
     <fieldset className={cn('w-full', className)}>
@@ -234,7 +233,7 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
               key={day}
               onClick={() => {
                 const currentDays = form.getValues('repeatDays') || [];
-                const newDays = currentDays.includes(day) ? currentDays.filter((d) => d !== day) : [...currentDays, day];
+                const newDays = currentDays.includes(day) ? currentDays.filter((d: RepeatDay) => d !== day) : [...currentDays, day];
                 form.setValue('repeatDays', newDays);
               }}
               variant='quaternary'
@@ -251,6 +250,11 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
           );
         })}
       </div>
+      {error && (
+        <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
+          {String(error?.message || '')}
+        </Typography>
+      )}
     </fieldset>
   );
 };
@@ -259,6 +263,7 @@ const DateField = () => {
   const { form } = useFormContext();
   const [open, setOpen] = React.useState(false);
   const triggerId = React.useId();
+  const error = form.formState.errors.startDate;
 
   return (
     <div className='w-full'>
@@ -317,9 +322,9 @@ const DateField = () => {
           );
         }}
       />
-      {form.formState.errors.startDate && (
+      {error && (
         <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>
-          {form.formState.errors.startDate.message}
+          {String(error?.message || '')}
         </Typography>
       )}
     </div>
@@ -327,8 +332,7 @@ const DateField = () => {
 };
 
 Form.Header = Header;
-Form.TitleField = TitleField;
-Form.DescriptionField = DescriptionField;
+Form.InputField = InputField;
 Form.SelectPriortyField = SelectPriortyField;
 Form.GoalSelector = GoalSelector;
 Form.RepeatButtonGroup = RepeatButtonGroup;

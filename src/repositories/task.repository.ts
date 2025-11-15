@@ -1,9 +1,8 @@
-import { PrismaClient, Task } from '@prisma/client';
+import { Task } from '@prisma/client';
 
+import { prisma } from '@/lib/prisma';
 import { TaskPayload } from '@/lib/validation/task';
 import { GetTaskParams, UpdateTaskParams } from '@/types/params';
-
-const prisma = new PrismaClient();
 
 export class TaskRepository {
   async create(data: TaskPayload): Promise<Task> {

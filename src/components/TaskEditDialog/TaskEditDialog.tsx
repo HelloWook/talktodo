@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import Form from '@/components/Form/Form';
 import { useAlert } from '@/hooks/useAlert';
 import { taskSchema, TaskPayload } from '@/lib/validation/task';
+import { useGetGoals } from '@/quries/useGoal';
 import { useUpdateTask, useDeleteTask } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
 import { Task } from '@/types';
@@ -19,6 +20,7 @@ interface TaskEditDialogProps {
 const TaskEditDialog = ({ onClose, task }: TaskEditDialogProps) => {
   const { mutate: updateMutate } = useUpdateTask();
   const { mutate: deleteMutate } = useDeleteTask();
+  const { data: goals = [] } = useGetGoals();
 
   const { openAlert } = useAlert();
   const user = useUserStore((state) => state.user);
@@ -84,18 +86,18 @@ const TaskEditDialog = ({ onClose, task }: TaskEditDialogProps) => {
       <Form form={form} onSubmit={handleSubmit}>
         <Form.Header title='할 일 수정' onClose={onClose} />
         <div className='mb-4'>
-          <Form.TitleField label='할 일' placeholder='할 일을 입력하세요' />
+          <Form.InputField name='title' label='할 일' placeholder='할 일을 입력하세요' />
         </div>
 
         <div className='mb-4'>
-          <Form.DescriptionField label='설명' placeholder='설명을 입력하세요' />
+          <Form.InputField name='description' label='설명' placeholder='설명을 입력하세요' />
         </div>
         <div className='mb-4 flex gap-3'>
           <Form.SelectPriortyField />
           <Form.DateField />
         </div>
         <div className='mb-4'>
-          <Form.GoalSelector goals={[]} />
+          <Form.GoalSelector goals={goals} />
         </div>
         <div className='mb-6'>
           <Form.RepeatButtonGroup />

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const taskSchema = z.object({
-  title: z.string().min(1),
+  title: z.string().min(1, '할 일은 필수 입력 항목입니다.'),
   description: z.string().optional(),
   memo: z.string().optional(),
   priority: z.enum(['낮음', '보통', '중요']),
