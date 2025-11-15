@@ -44,12 +44,14 @@ function Form<TFieldValues extends FieldValues = FieldValues>({ children, form, 
 interface HeaderProps {
   title: string;
   onClose: () => void;
+  className?: string;
+  titleClassName?: string;
 }
-const Header = ({ title, onClose }: HeaderProps) => {
+const Header = ({ title, onClose, className, titleClassName }: HeaderProps) => {
   return (
-    <header className='mb-3 border-b border-gray-200 pb-2'>
+    <header className={cn('mb-3 border-b border-gray-200 pb-2', className)}>
       <div className='flex items-center justify-between'>
-        <Typography variant='title1-semibold' as='p'>
+        <Typography variant='title1-semibold' as='p' className={cn(titleClassName)}>
           {title}
         </Typography>
         <button type='button' className='cursor-pointer' onClick={onClose} aria-label='닫기'>
@@ -61,27 +63,29 @@ const Header = ({ title, onClose }: HeaderProps) => {
 };
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
   name: string;
   className?: string;
 }
 
-const InputField = ({ label, name, ...props }: InputFieldProps) => {
+const InputField = ({ label, name, className, ...props }: InputFieldProps) => {
   const { form } = useFormContext();
   const inputId = React.useId();
   const error = form.formState.errors[name as keyof typeof form.formState.errors];
 
   return (
     <>
-      <label htmlFor={inputId}>
-        <Typography variant='body3-semibold' as='span'>
-          {label}
-        </Typography>
-      </label>
+      {label && (
+        <label htmlFor={inputId}>
+          <Typography variant='body3-semibold' as='span'>
+            {label}
+          </Typography>
+        </label>
+      )}
       <Controller
         name={name as FieldPath<FieldValues>}
         control={form.control}
-        render={({ field }) => <Input id={inputId} {...props} {...field} value={field.value || ''} />}
+        render={({ field }) => <Input id={inputId} {...props} {...field} value={field.value || ''} className={cn(className)} />}
       />
       {error && (
         <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>

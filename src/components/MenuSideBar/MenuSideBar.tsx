@@ -3,7 +3,9 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
+import GoalFormDialog from '@/components/GoalFormDialog/GoalFormDialog';
 import SideBar from '@/components/SideBar/SideBar';
+import { useDialog } from '@/hooks/useDialog';
 
 export interface Goal {
   id: string;
@@ -22,6 +24,7 @@ interface MenuSideBarProps {
 const MenuSideBar = ({ className }: MenuSideBarProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { openDialog, closeDialog } = useDialog();
   const [userInfo, setUserInfo] = useState<UserInfo>({ nickname: 'User', email: 'user@example.com' });
   const [goals, setGoals] = useState<Goal[]>([]);
 
@@ -56,8 +59,7 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
   }, []);
 
   const handleNewGoalClick = () => {
-    // TODO: 새 목표 생성 API 호출 및 모달 열기
-    console.log('새 목표 모달 열기');
+    const dialogId = openDialog(<GoalFormDialog onClose={() => closeDialog(dialogId)} />);
   };
 
   const handleGoalClick = (goalId: string) => {

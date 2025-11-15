@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const goalSchema = z.object({
+export const goalSchema = z.object({
   name: z.string().min(1),
 });
 
