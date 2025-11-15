@@ -26,17 +26,14 @@ const TaskContainer = ({ tasks, selectedDate, onDateChange }: TaskContainerProps
   useEffect(() => {
     if (!user?.id) return;
 
-    const prevDate = subDays(selectedDate, 2);
-    const nextDate = addDays(selectedDate, 2);
+    // -2일, -1일, +1일, +2일 prefetch
+    const datesToPrefetch = [subDays(selectedDate, 2), subDays(selectedDate, 1), addDays(selectedDate, 1), addDays(selectedDate, 2)];
 
-    prefetchTasks(queryClient, {
-      userId: user.id,
-      startDate: format(prevDate, 'yy-MM-dd'),
-    });
-
-    prefetchTasks(queryClient, {
-      userId: user.id,
-      startDate: format(nextDate, 'yy-MM-dd'),
+    datesToPrefetch.forEach((date) => {
+      prefetchTasks(queryClient, {
+        userId: user.id,
+        startDate: format(date, 'yy-MM-dd'),
+      });
     });
   }, [selectedDate, user?.id, queryClient]);
 
