@@ -5,7 +5,7 @@ export const taskSchema = z.object({
   description: z.string().optional(),
   memo: z.string().optional(),
   priority: z.enum(['낮음', '보통', '중요']),
-  startDate: z.date(),
+  startDate: z.string().regex(/^\d{2}-\d{2}-\d{2}$/, '날짜 형식은 yy-mm-dd여야 합니다'),
   repeatDays: z.array(z.enum(['월', '화', '수', '목', '금', '토', '일'])),
   isDone: z.boolean(),
   userId: z.string().min(1),

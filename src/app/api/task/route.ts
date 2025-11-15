@@ -1,4 +1,5 @@
 import { HttpStatusCode } from 'axios';
+import { format } from 'date-fns';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/auth';
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
     const validatedData = taskSchema.parse({
       ...body,
       userId: session.user.id,
-      startDate: body.startDate ? new Date(body.startDate) : new Date(),
+      startDate: body.startDate || format(new Date(), 'yy-MM-dd'),
       isDone: body.isDone ?? false,
     });
 
@@ -51,9 +52,10 @@ export async function GET(request: NextRequest) {
 
     const tasks = await taskService.findAll({ userId: session.user.id, startDate: startDate });
     return NextResponse.json({ success: true, data: tasks }, { status: HttpStatusCode.Ok });
-  } catch {
+  } catch (error) {
+    console.error('GET /api/task error:', error);
     return NextResponse.json(
-      { success: false, error: ERRORS.GET_ALL_TASKS_ERROR.message },
+      { success: false, error: ERRORS.GET_ALL_TASKS_ERROR.message, details: error instanceof Error ? error.message : String(error) },
       { status: ERRORS.GET_ALL_TASKS_ERROR.statusCode },
     );
   }
@@ -77,7 +79,7 @@ export async function PATCH(request: NextRequest) {
     const validatedData = taskSchema.parse({
       ...taskData,
       userId: session.user.id,
-      startDate: taskData.startDate ? new Date(taskData.startDate) : new Date(),
+      startDate: taskData.startDate || format(new Date(), 'yy-MM-dd'),
       isDone: taskData.isDone ?? false,
     });
 

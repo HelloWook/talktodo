@@ -22,7 +22,7 @@ const TaskContainer = () => {
   const user = useUserStore((state) => state.user);
 
   const { data: tasks, isLoading } = useGetTasks({
-    startDate: format(selectedDate, 'yyyy-MM-dd'),
+    startDate: format(selectedDate, 'yy-MM-dd'),
     userId: user?.id ?? '',
   });
 
@@ -36,12 +36,12 @@ const TaskContainer = () => {
 
     prefetchTasks(queryClient, {
       userId: user.id,
-      startDate: format(prevDate, 'yyyy-MM-dd'),
+      startDate: format(prevDate, 'yy-MM-dd'),
     });
 
     prefetchTasks(queryClient, {
       userId: user.id,
-      startDate: format(nextDate, 'yyyy-MM-dd'),
+      startDate: format(nextDate, 'yy-MM-dd'),
     });
   }, [selectedDate, user?.id, queryClient]);
 
@@ -63,7 +63,7 @@ const TaskContainer = () => {
         description: task.description,
         memo: updates.memo !== undefined ? updates.memo : task.memo,
         priority: task.priority,
-        startDate: task.startDate instanceof Date ? task.startDate : new Date(task.startDate),
+        startDate: typeof task.startDate === 'string' ? task.startDate : format(new Date(task.startDate), 'yy-MM-dd'),
         repeatDays: task.repeatDays,
         isDone: updates.isDone !== undefined ? updates.isDone : task.isDone,
         userId: user.id,

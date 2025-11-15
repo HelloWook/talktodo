@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-
+import { format } from 'date-fns';
 import React from 'react';
 
 import { useForm } from 'react-hook-form';
@@ -31,7 +31,7 @@ const TaskEditDialog = ({ onClose, task }: TaskEditDialogProps) => {
       description: task.description || '',
       memo: task.memo || '',
       priority: task.priority,
-      startDate: task.startDate instanceof Date ? task.startDate : new Date(task.startDate),
+      startDate: typeof task.startDate === 'string' ? task.startDate : format(new Date(task.startDate), 'yy-MM-dd'),
       repeatDays: task.repeatDays,
       isDone: task.isDone,
       userId: user?.id,
