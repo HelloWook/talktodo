@@ -11,6 +11,10 @@ export class GoalService {
   async findAll(userId: string): Promise<Goal[]> {
     return await goalRepository.findAll(userId);
   }
+
+  async update(id: string, data: GoalPayload): Promise<Goal> {
+    return await goalRepository.update(id, data);
+  }
 }
 
 export const goalService = new GoalService();

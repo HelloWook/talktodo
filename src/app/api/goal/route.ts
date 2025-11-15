@@ -50,3 +50,34 @@ export async function GET(_request: NextRequest) {
     );
   }
 }
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+    }
+
+    const body = await request.json();
+    const { id, ...updateData } = body;
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Goal ID is required' }, { status: HttpStatusCode.BadRequest });
+    }
+
+    const validatedData = goalSchema.parse({
+      ...updateData,
+      userId: session.user.id,
+    });
+
+    const goal = await goalService.update(id, validatedData);
+
+    return NextResponse.json({ success: true, data: goal }, { status: HttpStatusCode.Ok });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'ZodError') {
+      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+    }
+    return NextResponse.json({ success: false, error: ERRORS.CREATE_GOAL_ERROR.message }, { status: ERRORS.CREATE_GOAL_ERROR.statusCode });
+  }
+}

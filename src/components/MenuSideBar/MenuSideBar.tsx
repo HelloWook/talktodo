@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
+import GoalEditDialog from '@/components/GoalEditDialog/GoalEditDialog';
 import GoalFormDialog from '@/components/GoalFormDialog/GoalFormDialog';
 import SideBar from '@/components/SideBar/SideBar';
 import { useDialog } from '@/hooks/useDialog';
@@ -47,7 +48,10 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
   };
 
   const handleGoalClick = (goalId: string) => {
-    router.push(`/goal/${goalId}`);
+    const goal = goals.find((g) => g.id === goalId);
+    if (goal) {
+      const dialogId = openDialog(<GoalEditDialog goal={goal} onClose={() => closeDialog(dialogId)} />);
+    }
   };
 
   const handleGoalGroupClick = () => {

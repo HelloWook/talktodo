@@ -15,3 +15,11 @@ export const createGoal = async (goal: GoalPayload) => {
   });
   return response.data.data;
 };
+
+export const updateGoal = async (id: string, goal: GoalPayload) => {
+  const response = await axiosInstance.patch('/api/goal', {
+    id,
+    ...goal,
+  });
+  return response.data.data;
+};

@@ -20,6 +20,16 @@ export class GoalRepository {
       },
     });
   }
+
+  async update(id: string, data: GoalPayload): Promise<Goal> {
+    return await prisma.goal.update({
+      where: { id },
+      data: {
+        name: data.name,
+        userId: data.userId,
+      },
+    });
+  }
 }
 
 export const goalRepository = new GoalRepository();
