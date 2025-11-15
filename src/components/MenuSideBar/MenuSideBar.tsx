@@ -8,6 +8,8 @@ import SideBar from '@/components/SideBar/SideBar';
 import { useDialog } from '@/hooks/useDialog';
 import { useGetGoals } from '@/quries/useGoal';
 
+import MenuSideBarSkeleton from './MenuSideBarSkeleton';
+
 interface UserInfo {
   nickname: string;
   email: string;
@@ -22,7 +24,7 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
   const pathname = usePathname();
   const { openDialog, closeDialog } = useDialog();
   const [userInfo, setUserInfo] = useState<UserInfo>({ nickname: 'User', email: 'user@example.com' });
-  const { data: goals = [] } = useGetGoals();
+  const { data: goals = [], isLoading } = useGetGoals();
 
   useEffect(() => {
     // TODO: API 호출로 사용자 정보 가져오기
@@ -55,6 +57,10 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
   const handleDashboardClick = () => {
     router.push('/');
   };
+
+  if (isLoading) {
+    return <MenuSideBarSkeleton />;
+  }
 
   return (
     <SideBar className={className}>
