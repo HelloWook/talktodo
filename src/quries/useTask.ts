@@ -1,7 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { format } from 'date-fns';
-
 import { useToast } from '@/hooks/useToast';
 
 import { getTasks, createTask, updateTask, deleteTask } from '@/lib/axios/task.axios';
@@ -42,7 +40,7 @@ const useCreateTask = () => {
   const { mutate, error } = useMutation({
     mutationFn: (task: TaskPayload) => createTask(task),
     onMutate: async (variables) => {
-      const startDate = format(variables.startDate, 'yyyy-MM-dd');
+      const startDate = variables.startDate;
       const queryKey = tasks.list({
         userId: variables.userId,
         startDate,
@@ -74,7 +72,7 @@ const useCreateTask = () => {
       addToast('🎉 할 일이 생성되었습니다.');
     },
     onSettled: (data, error, variables) => {
-      const startDate = format(variables.startDate, 'yyyy-MM-dd');
+      const startDate = variables.startDate;
       queryClient.invalidateQueries({
         queryKey: tasks.list({
           userId: variables.userId,
@@ -93,7 +91,7 @@ const useUpdateTask = () => {
   const { mutate, error } = useMutation({
     mutationFn: (params: UpdateTaskParams) => updateTask(params),
     onMutate: async (variables) => {
-      const startDate = format(variables.data.startDate, 'yyyy-MM-dd');
+      const startDate = variables.data.startDate;
       const queryKey = tasks.list({
         userId: variables.data.userId,
         startDate,
@@ -116,7 +114,7 @@ const useUpdateTask = () => {
       }
     },
     onSettled: (data, error, variables) => {
-      const startDate = format(variables.data.startDate, 'yyyy-MM-dd');
+      const startDate = variables.data.startDate;
       queryClient.invalidateQueries({
         queryKey: tasks.list({
           userId: variables.data.userId,

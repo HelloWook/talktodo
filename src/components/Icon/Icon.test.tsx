@@ -14,7 +14,7 @@ describe('Icon', () => {
     render(<Icon name='home' />);
 
     const useElement = screen.getByLabelText('home').querySelector('use');
-    expect(useElement).toHaveAttribute('href', '/sprite.svg#home');
+    expect(useElement).toHaveAttribute('href', '#home');
   });
 
   it('SVG 요소가 올바르게 렌더링된다.', () => {
@@ -30,6 +30,6 @@ describe('Icon', () => {
 
     const useElement = screen.getByLabelText('home').querySelector('use');
     expect(useElement).toBeInTheDocument();
-    expect(useElement).toHaveAttribute('href', '/sprite.svg#home');
+    expect(useElement).toHaveAttribute('href', '#home');
   });
 });

@@ -270,31 +270,52 @@ const DateField = () => {
       <Controller
         name='startDate'
         control={form.control}
-        render={({ field }) => (
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <button
-                type='button'
-                className='w-full rounded-2xl border border-gray-300 bg-white px-3 py-2 text-left'
-                onClick={() => setOpen(!open)}
-                id={triggerId}
-              >
-                {field.value ? format(new Date(field.value), 'yyyy-MM-dd') : '날짜 선택'}
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align='start' sideOffset={8} className='w-auto border-none bg-white p-0 shadow-none'>
-              <DatePicker
-                date={field.value ? new Date(field.value) : new Date()}
-                onDateChange={(date) => {
-                  field.onChange(date);
-                  form.setValue('startDate', date);
-                  setOpen(false);
-                }}
-                closeSelector={() => setOpen(false)}
-              />
-            </PopoverContent>
-          </Popover>
-        )}
+        render={({ field }) => {
+          let dateValue: Date;
+          if (field.value) {
+            if (typeof field.value === 'string') {
+              // yy-MM-dd 형식을 yyyy-MM-dd로 변환 (예: "24-01-15" -> "2024-01-15")
+              const [yy, mm, dd] = field.value.split('-');
+              dateValue = new Date(2000 + parseInt(yy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10));
+            } else {
+              dateValue = new Date(field.value);
+            }
+          } else {
+            dateValue = new Date();
+          }
+          const displayValue = field.value
+            ? typeof field.value === 'string'
+              ? field.value
+              : format(new Date(field.value), 'yy-MM-dd')
+            : '날짜 선택';
+
+          return (
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  type='button'
+                  className='w-full rounded-2xl border border-gray-300 bg-white px-3 py-2 text-left'
+                  onClick={() => setOpen(!open)}
+                  id={triggerId}
+                >
+                  {displayValue}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align='start' sideOffset={8} className='w-auto border-none bg-white p-0 shadow-none'>
+                <DatePicker
+                  date={dateValue}
+                  onDateChange={(date) => {
+                    const formattedDate = format(date, 'yy-MM-dd');
+                    field.onChange(formattedDate);
+                    form.setValue('startDate', formattedDate);
+                    setOpen(false);
+                  }}
+                  closeSelector={() => setOpen(false)}
+                />
+              </PopoverContent>
+            </Popover>
+          );
+        }}
       />
       {form.formState.errors.startDate && (
         <Typography variant='body3-regular' as='p' className='mt-1 text-red-500'>

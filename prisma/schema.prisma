@@ -27,7 +27,7 @@ model Task {
   memo String?
   priority Priority
   repeatDays RepeatDay[]
-  startDate DateTime
+  startDate String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isDone Boolean @default(false)

@@ -40,19 +40,10 @@ export class TaskRepository {
     });
   }
   async findAll({ userId, startDate }: GetTaskParams): Promise<Task[]> {
-    const dateStart = new Date(startDate);
-    dateStart.setHours(0, 0, 0, 0);
-
-    const dateEnd = new Date(startDate);
-    dateEnd.setHours(23, 59, 59, 999);
-
     return await prisma.task.findMany({
       where: {
         userId,
-        startDate: {
-          gte: dateStart,
-          lte: dateEnd,
-        },
+        startDate: startDate,
       },
     });
   }

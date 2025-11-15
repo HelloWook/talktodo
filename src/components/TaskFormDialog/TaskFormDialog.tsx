@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 
 import Form from '@/components/Form/Form';
@@ -24,7 +25,7 @@ export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
       description: '',
       memo: '',
       priority: '보통',
-      startDate: new Date(),
+      startDate: format(new Date(), 'yy-MM-dd'),
       repeatDays: [],
       isDone: false,
       userId: user?.id,
