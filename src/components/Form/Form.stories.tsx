@@ -40,11 +40,11 @@ export const Light = () => {
       <Form form={form}>
         <Form.Header title='할 일 편집' onClose={() => {}} />
         <div className='mb-4'>
-          <Form.TitleField label='할 일' placeholder='할 일을 입력하세요' />
+          <Form.InputField name='title' label='할 일' placeholder='할 일을 입력하세요' />
         </div>
 
         <div className='mb-4'>
-          <Form.DescriptionField label='설명' placeholder='설명을 입력하세요' />
+          <Form.InputField name='description' label='설명' placeholder='설명을 입력하세요' />
         </div>
         <div className='mb-4 flex gap-3'>
           <Form.SelectPriortyField />

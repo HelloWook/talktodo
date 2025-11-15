@@ -180,7 +180,7 @@ describe('Form', () => {
     render(
       <FormWrapper defaultValues={mockDefaultValues}>
         <Form.Header title='새 작업 추가' onClose={() => {}} />
-        <Form.TitleField label='제목' />
+        <Form.InputField name='title' label='제목' />
       </FormWrapper>,
     );
 
@@ -193,7 +193,7 @@ describe('Form', () => {
 
     render(
       <FormWrapper defaultValues={mockDefaultValues}>
-        <Form.TitleField label='제목' />
+        <Form.InputField name='title' label='제목' />
       </FormWrapper>,
     );
 
@@ -209,7 +209,7 @@ describe('Form', () => {
 
     render(
       <FormWrapper defaultValues={mockDefaultValues}>
-        <Form.DescriptionField label='설명' />
+        <Form.InputField name='description' label='설명' />
       </FormWrapper>,
     );
 

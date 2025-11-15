@@ -84,11 +84,11 @@ const TaskEditDialog = ({ onClose, task }: TaskEditDialogProps) => {
       <Form form={form} onSubmit={handleSubmit}>
         <Form.Header title='할 일 수정' onClose={onClose} />
         <div className='mb-4'>
-          <Form.TitleField label='할 일' placeholder='할 일을 입력하세요' />
+          <Form.InputField name='title' label='할 일' placeholder='할 일을 입력하세요' />
         </div>
 
         <div className='mb-4'>
-          <Form.DescriptionField label='설명' placeholder='설명을 입력하세요' />
+          <Form.InputField name='description' label='설명' placeholder='설명을 입력하세요' />
         </div>
         <div className='mb-4 flex gap-3'>
           <Form.SelectPriortyField />
