@@ -6,11 +6,7 @@ import { useState, useEffect } from 'react';
 import GoalFormDialog from '@/components/GoalFormDialog/GoalFormDialog';
 import SideBar from '@/components/SideBar/SideBar';
 import { useDialog } from '@/hooks/useDialog';
-
-export interface Goal {
-  id: string;
-  name: string;
-}
+import { useGetGoals } from '@/quries/useGoal';
 
 interface UserInfo {
   nickname: string;
@@ -26,7 +22,7 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
   const pathname = usePathname();
   const { openDialog, closeDialog } = useDialog();
   const [userInfo, setUserInfo] = useState<UserInfo>({ nickname: 'User', email: 'user@example.com' });
-  const [goals, setGoals] = useState<Goal[]>([]);
+  const { data: goals = [] } = useGetGoals();
 
   useEffect(() => {
     // TODO: API 호출로 사용자 정보 가져오기
@@ -41,21 +37,7 @@ const MenuSideBar = ({ className }: MenuSideBarProps) => {
       }
     };
 
-    // TODO: API 호출로 목표 리스트 가져오기
-    const fetchGoals = async () => {
-      try {
-        setGoals([
-          { id: 'goal_001', name: '업무' },
-          { id: 'goal_002', name: '건강' },
-          { id: 'goal_003', name: '자기계발' },
-        ]);
-      } catch (error) {
-        console.error('Failed to fetch goals:', error);
-      }
-    };
-
     fetchUserInfo();
-    fetchGoals();
   }, []);
 
   const handleNewGoalClick = () => {

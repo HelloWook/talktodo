@@ -14,4 +14,8 @@ type DeleteTaskParams = {
   id: string;
 };
 
-export type { GetTaskParams, UpdateTaskParams, DeleteTaskParams };
+type GetGoalsParams = {
+  userId: string;
+};
+
+export type { GetTaskParams, UpdateTaskParams, DeleteTaskParams, GetGoalsParams };

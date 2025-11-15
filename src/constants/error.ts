@@ -9,6 +9,8 @@ export type ErrorKey =
   | 'GET_TASK_BY_ID_ERROR'
   | 'GET_TASK_BY_USER_ID_ERROR'
   | 'GET_TASK_BY_GOAL_ID_ERROR'
+  | 'CREATE_GOAL_ERROR'
+  | 'GET_ALL_GOALS_ERROR'
   | 'UNAUTHORIZED'
   | 'NOT_FOUND'
   | 'INTERNAL_SERVER_ERROR';
@@ -70,6 +72,16 @@ export const ERRORS: Record<ErrorKey, ErrorInfo> = {
   GET_TASK_BY_GOAL_ID_ERROR: {
     message: '목표 ID로 조회에 실패했습니다.',
     code: 'ERR_50007',
+    statusCode: 500,
+  },
+  CREATE_GOAL_ERROR: {
+    message: '목표 생성에 실패했습니다.',
+    code: 'ERR_50008',
+    statusCode: 500,
+  },
+  GET_ALL_GOALS_ERROR: {
+    message: '모든 목표 조회에 실패했습니다.',
+    code: 'ERR_50009',
     statusCode: 500,
   },
   NOT_FOUND: {

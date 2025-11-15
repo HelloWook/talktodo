@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import Form from '@/components/Form/Form';
 import { taskSchema, TaskPayload } from '@/lib/validation/task';
+import { useGetGoals } from '@/quries/useGoal';
 import { useCreateTask } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
 
@@ -15,6 +16,7 @@ interface TaskFormDialogProps {
 
 export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
   const { mutate } = useCreateTask();
+  const { data: goals = [] } = useGetGoals();
 
   const user = useUserStore((state) => state.user);
 
@@ -62,7 +64,7 @@ export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
           <Form.DateField />
         </div>
         <div className='mb-4'>
-          <Form.GoalSelector goals={[]} />
+          <Form.GoalSelector goals={goals} />
         </div>
         <div className='mb-6'>
           <Form.RepeatButtonGroup />

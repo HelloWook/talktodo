@@ -1,24 +1,36 @@
+'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import Form from '@/components/Form/Form';
 import { GoalPayload, goalSchema } from '@/lib/validation/goal';
+import { useCreateGoal } from '@/quries/useGoal';
+import { useUserStore } from '@/stores/user';
 
 interface GoalFormDialogProps {
   onClose: () => void;
 }
 
 const GoalFormDialog = ({ onClose }: GoalFormDialogProps) => {
+  const { mutate } = useCreateGoal();
+  const user = useUserStore((state) => state.user);
+
   const form = useForm<GoalPayload>({
     resolver: zodResolver(goalSchema),
     defaultValues: {
       name: '',
+      userId: user?.id ?? '',
     },
   });
 
   const handleSubmit = form.handleSubmit((data) => {
-    console.log('목표 생성:', data);
-    onClose();
+    mutate(data, {
+      onSuccess: () => {
+        form.reset();
+        onClose();
+      },
+    });
   });
 
   return (

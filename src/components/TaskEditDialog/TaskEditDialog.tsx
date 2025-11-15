@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import Form from '@/components/Form/Form';
 import { useAlert } from '@/hooks/useAlert';
 import { taskSchema, TaskPayload } from '@/lib/validation/task';
+import { useGetGoals } from '@/quries/useGoal';
 import { useUpdateTask, useDeleteTask } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
 import { Task } from '@/types';
@@ -19,6 +20,7 @@ interface TaskEditDialogProps {
 const TaskEditDialog = ({ onClose, task }: TaskEditDialogProps) => {
   const { mutate: updateMutate } = useUpdateTask();
   const { mutate: deleteMutate } = useDeleteTask();
+  const { data: goals = [] } = useGetGoals();
 
   const { openAlert } = useAlert();
   const user = useUserStore((state) => state.user);
@@ -95,7 +97,7 @@ const TaskEditDialog = ({ onClose, task }: TaskEditDialogProps) => {
           <Form.DateField />
         </div>
         <div className='mb-4'>
-          <Form.GoalSelector goals={[]} />
+          <Form.GoalSelector goals={goals} />
         </div>
         <div className='mb-6'>
           <Form.RepeatButtonGroup />
