@@ -15,7 +15,7 @@ const mockTask: Task = {
   repeatDays: ['월', '화', '수', '목', '금', '토', '일'],
   createdAt: new Date(),
   updatedAt: new Date(),
-  goal: { id: 'g1', name: '건강' },
+  goal: { id: 'g1', name: '건강', userId: '1' },
 };
 
 const mockTaskDone: Task = {

@@ -5,7 +5,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { taskSchema, TaskPayload } from '@/lib/validation/task';
-import type { Goal } from '@/types';
+import { mockGoals } from '@/stories/mock/mockGoal';
 
 import Form from './Form';
 
@@ -235,21 +235,15 @@ describe('Form', () => {
   });
 
   it('목표를 선택할 수 있다', () => {
-    const goals: Goal[] = [
-      { id: 'g1', name: '업무' },
-      { id: 'g2', name: '개인 발전' },
-      { id: 'g3', name: '건강' },
-    ];
-
     render(
       <FormWrapper defaultValues={mockDefaultValues}>
-        <Form.GoalSelector goals={goals} />
+        <Form.GoalSelector goals={mockGoals} />
       </FormWrapper>,
     );
 
-    expect(screen.getByText('업무')).toBeInTheDocument();
-    expect(screen.getByText('개인 발전')).toBeInTheDocument();
     expect(screen.getByText('건강')).toBeInTheDocument();
+    expect(screen.getByText('공부')).toBeInTheDocument();
+    expect(screen.getByText('취미')).toBeInTheDocument();
   });
 
   it('반복 요일을 선택할 수 있다', async () => {

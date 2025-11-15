@@ -62,7 +62,7 @@ describe('ListView', () => {
     repeatDays: ['월', '화', '수', '목', '금'],
     createdAt: new Date('2024-03-20'),
     updatedAt: new Date('2024-03-20'),
-    goal: { id: 'g1', name: '학습' },
+    goal: { id: 'g1', name: '학습', userId: '1' },
   };
 
   const mockHandlers = {

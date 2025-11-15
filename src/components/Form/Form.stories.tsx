@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { taskSchema } from '@/lib/validation/task';
+import { mockGoals } from '@/stories/mock/mockGoal';
 import { mockEmptyTask } from '@/stories/mock/mockTask';
 
 import Form from './Form';
@@ -29,11 +30,7 @@ export const Light = () => {
     },
   });
 
-  const goals = [
-    { id: 'g1', name: '건강' },
-    { id: 'g2', name: '공부' },
-    { id: 'g3', name: '취미' },
-  ];
+  const goals = mockGoals;
 
   return (
     <div className='m-6 flex w-full justify-center'>
