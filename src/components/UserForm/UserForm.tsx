@@ -25,12 +25,14 @@ interface AuthFormTitleProps {
 
 interface UserProfileUploadProps {
   imageRef: React.RefObject<HTMLInputElement | null>;
+  currentImageUrl?: string;
+  onFileSelect?: (file: File) => void;
 }
 
-const UserProfileUpload = ({ imageRef }: UserProfileUploadProps) => {
+const UserProfileUpload = ({ imageRef, currentImageUrl, onFileSelect }: UserProfileUploadProps) => {
   return (
     <div>
-      <ProfileUpload imageRef={imageRef} />
+      <ProfileUpload imageRef={imageRef} currentImageUrl={currentImageUrl} onFileSelect={onFileSelect} />
     </div>
   );
 };

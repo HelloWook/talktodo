@@ -16,6 +16,13 @@ export class UserRepository {
       data,
     });
   }
+
+  async update(id: string, data: Partial<UserPayload>): Promise<User> {
+    return await prisma.user.update({
+      where: { id },
+      data,
+    });
+  }
 }
 
 export const userRepository = new UserRepository();
