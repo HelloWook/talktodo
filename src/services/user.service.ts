@@ -15,6 +15,10 @@ export class UserService {
 
     return await userRepository.Create(data);
   }
+
+  async updateUser(id: string, data: Partial<UserPayload>) {
+    return await userRepository.update(id, data);
+  }
 }
 
 export const userService = new UserService();
