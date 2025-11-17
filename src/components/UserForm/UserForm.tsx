@@ -1,19 +1,16 @@
+import { cn } from '@/utils/cn';
+
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import Typography from '../Typography/Typography';
 import ProfileUpload from './ProfileUpload/ProfileUpload';
-
 interface UserFormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
 }
 
-interface UserFormTitleProps {
-  onSubmit: () => void;
-}
-
 const UserForm = ({ children, onSubmit, ...props }: UserFormProps) => {
   return (
-    <form {...props} className='h-[613px] w-[90%] max-w-[640px] rounded-[28px] bg-[var(--color-white)] p-10 shadow' onSubmit={onSubmit}>
+    <form {...props} className='flex h-[613px] w-[90%] max-w-[640px] flex-col rounded-[28px] bg-white p-10 shadow' onSubmit={onSubmit}>
       {children}
     </form>
   );
@@ -64,11 +61,12 @@ const FieldGroup = ({ children, fieldName, ...props }: FieldGroupProps) => {
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
+  className?: string;
 }
 
-const FormButton = ({ children, ...props }: ButtonProps) => {
+const FormButton = ({ children, className, ...props }: ButtonProps) => {
   return (
-    <Button variant='primary' size='medium' {...props} type='submit' onClick={() => {}}>
+    <Button variant='primary' size='medium' className={cn('w-full', className)} {...props} type='submit' onClick={() => {}}>
       <Typography variant='body2-bold' as='span'>
         {children}
       </Typography>
