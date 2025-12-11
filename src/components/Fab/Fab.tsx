@@ -15,7 +15,8 @@ const sizeClasses = {
 } as const satisfies Record<FabSize, string>;
 
 export interface FabItem {
-  label: string;
+  key: string;
+  label: React.ReactNode;
   onClick: () => void;
 }
 
@@ -45,7 +46,7 @@ const Fab = ({ size, items, className }: FabProps) => {
       <DropdownMenuContent align='end' side='top' className='border-0'>
         <DropdownMenuGroup>
           {items.map((item) => (
-            <DropdownMenuItem key={item.label} className='cursor-pointer p-3 text-center' onClick={() => item.onClick()}>
+            <DropdownMenuItem key={item.key} className='w-full cursor-pointer p-3 text-center' onClick={() => item.onClick()}>
               {item.label}
             </DropdownMenuItem>
           ))}
