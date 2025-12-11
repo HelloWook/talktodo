@@ -14,7 +14,7 @@ const GoalSelectorButton = ({ active, onClick, goal }: GoalSelectorButtonProps) 
 
   return (
     <button aria-pressed={active} onClick={onClick} className={cn(`flex w-full cursor-pointer rounded-xl border-solid p-4`, ativeStlye)}>
-      <Typography variant='title3-semibold' as='p' className={activeButtonStyle}>
+      <Typography variant='body1-medium' as='p' className={activeButtonStyle}>
         {goal.name}
       </Typography>
     </button>

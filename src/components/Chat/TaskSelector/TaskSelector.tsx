@@ -12,7 +12,12 @@ import { useDialog } from '@/hooks/useDialog';
 import { useGetGoals } from '@/quries/useGoal';
 import type { Goal } from '@/types';
 
-const TaskSelector = () => {
+interface TaskSelectorProps {
+  onGoalSelect?: (goal: Goal) => void;
+  onNextClick?: () => void;
+}
+
+const TaskSelector = ({ onGoalSelect, onNextClick }: TaskSelectorProps) => {
   const { data: goals = [], isLoading } = useGetGoals();
   const [activeGoal, setActiveGoal] = useState<Goal | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -20,6 +25,7 @@ const TaskSelector = () => {
 
   const handleGoalClick = (goal: Goal) => {
     setActiveGoal(goal);
+    onGoalSelect?.(goal);
   };
 
   const handleNewGoalClick = () => {
@@ -28,7 +34,7 @@ const TaskSelector = () => {
 
   const handleNextClick = () => {
     if (activeGoal) {
-      alert('다음 단계로 이동합니다.');
+      onNextClick?.();
     }
   };
 
