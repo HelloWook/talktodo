@@ -8,6 +8,7 @@ import SelectProirty from '@/components/SelectPriorty/SelectPriorty';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Goal, Priority, RepeatDay } from '@/types';
 import { cn } from '@/utils/cn';
+import { formatDateValue, parseDateValue } from '@/utils/dateParser';
 
 import DatePicker from '../DatePicker/DatePicker';
 import Input from '../Input/Input';
@@ -259,14 +260,19 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
   );
 };
 
-const DateField = () => {
+interface DateFieldProps {
+  initialDate?: Date;
+  className?: string;
+}
+
+const DateField = ({ initialDate, className }: DateFieldProps) => {
   const { form } = useFormContext();
   const [open, setOpen] = React.useState(false);
   const triggerId = React.useId();
   const error = form.formState.errors.startDate;
 
   return (
-    <div className='w-full'>
+    <div className={cn('w-full', className)}>
       <label htmlFor={triggerId}>
         <Typography variant='body3-semibold' as='span'>
           날짜
@@ -276,23 +282,8 @@ const DateField = () => {
         name='startDate'
         control={form.control}
         render={({ field }) => {
-          let dateValue: Date;
-          if (field.value) {
-            if (typeof field.value === 'string') {
-              // yy-MM-dd 형식을 yyyy-MM-dd로 변환 (예: "24-01-15" -> "2024-01-15")
-              const [yy, mm, dd] = field.value.split('-');
-              dateValue = new Date(2000 + parseInt(yy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10));
-            } else {
-              dateValue = new Date(field.value);
-            }
-          } else {
-            dateValue = new Date();
-          }
-          const displayValue = field.value
-            ? typeof field.value === 'string'
-              ? field.value
-              : format(new Date(field.value), 'yy-MM-dd')
-            : '날짜 선택';
+          const dateValue = parseDateValue(field.value, initialDate ?? new Date());
+          const displayValue = formatDateValue(field.value) || '날짜 선택';
 
           return (
             <Popover open={open} onOpenChange={setOpen}>
@@ -312,7 +303,6 @@ const DateField = () => {
                   onDateChange={(date) => {
                     const formattedDate = format(date, 'yy-MM-dd');
                     field.onChange(formattedDate);
-                    form.setValue('startDate', formattedDate);
                     setOpen(false);
                   }}
                   closeSelector={() => setOpen(false)}

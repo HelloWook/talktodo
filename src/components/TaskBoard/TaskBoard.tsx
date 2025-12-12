@@ -5,7 +5,6 @@ import { useState } from 'react';
 import CardView from '@/components/Card/CardView';
 import { TaskViewContainer } from '@/components/TaskViewContainer';
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
-import useMount from '@/hooks/useMount';
 import type { Task } from '@/types';
 import { cn } from '@/utils/cn';
 import { filterTasksByStatus } from '@/utils/filterTasks';
@@ -28,7 +27,6 @@ const EmptyTaskState = ({ mode }: { mode: 'todo' | 'done' }) => {
 export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpenMemo, className }: TaskBoardProps) {
   const { doneTasks, undoneTasks } = filterTasksByStatus(tasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const isMounted = useMount();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
