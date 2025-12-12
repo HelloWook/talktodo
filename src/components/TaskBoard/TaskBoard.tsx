@@ -70,7 +70,7 @@ export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpen
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
-      <div className={cn('flex h-full w-full gap-2', className)}>
+      <div className={cn('flex h-full w-full flex-col gap-2 md:flex-row', className)}>
         <TaskViewContainer
           items={undoneTasks}
           layout={layout}

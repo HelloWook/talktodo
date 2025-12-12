@@ -149,7 +149,6 @@ const Content = ({ className }: CommonProps) => {
   );
 };
 
-// 컴파운드 패턴 적용
 Header.Title = Title;
 Header.TodoStats = TodoStats;
 Header.Character = Character;
