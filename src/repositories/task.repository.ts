@@ -52,6 +52,22 @@ export class TaskRepository {
       where: { id },
     });
   }
+
+  async createMany(data: TaskPayload[]): Promise<Task[]> {
+    return await prisma.task.createManyAndReturn({
+      data: data.map((task) => ({
+        title: task.title,
+        description: task.description,
+        memo: task.memo,
+        priority: task.priority,
+        repeatDays: task.repeatDays,
+        startDate: task.startDate,
+        isDone: task.isDone,
+        userId: task.userId,
+        goalId: task.goalId,
+      })),
+    });
+  }
 }
 
 export const taskRepository = new TaskRepository();

@@ -10,10 +10,12 @@ import ChatForm from '../ChatForm/ChatForm';
 
 interface ChatRoomContainerProps extends ChatRoomAction {
   onNextStep?: () => void;
+  userId?: string;
+  goalId?: string | null;
 }
 
-const ChatRoomContainer = ({ handleSetTaskSchedules, onNextStep }: ChatRoomContainerProps) => {
-  const { messages, sendMessage } = useChat({ handleSetTaskSchedules, onNextStep });
+const ChatRoomContainer = ({ handleSetTaskSchedules, userId, goalId }: ChatRoomContainerProps) => {
+  const { messages, sendMessage } = useChat({ handleSetTaskSchedules, userId, goalId });
 
   return (
     <>

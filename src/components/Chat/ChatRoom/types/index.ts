@@ -1,3 +1,5 @@
+import { Task } from '@/types';
+
 export interface ChatHeaderProps {
   goal: string;
   onPrevClick?: () => void;
@@ -17,10 +19,7 @@ export interface Message {
   temp?: boolean;
 }
 
-export interface TaskSchedule {
-  content: string;
-  taskDate: string;
-}
+export type TaskSchedule = Task;
 
 export interface ChatRoomAction {
   handleSetTaskSchedules?: (schedules: TaskSchedule) => void;

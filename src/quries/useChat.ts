@@ -1,5 +1,6 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
+import { format } from 'date-fns';
 
 import { useState } from 'react';
 
@@ -13,10 +14,11 @@ interface parsedTask {
 }
 
 interface UseChatOptions extends ChatRoomAction {
-  onNextStep?: () => void;
+  userId?: string;
+  goalId?: string | null;
 }
 
-const useChat = ({ handleSetTaskSchedules, onNextStep }: UseChatOptions) => {
+const useChat = ({ handleSetTaskSchedules, userId, goalId }: UseChatOptions) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const handleMessage = (newMessage: Message) => {
@@ -32,7 +34,6 @@ const useChat = ({ handleSetTaskSchedules, onNextStep }: UseChatOptions) => {
         temp: false,
       });
 
-      // 로딩 처리를 위한 임시 메시지 추가
       handleMessage({
         message: '채팅을 작성 중 입니다...',
         role: 'assistant',
@@ -56,13 +57,22 @@ const useChat = ({ handleSetTaskSchedules, onNextStep }: UseChatOptions) => {
         const parsedContent = JSON.parse(customPayloadMsg.content);
 
         parsedContent.data.forEach((task: parsedTask) => {
+          const date = new Date(task.date);
+          const formattedDate = format(date, 'yy-MM-dd');
+
           handleSetTaskSchedules?.({
-            content: task.task,
-            taskDate: task.date,
+            id: crypto.randomUUID(),
+            title: task.task,
+            startDate: formattedDate,
+            repeatDays: [],
+            priority: '보통',
+            description: '',
+            memo: '',
+            isDone: false,
+            userId: userId || '',
+            goalId: goalId || null,
           });
         });
-
-        onNextStep?.();
       }
     },
     onError: () => {

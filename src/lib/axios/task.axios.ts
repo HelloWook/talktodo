@@ -33,3 +33,10 @@ export const deleteTask = async (id: string) => {
   });
   return response.data;
 };
+
+export const createTasks = async (tasks: TaskPayload[]) => {
+  const response = await axiosInstance.post('/api/task/batch', {
+    tasks,
+  });
+  return response.data.data;
+};

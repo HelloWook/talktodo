@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { useRouter } from 'next/navigation';
+
 import { useToast } from '@/hooks/useToast';
 
-import { getTasks, createTask, updateTask, deleteTask } from '@/lib/axios/task.axios';
+import { getTasks, createTask, createTasks, updateTask, deleteTask } from '@/lib/axios/task.axios';
 import { tasks } from '@/quries/queryKey/queryKeys';
 import { Task } from '@/types';
 import { GetTaskParams, UpdateTaskParams, DeleteTaskParams } from '@/types/params';
@@ -18,11 +20,6 @@ const useGetTasks = (params: GetTaskParams) => {
   return { data, isLoading, error };
 };
 
-/**
- * 할 일 목록을 prefetch하는 함수
- * @param queryClient - QueryClient 인스턴스
- * @param params - 할 일 조회 파라미터
- */
 export const prefetchTasks = async (queryClient: ReturnType<typeof useQueryClient>, params: GetTaskParams) => {
   if (!params.userId || params.userId.trim() === '') {
     return;
@@ -146,4 +143,34 @@ const useDeleteTask = () => {
   return { mutate, error };
 };
 
-export { useGetTasks, useCreateTask, useUpdateTask, useDeleteTask };
+const useCreateTasks = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { addToast } = useToast();
+
+  const { mutate, error } = useMutation({
+    mutationFn: (tasks: TaskPayload[]) => createTasks(tasks),
+    onSuccess: (data, variables) => {
+      const uniqueDates = [...new Set(variables.map((task) => task.startDate))];
+      const userId = variables[0]?.userId;
+
+      if (userId) {
+        uniqueDates.forEach((startDate) => {
+          queryClient.invalidateQueries({
+            queryKey: tasks.list({ userId, startDate }).queryKey,
+          });
+        });
+      }
+
+      addToast(`🎉할 일이 생성되었습니다.`);
+      router.push('/');
+    },
+    onError: () => {
+      addToast('할 일 생성 중 오류가 발생했습니다.');
+    },
+  });
+
+  return { mutate, error };
+};
+
+export { useGetTasks, useCreateTask, useCreateTasks, useUpdateTask, useDeleteTask };
