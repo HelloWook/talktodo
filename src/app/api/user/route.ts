@@ -2,7 +2,7 @@ import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/auth';
-import { ERRORS } from '@/constants/error';
+import { ERRORS, type ApiErrorResponse } from '@/error/error';
 import { userUpdateSchema } from '@/lib/validation/user';
 import { userService } from '@/services/user.service';
 
@@ -11,7 +11,11 @@ export async function GET() {
     const session = await auth();
 
     if (!session?.user) {
-      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
     }
 
     return NextResponse.json({
@@ -24,10 +28,11 @@ export async function GET() {
       },
     });
   } catch {
-    return NextResponse.json(
-      { success: false, error: ERRORS.INTERNAL_SERVER_ERROR.message },
-      { status: ERRORS.INTERNAL_SERVER_ERROR.statusCode },
-    );
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.INTERNAL_SERVER_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.INTERNAL_SERVER_ERROR.statusCode });
   }
 }
 
@@ -36,7 +41,11 @@ export async function PATCH(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
     }
 
     const body = await request.json();
@@ -49,8 +58,16 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: true, data: user }, { status: HttpStatusCode.Ok });
   } catch (error) {
     if (error instanceof Error && error.name === 'ZodError') {
-      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.VALIDATION_ERROR,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.VALIDATION_ERROR.statusCode });
     }
-    return NextResponse.json({ success: false, error: ERRORS.UPDATE_USER_ERROR.message }, { status: ERRORS.UPDATE_USER_ERROR.statusCode });
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.UPDATE_USER_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.UPDATE_USER_ERROR.statusCode });
   }
 }
