@@ -1,6 +1,7 @@
 'use client';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 import Fab from '@/components/Fab/Fab';
 import MenuSideBar from '@/components/MenuSideBar';
@@ -9,6 +10,7 @@ import TaskContainer from '@/components/TaskContainer/TaskContainer';
 import TaskFormDialog from '@/components/TaskFormDialog/TaskFormDialog';
 import TaskHeaderSkeleton from '@/components/TaskHeader/TaskHeaderSkeleton';
 import TaskLayoutSkeleton from '@/components/TaskLayout/TaskLayoutSkeleton';
+import Typography from '@/components/Typography/Typography';
 import { useDialog } from '@/hooks/useDialog';
 import { useGetGoals } from '@/quries/useGoal';
 import { useGetTasks } from '@/quries/useTask';
@@ -17,6 +19,9 @@ import { useUserStore } from '@/stores/user';
 export default function Home() {
   const { openDialog, closeDialog } = useDialog();
   const user = useUserStore((state) => state.user);
+
+  const router = useRouter();
+
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const { isLoading: isGoalsLoading } = useGetGoals();
@@ -43,9 +48,27 @@ export default function Home() {
           size='small'
           items={[
             {
-              label: '할 일 생성하기',
+              key: 'create-task',
+              label: <span className='w-full text-center'>할 일 생성하기</span>,
               onClick: () => {
                 const id = openDialog(<TaskFormDialog onClose={() => closeDialog(id)} />);
+              },
+            },
+            {
+              key: 'ai-task',
+              label: (
+                <React.Fragment>
+                  <Typography
+                    variant='body3-medium-tight'
+                    className='rounded-[8px] bg-purple-50 p-2 px-2 py-1 text-purple-400 group-hover:bg-purple-400 group-hover:text-white'
+                  >
+                    AI
+                  </Typography>
+                  할 일 정리하기
+                </React.Fragment>
+              ),
+              onClick: () => {
+                router.push('/chat');
               },
             },
           ]}

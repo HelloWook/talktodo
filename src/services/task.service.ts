@@ -19,6 +19,10 @@ export class TaskService {
   async delete(id: string): Promise<Task> {
     return await taskRepository.delete(id);
   }
+
+  async createMany(data: TaskPayload[]): Promise<Task[]> {
+    return await taskRepository.createMany(data);
+  }
 }
 
 export const taskService = new TaskService();

@@ -27,9 +27,9 @@ type Story = StoryObj<typeof Fab>;
 export const Playground: Story = {
   args: {
     items: [
-      { label: 'add', onClick: () => {} },
-      { label: 'edit', onClick: () => {} },
-      { label: 'delete', onClick: () => {} },
+      { key: 'add', label: 'add', onClick: () => {} },
+      { key: 'edit', label: 'edit', onClick: () => {} },
+      { key: 'delete', label: 'delete', onClick: () => {} },
     ],
     size: 'large',
   },
@@ -48,9 +48,9 @@ export const Sizes: Story = {
   ),
   args: {
     items: [
-      { label: 'add', onClick: () => {} },
-      { label: 'edit', onClick: () => {} },
-      { label: 'delete', onClick: () => {} },
+      { key: 'add', label: 'add', onClick: () => {} },
+      { key: 'edit', label: 'edit', onClick: () => {} },
+      { key: 'delete', label: 'delete', onClick: () => {} },
     ],
   },
 };

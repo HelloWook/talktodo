@@ -6,8 +6,8 @@ type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'disabled' | 'kakao'
 type ButtonSize = 'small' | 'medium' | 'large';
 
 const variantClasses = {
-  primary: 'bg-primary hover:bg-purple-100 hover:!text-purple-500',
-  secondary: 'bg-purple-700 hover:!bg-purple-200 hover:!text-purple-500',
+  primary: 'bg-primary hover:!bg-purple-700 ',
+  secondary: 'bg-purple-100 hover:!bg-purple-200 text-primary',
   tertiary: 'bg-purple-800 hover:!bg-purple-300 hover:!text-purple-500',
   quaternary: 'border-purple-400 bg-white hover:!bg-purple-50 active:!bg-purple-100',
   disabled: 'bg-gray-300 hover:!bg-gray-100 hover:!text-gray-400',

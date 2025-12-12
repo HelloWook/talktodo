@@ -156,7 +156,7 @@ const EditFormActions = ({ onEdit, onDelete, className }: EditFormActionsProps) 
       <Button variant='primary' type='button' onClick={onEdit} className='w-full'>
         수정하기
       </Button>
-      <Button variant='quaternary' type='button' onClick={onDelete} className='!text-primary !hover:bg-white w-full !bg-white'>
+      <Button variant='secondary' type='button' onClick={onDelete} className='!text-primary !hover:bg-white w-full'>
         삭제하기
       </Button>
     </div>

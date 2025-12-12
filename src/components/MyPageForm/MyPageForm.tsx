@@ -89,7 +89,7 @@ const MyPageForm = () => {
         <UserForm.UserProfileUpload imageRef={imageRef} currentImageUrl={user?.image} onFileSelect={handleFileSelect} />
         <UserForm.FieldGroup fieldName='이름' value={nickname} onChange={(e) => setNickname(e.target.value)} />
         <UserForm.FieldGroup fieldName='이메일' value={email} disabled />
-        <UserForm.FormButton className='w-full' disabled={mutation.isPending}>
+        <UserForm.FormButton className='mt-auto w-full p-6' disabled={mutation.isPending}>
           {mutation.isPending ? '저장 중...' : '저장'}
         </UserForm.FormButton>
       </UserForm>
