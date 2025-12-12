@@ -46,7 +46,7 @@ const TaskSelector = ({ onGoalSelect, onNextClick }: TaskSelectorProps) => {
     <div className='m-auto flex w-full max-w-[624px] flex-col items-center justify-center'>
       <div className='relative mb-3 -translate-x-6'>
         <Image
-          src='/img/unCompletedCharacter.png'
+          src='/img/UnCompletedCharacter.png'
           alt='chat character'
           width={110}
           height={120}
