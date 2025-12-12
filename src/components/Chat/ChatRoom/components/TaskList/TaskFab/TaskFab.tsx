@@ -35,4 +35,3 @@ const TaskFab = ({ taskCount, onClick }: TaskFabProps) => {
 };
 
 export default TaskFab;
-
