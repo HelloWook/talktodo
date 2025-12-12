@@ -2,22 +2,24 @@
 
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 
-import { toastService } from '@/components/Toast/toastService';
+import { useErrorHandler } from '@/hooks/useErrorHandler';
 
 export function Providers({ children }: PropsWithChildren) {
-  const [queryClient] = useState(
+  const { handleError } = useErrorHandler();
+
+  const queryClient = useMemo(
     () =>
       new QueryClient({
         queryCache: new QueryCache({
           onError: (error) => {
-            toastService.addToast('조회 중 오류가 발생했습니다.');
+            handleError(error, '조회 중 오류가 발생했습니다.');
           },
         }),
         mutationCache: new MutationCache({
           onError: (error) => {
-            toastService.addToast('생성 중 오류가 발생했습니다.');
+            handleError(error, '처리 중 오류가 발생했습니다.');
           },
         }),
         defaultOptions: {
@@ -32,6 +34,7 @@ export function Providers({ children }: PropsWithChildren) {
           },
         },
       }),
+    [handleError],
   );
 
   return (

@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/auth';
-import { ERRORS } from '@/constants/error';
+import { ERRORS, type ApiErrorResponse } from '@/error/error';
 import { taskSchema } from '@/lib/validation/task';
 import { taskService } from '@/services/task.service';
 
@@ -12,7 +12,11 @@ export async function POST(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
     }
 
     const body = await request.json();
@@ -29,9 +33,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: task }, { status: HttpStatusCode.Created });
   } catch (error) {
     if (error instanceof Error && error.name === 'ZodError') {
-      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.VALIDATION_ERROR,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.VALIDATION_ERROR.statusCode });
     }
-    return NextResponse.json({ success: false, error: ERRORS.CREATE_TASK_ERROR.message }, { status: ERRORS.CREATE_TASK_ERROR.statusCode });
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.CREATE_TASK_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.CREATE_TASK_ERROR.statusCode });
   }
 }
 
@@ -40,24 +52,33 @@ export async function GET(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
     }
 
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get('startDate');
 
     if (!startDate) {
-      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.VALIDATION_ERROR,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.VALIDATION_ERROR.statusCode });
     }
 
     const tasks = await taskService.findAll({ userId: session.user.id, startDate: startDate });
     return NextResponse.json({ success: true, data: tasks }, { status: HttpStatusCode.Ok });
   } catch (error) {
     console.error('GET /api/task error:', error);
-    return NextResponse.json(
-      { success: false, error: ERRORS.GET_ALL_TASKS_ERROR.message, details: error instanceof Error ? error.message : String(error) },
-      { status: ERRORS.GET_ALL_TASKS_ERROR.statusCode },
-    );
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.GET_ALL_TASKS_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.GET_ALL_TASKS_ERROR.statusCode });
   }
 }
 
@@ -66,14 +87,22 @@ export async function PATCH(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
     }
 
     const body = await request.json();
     const { id, ...taskData } = body;
 
     if (!id) {
-      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.VALIDATION_ERROR,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.VALIDATION_ERROR.statusCode });
     }
 
     const validatedData = taskSchema.parse({
@@ -88,9 +117,17 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: true, data: task }, { status: HttpStatusCode.Ok });
   } catch (error) {
     if (error instanceof Error && error.name === 'ZodError') {
-      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.VALIDATION_ERROR,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.VALIDATION_ERROR.statusCode });
     }
-    return NextResponse.json({ success: false, error: ERRORS.UPDATE_TASK_ERROR.message }, { status: ERRORS.UPDATE_TASK_ERROR.statusCode });
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.UPDATE_TASK_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.UPDATE_TASK_ERROR.statusCode });
   }
 }
 
@@ -99,20 +136,32 @@ export async function DELETE(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ success: false, error: ERRORS.UNAUTHORIZED.message }, { status: ERRORS.UNAUTHORIZED.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
     }
 
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 
     if (!id) {
-      return NextResponse.json({ success: false, error: ERRORS.VALIDATION_ERROR.message }, { status: ERRORS.VALIDATION_ERROR.statusCode });
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.VALIDATION_ERROR,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.VALIDATION_ERROR.statusCode });
     }
 
     await taskService.delete(id);
 
     return NextResponse.json({ success: true }, { status: HttpStatusCode.Ok });
   } catch {
-    return NextResponse.json({ success: false, error: ERRORS.DELETE_TASK_ERROR.message }, { status: ERRORS.DELETE_TASK_ERROR.statusCode });
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.DELETE_TASK_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.DELETE_TASK_ERROR.statusCode });
   }
 }

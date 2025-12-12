@@ -109,3 +109,34 @@ export const getErrorMessage = (key: ErrorKey): string => ERRORS[key].message;
 export const getErrorCode = (key: ErrorKey): string => ERRORS[key].code;
 
 export const getErrorStatusCode = (key: ErrorKey): number => ERRORS[key].statusCode;
+
+// API 응답 타입
+export interface ApiErrorResponse {
+  success: false;
+  error: ErrorInfo;
+}
+
+export interface ApiSuccessResponse<T = unknown> {
+  success: true;
+  data: T;
+}
+
+export type ApiResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse;
+
+// 커스텀 에러 클래스 (클라이언트에서 사용)
+export class ApiError extends Error {
+  public readonly code: string;
+  public readonly statusCode: number;
+
+  constructor(errorInfo: ErrorInfo) {
+    super(errorInfo.message);
+    this.name = 'ApiError';
+    this.code = errorInfo.code;
+    this.statusCode = errorInfo.statusCode;
+    Object.setPrototypeOf(this, ApiError.prototype);
+  }
+
+  static fromErrorInfo(errorInfo: ErrorInfo): ApiError {
+    return new ApiError(errorInfo);
+  }
+}
