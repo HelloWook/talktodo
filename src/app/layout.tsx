@@ -13,6 +13,7 @@ import MemoDrawerContainer from '@/components/MemoDrawer/MemoDrawerContainer';
 import ToastContainer from '@/components/Toast/ToastContainer';
 import ToastHandler from '@/components/Toast/ToastHandler';
 import UserProvider from '@/components/UserProvider/UserProvider';
+import NetworkStatusMonitor from '@/error/NetworkStatusMonitor';
 
 import { Providers } from './providers';
 
@@ -61,6 +62,7 @@ export default function RootLayout({
         <div dangerouslySetInnerHTML={{ __html: spriteSvg }} style={{ display: 'none' }} aria-hidden='true' />
         <Providers>
           <UserProvider />
+          <NetworkStatusMonitor />
           {children}
 
           <div id='toast-root' />
