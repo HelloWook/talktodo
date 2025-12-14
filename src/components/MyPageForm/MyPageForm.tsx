@@ -1,13 +1,10 @@
 'use client';
-import { useMutation } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
 
 import Button from '@/components/Button/Button';
-import { toastService } from '@/components/Toast/toastService';
 import Typography from '@/components/Typography/Typography';
-import { useDeleteAccount } from '@/hooks/useDeleteAccount';
 import { useDialog } from '@/hooks/useDialog';
-import { updateUser } from '@/lib/axios/user.axios';
+import { useUpdateUser, useDeleteAccount } from '@/quries/useUser';
 import { useUserStore } from '@/stores/user';
 import { formatEmail } from '@/utils/formatEmail';
 
@@ -15,9 +12,9 @@ import UserForm from '../UserForm/UserForm';
 
 const MyPageForm = () => {
   const { openDialog, closeDialog } = useDialog();
+  const { mutate: updateUser, isPending: isUpdating } = useUpdateUser();
   const { deleteAccount, isDeleting } = useDeleteAccount();
   const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -29,24 +26,6 @@ const MyPageForm = () => {
     }
   }, [user]);
 
-  const updateMutation = useMutation({
-    mutationFn: async (data: { nickname: string }) => {
-      return await updateUser(data);
-    },
-    onSuccess: (data) => {
-      setUser({
-        id: user?.id || '',
-        email: data.email,
-        nickname: data.nickname,
-        image: data.image || undefined,
-      });
-      toastService.addToast('사용자 정보가 수정되었습니다.');
-    },
-    onError: () => {
-      toastService.addToast('사용자 정보 수정에 실패했습니다.');
-    },
-  });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,7 +33,7 @@ const MyPageForm = () => {
       nickname: nickname.trim(),
     };
 
-    updateMutation.mutate(payload);
+    updateUser(payload);
   };
 
   const handleDeleteAccount = () => {
@@ -96,8 +75,8 @@ const MyPageForm = () => {
       <UserForm.FieldGroup fieldName='이름' value={nickname} onChange={(e) => setNickname(e.target.value)} />
       <UserForm.FieldGroup fieldName='이메일' value={email} disabled />
       <div className='mt-auto flex gap-3'>
-        <UserForm.FormButton className='w-full' disabled={updateMutation.isPending}>
-          {updateMutation.isPending ? '저장 중...' : '저장'}
+        <UserForm.FormButton className='w-full' disabled={isUpdating}>
+          {isUpdating ? '저장 중...' : '저장'}
         </UserForm.FormButton>
         <Button variant='secondary' size='medium' className='w-full border' onClick={handleDeleteAccount} type='button'>
           계정 탈퇴

@@ -18,7 +18,14 @@ export const goals = createQueryKeys('goals', {
   }),
 });
 
+export const user = createQueryKeys('user', {
+  detail: () => ({
+    queryKey: ['detail'],
+  }),
+});
+
 export const queryKeys = {
   tasks,
   goals,
+  user,
 } as const;
