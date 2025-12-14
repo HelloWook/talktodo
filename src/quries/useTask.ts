@@ -129,7 +129,6 @@ const useDeleteTask = () => {
 
   const { mutate, error } = useMutation({
     mutationFn: (params: DeleteTaskParams) => deleteTask(params.id),
-    onError: () => {},
     onSuccess: () => {
       addToast('🗑️ 할 일이 삭제되었습니다.');
       queryClient.invalidateQueries({
@@ -164,9 +163,6 @@ const useCreateTasks = () => {
 
       addToast(`🎉할 일이 생성되었습니다.`);
       router.push('/');
-    },
-    onError: () => {
-      addToast('할 일 생성 중 오류가 발생했습니다.');
     },
   });
 
