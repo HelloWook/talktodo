@@ -10,16 +10,23 @@ interface GoalLayoutProps {
   currentGoalIndex: number;
   onGoalChange: (index: number) => void;
   onTaskClick?: (taskId: string) => void;
+  onToggleDone?: (taskId: string) => void;
 }
 
-const GoalLayout = ({ goals, tasks, currentGoalIndex, onGoalChange, onTaskClick }: GoalLayoutProps) => {
+const GoalLayout = ({ goals, tasks, currentGoalIndex, onGoalChange, onTaskClick, onToggleDone }: GoalLayoutProps) => {
   const currentGoal = goals[currentGoalIndex] || null;
 
   return (
     <>
       <GoalNavigator className='py-4' goals={goals} currentGoalIndex={currentGoalIndex} onGoalChange={onGoalChange} />
 
-      <GoalBoard className='flex-1 overflow-hidden' goal={currentGoal} tasks={tasks} onTaskClick={onTaskClick} />
+      <GoalBoard
+        className='flex-1 overflow-hidden'
+        goal={currentGoal}
+        tasks={tasks}
+        onTaskClick={onTaskClick}
+        onToggleDone={onToggleDone}
+      />
     </>
   );
 };

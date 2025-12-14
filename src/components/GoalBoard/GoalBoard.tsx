@@ -10,9 +10,10 @@ interface GoalBoardProps {
   goal: Goal | null;
   tasks: Task[];
   onTaskClick?: (taskId: string) => void;
+  onToggleDone?: (taskId: string) => void;
 }
 
-const GoalBoard = ({ className, goal, tasks, onTaskClick }: GoalBoardProps) => {
+const GoalBoard = ({ className, goal, tasks, onTaskClick, onToggleDone }: GoalBoardProps) => {
   const isMobile = useMediaQuery('(max-width: 640px)');
 
   const goalTasks = goal ? tasks.filter((task) => task.goalId === goal.id) : [];
@@ -73,9 +74,23 @@ const GoalBoard = ({ className, goal, tasks, onTaskClick }: GoalBoardProps) => {
           >
             <div className='flex items-start gap-3'>
               <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleDone?.(task.id);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onToggleDone?.(task.id);
+                  }
+                }}
+                role='checkbox'
+                aria-checked={task.isDone}
+                tabIndex={0}
                 className={cn(
-                  'mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2',
-                  task.isDone ? 'border-purple-500 bg-purple-500' : 'border-gray-300 bg-white',
+                  'mt-0.5 flex h-5 w-5 flex-shrink-0 cursor-pointer items-center justify-center rounded border-2 transition-colors',
+                  task.isDone ? 'border-purple-500 bg-purple-500' : 'border-gray-300 bg-white hover:border-purple-400',
                 )}
               >
                 {task.isDone && <Icon name='close' className='h-3 w-3 text-white' />}
