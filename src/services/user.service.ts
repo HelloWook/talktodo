@@ -19,6 +19,10 @@ export class UserService {
   async updateUser(id: string, data: Partial<UserPayload>) {
     return await userRepository.update(id, data);
   }
+
+  async deleteUser(id: string) {
+    return await userRepository.delete(id);
+  }
 }
 
 export const userService = new UserService();

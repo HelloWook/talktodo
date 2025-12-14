@@ -12,6 +12,7 @@ export type ErrorKey =
   | 'CREATE_GOAL_ERROR'
   | 'GET_ALL_GOALS_ERROR'
   | 'UPDATE_USER_ERROR'
+  | 'DELETE_USER_ERROR'
   | 'UNAUTHORIZED'
   | 'NOT_FOUND'
   | 'INTERNAL_SERVER_ERROR';
@@ -88,6 +89,11 @@ export const ERRORS: Record<ErrorKey, ErrorInfo> = {
   UPDATE_USER_ERROR: {
     message: '사용자 정보 수정에 실패했습니다.',
     code: 'ERR_50010',
+    statusCode: 500,
+  },
+  DELETE_USER_ERROR: {
+    message: '계정 탈퇴에 실패했습니다.',
+    code: 'ERR_50011',
     statusCode: 500,
   },
   NOT_FOUND: {

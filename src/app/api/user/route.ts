@@ -71,3 +71,27 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json(errorResponse, { status: ERRORS.UPDATE_USER_ERROR.statusCode });
   }
 }
+
+export async function DELETE() {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
+    }
+
+    await userService.deleteUser(session.user.id);
+
+    return NextResponse.json({ success: true }, { status: HttpStatusCode.Ok });
+  } catch {
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.DELETE_USER_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.DELETE_USER_ERROR.statusCode });
+  }
+}

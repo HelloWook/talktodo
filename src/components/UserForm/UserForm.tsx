@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { cn } from '@/utils/cn';
 
 import Button from '../Button/Button';
@@ -30,6 +32,24 @@ const UserProfileUpload = ({ imageRef, currentImageUrl, onFileSelect }: UserProf
   return (
     <div>
       <ProfileUpload imageRef={imageRef} currentImageUrl={currentImageUrl} onFileSelect={onFileSelect} />
+    </div>
+  );
+};
+
+interface UserProfileDisplayProps {
+  currentImageUrl?: string;
+}
+
+const UserProfileDisplay = ({ currentImageUrl }: UserProfileDisplayProps) => {
+  return (
+    <div className='mb-[44px] flex flex-col items-center justify-center'>
+      <Image
+        src={currentImageUrl || '/img/Profile.png'}
+        alt='프로필'
+        width={140}
+        height={140}
+        className='!h-[140px] rounded-full object-cover'
+      />
     </div>
   );
 };
@@ -78,4 +98,5 @@ UserForm.Title = AuthFormTitle;
 UserForm.FieldGroup = FieldGroup;
 UserForm.FormButton = FormButton;
 UserForm.UserProfileUpload = UserProfileUpload;
+UserForm.UserProfileDisplay = UserProfileDisplay;
 export default UserForm;

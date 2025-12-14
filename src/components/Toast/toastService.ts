@@ -5,23 +5,22 @@ class ToastService {
   private listeners = new Set<(toasts: ToastType[]) => void>();
   private readonly maxCount = 3;
   private readonly duration = 3000;
+  private counter = 0;
 
   addToast(content: string) {
     const toast: ToastType = {
-      id: Date.now().toString(),
+      id: `${Date.now()}-${++this.counter}-${Math.random().toString(36).substring(2, 9)}`,
       content,
     };
 
     this.toasts = [...this.toasts, toast];
 
-    // 최대 개수 제한
     if (this.toasts.length > this.maxCount) {
       this.toasts = this.toasts.slice(-this.maxCount);
     }
 
     this.notifyListeners();
 
-    // 자동 제거
     setTimeout(() => {
       this.removeToast(toast.id);
     }, this.duration);
