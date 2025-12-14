@@ -84,12 +84,13 @@ const GoalBoard = ({ className, goal, tasks, onTaskClick }: GoalBoardProps) => {
               <div className='min-w-0 flex-1'>
                 <Typography
                   variant='body2-medium-loose'
-                  className={cn('mb-1', task.isDone ? 'text-gray-500 line-through' : 'text-gray-900')}
+                  className={cn('mb-1 overflow-hidden overflow-ellipsis', task.isDone ? 'text-gray-500 line-through' : 'text-gray-900')}
                 >
                   {task.title}
+                  <br />
                 </Typography>
                 {task.description && (
-                  <Typography variant='body3-medium-loose' className='truncate text-gray-500'>
+                  <Typography variant='body3-medium-loose' className='truncate overflow-hidden text-ellipsis text-gray-500'>
                     {task.description}
                   </Typography>
                 )}
