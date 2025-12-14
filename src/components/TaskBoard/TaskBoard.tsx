@@ -5,7 +5,6 @@ import { useState } from 'react';
 import CardView from '@/components/Card/CardView';
 import { TaskViewContainer } from '@/components/TaskViewContainer';
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
-import useMount from '@/hooks/useMount';
 import type { Task } from '@/types';
 import { cn } from '@/utils/cn';
 import { filterTasksByStatus } from '@/utils/filterTasks';
@@ -28,7 +27,6 @@ const EmptyTaskState = ({ mode }: { mode: 'todo' | 'done' }) => {
 export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpenMemo, className }: TaskBoardProps) {
   const { doneTasks, undoneTasks } = filterTasksByStatus(tasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const isMounted = useMount();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -72,7 +70,7 @@ export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpen
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
-      <div className={cn('flex h-full w-full gap-2', className)}>
+      <div className={cn('flex h-full min-h-[calc(100vh-100px)] w-full flex-col gap-2 md:min-h-0 md:flex-row', className)}>
         <TaskViewContainer
           items={undoneTasks}
           layout={layout}
@@ -82,7 +80,7 @@ export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpen
           onOpenMemo={onOpenMemo}
           isDragEnabled={true}
         />
-        <div className='line mt-16 w-[3px]' />
+        <div className='line mt-16 hidden w-[3px] md:mt-0 md:block' />
         <TaskViewContainer
           items={doneTasks}
           layout={layout}

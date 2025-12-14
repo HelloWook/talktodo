@@ -12,9 +12,10 @@ import { useUserStore } from '@/stores/user';
 
 interface TaskFormDialogProps {
   onClose: () => void;
+  initialDate?: Date;
 }
 
-export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
+export default function TaskFormDialog({ onClose, initialDate }: TaskFormDialogProps) {
   const { mutate } = useCreateTask();
   const { data: goals = [] } = useGetGoals();
 
@@ -27,7 +28,7 @@ export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
       description: '',
       memo: '',
       priority: '보통',
-      startDate: format(new Date(), 'yy-MM-dd'),
+      startDate: initialDate ? format(initialDate, 'yy-MM-dd') : format(new Date(), 'yy-MM-dd'),
       repeatDays: [],
       isDone: false,
       userId: user?.id,
@@ -49,7 +50,7 @@ export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
   });
 
   return (
-    <div className='m-6 flex w-full justify-center'>
+    <div className='mx-auto flex w-[90%] max-w-[480px] items-center justify-center'>
       <Form form={form} onSubmit={handleSubmit}>
         <Form.Header title='할 일 생성' onClose={onClose} />
         <div className='mb-4'>
@@ -61,7 +62,7 @@ export default function TaskFormDialog({ onClose }: TaskFormDialogProps) {
         </div>
         <div className='mb-4 flex gap-3'>
           <Form.SelectPriortyField />
-          <Form.DateField />
+          <Form.DateField initialDate={initialDate} />
         </div>
         <div className='mb-4'>
           <Form.GoalSelector goals={goals} />

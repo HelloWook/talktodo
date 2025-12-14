@@ -5,12 +5,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const MenuSideBarSkeleton = () => {
   return (
-    <SideBar>
+    <SideBar className='hidden xl:block'>
       <SideBar.Content className='bg-purple-100'>
-        <div className='flex items-center justify-between self-stretch border-b border-gray-200 py-5'>
-          <Skeleton className='h-8 w-8 rounded-md bg-purple-300' />
-          <Skeleton className='h-6 w-6 rounded-md bg-purple-300' />
-        </div>
+        {/* 모바일에서는 헤더가 숨겨지므로 스켈레톤에서도 제거 */}
 
         <div className='flex w-full flex-col justify-center border-b border-gray-200 py-5'>
           <div className='flex cursor-pointer items-center gap-1'>

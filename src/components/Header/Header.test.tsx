@@ -4,6 +4,23 @@ import { Task } from '@/types';
 
 import Header from './Header';
 
+// window.matchMedia 모킹
+beforeAll(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
+});
+
 const makeTask = (overrides?: Partial<Task>): Task => ({
   id: overrides?.id ?? '1',
   title: overrides?.title ?? '작업',
@@ -11,7 +28,7 @@ const makeTask = (overrides?: Partial<Task>): Task => ({
   memo: overrides?.memo ?? '',
   priority: overrides?.priority ?? '보통',
   repeatDays: overrides?.repeatDays ?? [],
-  startDate: overrides?.startDate ?? new Date(),
+  startDate: overrides?.startDate ?? new Date().toISOString(),
   userId: overrides?.userId ?? '1',
   isDone: overrides?.isDone ?? false,
   goal: overrides?.goal ?? { id: 'g1', name: '건강', userId: '1' },

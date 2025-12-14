@@ -15,6 +15,10 @@ export class GoalService {
   async update(id: string, data: GoalPayload): Promise<Goal> {
     return await goalRepository.update(id, data);
   }
+
+  async delete(id: string): Promise<Goal> {
+    return await goalRepository.delete(id);
+  }
 }
 
 export const goalService = new GoalService();

@@ -8,7 +8,7 @@ const ChatPage = () => {
   const { step, selectedGoal, handleGoalSelect, handleNextToChatRoom, handleBackToSelector } = useChatStep();
 
   return (
-    <div className='gradient-bg flex h-screen w-screen items-center'>
+    <div className='gradient-bg flex min-h-screen w-full items-center justify-center py-4'>
       {step === 'selector' ? (
         <TaskSelector onGoalSelect={handleGoalSelect} onNextClick={handleNextToChatRoom} />
       ) : (

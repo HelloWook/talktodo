@@ -1,4 +1,7 @@
+'use client';
+
 import Typography from '@/components/Typography/Typography';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import type { Goal } from '@/types';
 import { cn } from '@/utils/cn';
 
@@ -9,12 +12,13 @@ interface GoalSelectorButtonProps {
 }
 
 const GoalSelectorButton = ({ active, onClick, goal }: GoalSelectorButtonProps) => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const ativeStlye = active ? ' border-1 border-purple-500 bg-purple-50 text-purple-500' : 'border border-gray-200 bg-white text-gray-900';
   const activeButtonStyle = active ? 'text-purple-500' : 'text-gray-900';
 
   return (
     <button aria-pressed={active} onClick={onClick} className={cn(`flex w-full cursor-pointer rounded-xl border-solid p-4`, ativeStlye)}>
-      <Typography variant='body1-medium' as='p' className={activeButtonStyle}>
+      <Typography variant={isMobile ? 'body2-medium-tight' : 'body1-medium'} as='p' className={activeButtonStyle}>
         {goal.name}
       </Typography>
     </button>

@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 
 import Fab from '@/components/Fab/Fab';
 import MenuSideBar from '@/components/MenuSideBar';
@@ -12,6 +12,8 @@ import TaskHeaderSkeleton from '@/components/TaskHeader/TaskHeaderSkeleton';
 import TaskLayoutSkeleton from '@/components/TaskLayout/TaskLayoutSkeleton';
 import Typography from '@/components/Typography/Typography';
 import { useDialog } from '@/hooks/useDialog';
+import useMediaQuery from '@/hooks/useMediaQuery';
+import { useSelectedDate } from '@/hooks/useSelectedDate';
 import { useGetGoals } from '@/quries/useGoal';
 import { useGetTasks } from '@/quries/useTask';
 import { useUserStore } from '@/stores/user';
@@ -19,10 +21,11 @@ import { useUserStore } from '@/stores/user';
 export default function Home() {
   const { openDialog, closeDialog } = useDialog();
   const user = useUserStore((state) => state.user);
+  const isMobile = useMediaQuery('(max-width: 1280px)');
 
   const router = useRouter();
 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const { selectedDate, setSelectedDate } = useSelectedDate();
 
   const { isLoading: isGoalsLoading } = useGetGoals();
   const { data: tasks, isLoading: isTasksLoading } = useGetTasks({
@@ -33,8 +36,8 @@ export default function Home() {
   const isLoading = isGoalsLoading || isTasksLoading;
 
   return (
-    <div className='flex h-screen w-screen overflow-hidden bg-purple-50'>
-      {isLoading ? <MenuSideBarSkeleton /> : <MenuSideBar />}
+    <div className={`flex h-screen w-screen overflow-x-hidden overflow-y-scroll bg-purple-50 ${isMobile ? 'flex-col' : 'flex-row'}`}>
+      <div className={isMobile ? 'w-full' : ''}>{isLoading ? <MenuSideBarSkeleton /> : <MenuSideBar />}</div>
       {isLoading ? (
         <main className='relative mx-auto flex h-full w-full max-w-[1080px] flex-col p-4'>
           <TaskHeaderSkeleton />
@@ -51,7 +54,7 @@ export default function Home() {
               key: 'create-task',
               label: <span className='w-full text-center'>할 일 생성하기</span>,
               onClick: () => {
-                const id = openDialog(<TaskFormDialog onClose={() => closeDialog(id)} />);
+                const id = openDialog(<TaskFormDialog onClose={() => closeDialog(id)} initialDate={selectedDate} />);
               },
             },
             {

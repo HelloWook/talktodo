@@ -46,7 +46,7 @@ const TaskSelector = ({ onGoalSelect, onNextClick }: TaskSelectorProps) => {
     <div className='m-auto flex w-full max-w-[624px] flex-col items-center justify-center'>
       <div className='relative mb-3 -translate-x-6'>
         <Image
-          src='/img/unCompletedCharacter.png'
+          src='/img/UnCompletedCharacter.png'
           alt='chat character'
           width={110}
           height={120}
@@ -54,10 +54,10 @@ const TaskSelector = ({ onGoalSelect, onNextClick }: TaskSelectorProps) => {
           onLoad={() => setIsImageLoading(false)}
         />
       </div>
-      <div className='w-[95%] rounded-4xl bg-white p-9 shadow'>
+      <div className='w-[90%] rounded-4xl bg-white p-9 shadow'>
         <TaskSelectorHeader />
         {
-          <div className='scrollbar-hide flex h-[350px] flex-col gap-2 overflow-y-scroll'>
+          <div className='scrollbar-hide flex h-[200px] flex-col gap-2 overflow-y-scroll md:h-[350px]'>
             {goals.map((goal) => (
               <GoalSelectorButton key={goal.id} active={activeGoal?.id === goal.id} onClick={() => handleGoalClick(goal)} goal={goal} />
             ))}

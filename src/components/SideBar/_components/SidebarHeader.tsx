@@ -7,11 +7,16 @@ import { useSidebar } from '@/components/SideBar/SideBar';
 
 export default function SidebarHeader() {
   const router = useRouter();
-  const { isFold, toggleFold } = useSidebar();
+  const { isFold, toggleFold, isMobile } = useSidebar();
 
   const handleLogoClick = () => {
     router.push('/');
   };
+
+  // 모바일일 때는 헤더를 숨김 (상단 버튼에서 처리)
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div className={`flex items-center justify-between self-stretch border-b border-gray-200 py-5 ${isFold ? 'justify-center' : ''}`}>

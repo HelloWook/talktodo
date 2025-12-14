@@ -23,3 +23,8 @@ export const updateGoal = async (id: string, goal: GoalPayload) => {
   });
   return response.data.data;
 };
+
+export const deleteGoal = async (id: string) => {
+  const response = await axiosInstance.delete(`/api/goal?id=${id}`);
+  return response.data;
+};
