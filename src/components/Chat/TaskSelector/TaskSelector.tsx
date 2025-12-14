@@ -54,10 +54,10 @@ const TaskSelector = ({ onGoalSelect, onNextClick }: TaskSelectorProps) => {
           onLoad={() => setIsImageLoading(false)}
         />
       </div>
-      <div className='w-[95%] rounded-4xl bg-white p-9 shadow'>
+      <div className='w-[90%] rounded-4xl bg-white p-9 shadow'>
         <TaskSelectorHeader />
         {
-          <div className='scrollbar-hide flex h-[350px] flex-col gap-2 overflow-y-scroll'>
+          <div className='scrollbar-hide flex h-[200px] flex-col gap-2 overflow-y-scroll md:h-[350px]'>
             {goals.map((goal) => (
               <GoalSelectorButton key={goal.id} active={activeGoal?.id === goal.id} onClick={() => handleGoalClick(goal)} goal={goal} />
             ))}
