@@ -114,3 +114,38 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json(errorResponse, { status: ERRORS.CREATE_GOAL_ERROR.statusCode });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.UNAUTHORIZED,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.UNAUTHORIZED.statusCode });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      const errorResponse: ApiErrorResponse = {
+        success: false,
+        error: ERRORS.VALIDATION_ERROR,
+      };
+      return NextResponse.json(errorResponse, { status: ERRORS.VALIDATION_ERROR.statusCode });
+    }
+
+    await goalService.delete(id);
+
+    return NextResponse.json({ success: true }, { status: HttpStatusCode.Ok });
+  } catch {
+    const errorResponse: ApiErrorResponse = {
+      success: false,
+      error: ERRORS.DELETE_GOAL_ERROR,
+    };
+    return NextResponse.json(errorResponse, { status: ERRORS.DELETE_GOAL_ERROR.statusCode });
+  }
+}

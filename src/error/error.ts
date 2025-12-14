@@ -11,6 +11,8 @@ export type ErrorKey =
   | 'GET_TASK_BY_GOAL_ID_ERROR'
   | 'CREATE_GOAL_ERROR'
   | 'GET_ALL_GOALS_ERROR'
+  | 'UPDATE_GOAL_ERROR'
+  | 'DELETE_GOAL_ERROR'
   | 'UPDATE_USER_ERROR'
   | 'DELETE_USER_ERROR'
   | 'UNAUTHORIZED'
@@ -86,14 +88,24 @@ export const ERRORS: Record<ErrorKey, ErrorInfo> = {
     code: 'ERR_50009',
     statusCode: 500,
   },
+  UPDATE_GOAL_ERROR: {
+    message: '목표 수정에 실패했습니다.',
+    code: 'ERR_50010',
+    statusCode: 500,
+  },
+  DELETE_GOAL_ERROR: {
+    message: '목표 삭제에 실패했습니다.',
+    code: 'ERR_50011',
+    statusCode: 500,
+  },
   UPDATE_USER_ERROR: {
     message: '사용자 정보 수정에 실패했습니다.',
-    code: 'ERR_50010',
+    code: 'ERR_50012',
     statusCode: 500,
   },
   DELETE_USER_ERROR: {
     message: '계정 탈퇴에 실패했습니다.',
-    code: 'ERR_50011',
+    code: 'ERR_50013',
     statusCode: 500,
   },
   NOT_FOUND: {
