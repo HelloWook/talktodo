@@ -10,6 +10,7 @@ import { Suspense } from 'react';
 import AlertContainer from '@/components/Alert/AlertContainer';
 import DialogContainer from '@/components/DialogManager/DialogContainer';
 import MemoDrawerContainer from '@/components/MemoDrawer/MemoDrawerContainer';
+import ServiceWorkerRegistration from '@/components/PWA/ServiceWorkerRegistration';
 import ToastContainer from '@/components/Toast/ToastContainer';
 import ToastHandler from '@/components/Toast/ToastHandler';
 import UserProvider from '@/components/UserProvider/UserProvider';
@@ -47,6 +48,20 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: '톡투두',
   description: 'ai 챗봇을 활용한 할 일 관리 서비스',
+  manifest: '/manifest.json',
+  themeColor: '#8f3fff',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: '톡투두',
+  },
+  icons: {
+    icon: [
+      { url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
+  },
 };
 
 const spriteSvg = fs.readFileSync(path.join(process.cwd(), 'public', 'sprite.svg'), 'utf-8');
@@ -63,6 +78,7 @@ export default function RootLayout({
         <Providers>
           <UserProvider />
           <NetworkStatusMonitor />
+          <ServiceWorkerRegistration />
           {children}
 
           <div id='toast-root' />
