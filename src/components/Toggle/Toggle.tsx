@@ -74,10 +74,7 @@ const Toggle = ({
       )}
       {...props}
     >
-      {/* Left Icon */}
       {icons?.left && <div className={cn(ICON_CLASSNAME, 'left-1')}>{icons.left}</div>}
-
-      {/* Thumb */}
       <span
         className='pointer-events-none z-10 inline-block transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out'
         style={{
@@ -87,7 +84,6 @@ const Toggle = ({
         }}
       />
 
-      {/* Right Icon */}
       {icons?.right && <div className={cn(ICON_CLASSNAME, 'right-1')}>{icons.right}</div>}
     </button>
   );

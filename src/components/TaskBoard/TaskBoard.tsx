@@ -70,7 +70,7 @@ export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpen
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
-      <div className={cn('flex h-full w-full flex-col gap-2 md:flex-row', className)}>
+      <div className={cn('flex h-full min-h-0 w-full flex-col gap-2 md:flex-row', className)}>
         <TaskViewContainer
           items={undoneTasks}
           layout={layout}
@@ -80,7 +80,7 @@ export default function TaskBoard({ tasks, layout = 'card', onToggleDone, onOpen
           onOpenMemo={onOpenMemo}
           isDragEnabled={true}
         />
-        <div className='line mt-16 w-[3px]' />
+        <div className='line mt-16 hidden w-[3px] md:mt-0 md:block' />
         <TaskViewContainer
           items={doneTasks}
           layout={layout}

@@ -82,7 +82,7 @@ const TaskEditDialog = ({ onClose, task }: TaskEditDialogProps) => {
   };
 
   return (
-    <div className='m-6 flex w-full justify-center'>
+    <div className='flex w-[90%] max-w-[480px] items-center justify-center mx-auto'>
       <Form form={form} onSubmit={handleSubmit}>
         <Form.Header title='할 일 수정' onClose={onClose} />
         <div className='mb-4'>

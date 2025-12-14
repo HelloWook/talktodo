@@ -2,17 +2,20 @@
 
 import { useMemo } from 'react';
 
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 import DateButton from './DateButton';
+
 import { MOVE_DAYS_COUNT, formatDateToPath, getNearbyDates, isSameDate, moveDateByDays } from './dateUtils';
 import NavigationButton from './NavigationButton';
-
 interface DateListProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
 }
 
 export default function DateList({ selectedDate, onDateChange }: DateListProps) {
-  const visibleDates = useMemo(() => getNearbyDates(selectedDate), [selectedDate]);
+  const isMobile = useMediaQuery('(max-width: 480px)');
+  const visibleDates = useMemo(() => getNearbyDates(selectedDate, isMobile ? 3 : 5), [selectedDate, isMobile]);
 
   const handleDateSelect = (date: Date) => {
     onDateChange(date);
@@ -24,7 +27,7 @@ export default function DateList({ selectedDate, onDateChange }: DateListProps) 
   };
 
   return (
-    <div className='inline-flex gap-3'>
+    <div className='inline-flex sm:gap-3'>
       <NavigationButton direction='prev' onClick={() => handleMoveDays(-MOVE_DAYS_COUNT)} />
 
       {visibleDates.map((dateInfo) => (

@@ -50,7 +50,7 @@ export default function TaskFormDialog({ onClose, initialDate }: TaskFormDialogP
   });
 
   return (
-    <div className='m-6 flex w-full justify-center'>
+    <div className='mx-auto flex w-[90%] max-w-[480px] items-center justify-center'>
       <Form form={form} onSubmit={handleSubmit}>
         <Form.Header title='할 일 생성' onClose={onClose} />
         <div className='mb-4'>

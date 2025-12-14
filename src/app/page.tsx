@@ -36,8 +36,7 @@ export default function Home() {
   const isLoading = isGoalsLoading || isTasksLoading;
 
   return (
-    <div className={`flex h-screen w-screen overflow-hidden bg-purple-50 ${isMobile ? 'flex-col' : 'flex-row'}`}>
-      {/* 모바일일 때는 상단에, 데스크톱일 때는 좌측에 배치 */}
+    <div className={`flex h-screen w-screen overflow-x-hidden overflow-y-scroll bg-purple-50 ${isMobile ? 'flex-col' : 'flex-row'}`}>
       <div className={isMobile ? 'w-full' : ''}>{isLoading ? <MenuSideBarSkeleton /> : <MenuSideBar />}</div>
       {isLoading ? (
         <main className='relative mx-auto flex h-full w-full max-w-[1080px] flex-col p-4'>

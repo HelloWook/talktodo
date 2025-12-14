@@ -2,6 +2,7 @@
 
 import type { LayoutType } from '@/components/TaskViewContainer/TaskViewContainer.types';
 import Typography from '@/components/Typography/Typography';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import { cn } from '@/utils/cn';
 
 import { DateList, DatePickerButton, formatFullDate } from './_components/DateSelector';
@@ -21,11 +22,14 @@ export default function DateSubHeader({ className, selectedDate, onDateChange, l
     onLayoutChange?.(checked ? 'list' : 'card');
   };
 
+  const isTablet = useMediaQuery('(max-width: 768px)');
+  const isMobile = useMediaQuery('(max-width: 640px)');
+
   return (
     <div className={cn('flex w-full items-center', className)}>
       <div className='mx-auto flex items-center gap-2'>
-        <Typography variant='title3-semibold' className='text-gray-900'>
-          {formatFullDate(selectedDate)}
+        <Typography as='p' variant='title3-semibold' className='text-gray-900'>
+          {!isTablet && formatFullDate(selectedDate)}
         </Typography>
         <DatePickerButton selectedDate={selectedDate} onDateChange={onDateChange} />
 
@@ -37,11 +41,11 @@ export default function DateSubHeader({ className, selectedDate, onDateChange, l
           checked={layout === 'list'}
           onChange={handleToggle}
           icons={{
-            left: <Icon name='layout1' className='h-8 w-8' />,
-            right: <Icon name='layout2' className='h-8 w-8' />,
+            left: <Icon name='layout1' className={cn('h-8 w-8', isMobile && 'h-6 w-6')} />,
+            right: <Icon name='layout2' className={cn('h-8 w-8', isMobile && 'h-6 w-6')} />,
           }}
-          className='h-12 w-20'
-          thumbSize={40}
+          className={cn('h-12 w-20', isMobile && 'h-10 w-18')}
+          thumbSize={isMobile ? 32 : 40}
           thumbTranslateX={32}
         />
       </div>
