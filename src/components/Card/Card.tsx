@@ -9,6 +9,7 @@ import { getRepeatData } from '@/utils/getRepeatData';
 import Dot from '../Dot/Dot';
 import Icon from '../Icon/Icon';
 import Typography from '../Typography/Typography';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 type CardContextProps = {
   task: Task;
@@ -58,11 +59,11 @@ const Card = ({ className, children, handleClick }: CardProps) => {
   };
 
   return (
-    <div onClick={handleClick} onKeyDown={handleKeyDown} role='button' tabIndex={0} className='h-full w-full cursor-pointer text-left'>
+    <div onClick={handleClick} onKeyDown={handleKeyDown} role='button' tabIndex={0} className={cn('w-full cursor-pointer text-left')}>
       <article
         className={cn(
           'flex rounded-lg border border-transparent shadow hover:border hover:border-purple-300',
-          isListView ? 'h-[110px] flex-row items-center gap-4 p-4' : 'h-full flex-col gap-1.5 p-3',
+          isListView ? 'h-[80px] sm:h-[90px] flex-row items-center gap-4 p-4' : 'min-h-[140px] sm:min-h-[160px]  flex-col gap-1.5 p-3',
           task.isDone ? 'bg-purple-200' : 'bg-white',
           className,
         )}
@@ -79,10 +80,12 @@ interface CardTitleProps {
 }
 
 const CardTitle = ({ className }: CardTitleProps) => {
-  const { task } = useCardContext();
+  const { task, } = useCardContext();
 
+
+  const isMobile = useMediaQuery('(max-width: 640px)');
   return (
-    <Typography variant='body2-medium-tight' className={cn(task.isDone ? 'text-gray-400 line-through' : 'text-gray-900', className)}>
+    <Typography variant={isMobile ? 'body3-medium-tight' : 'body2-medium-tight'} className={cn(task.isDone ? 'text-gray-400 line-through' : 'text-gray-900', className)}>
       {task.title}
     </Typography>
   );

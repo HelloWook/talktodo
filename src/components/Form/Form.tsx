@@ -6,6 +6,7 @@ import Button from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
 import SelectProirty from '@/components/SelectPriorty/SelectPriorty';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import { Goal, Priority, RepeatDay } from '@/types';
 import { cn } from '@/utils/cn';
 import { formatDateValue, parseDateValue } from '@/utils/dateParser';
@@ -17,6 +18,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 
 interface FormState<TFieldValues extends FieldValues = FieldValues> {
   form: UseFormReturn<TFieldValues>;
+  isMobile: boolean;
 }
 
 const FormContext = createContext<FormState<FieldValues> | null>(null);
@@ -32,8 +34,9 @@ interface FormProps<TFieldValues extends FieldValues = FieldValues> extends Reac
 }
 
 function Form<TFieldValues extends FieldValues = FieldValues>({ children, form, ...props }: FormProps<TFieldValues>) {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   return (
-    <FormContext.Provider value={{ form } as FormState<FieldValues>}>
+    <FormContext.Provider value={{ form, isMobile } as FormState<FieldValues> }>
       <form {...props} className={cn('mx-auto w-full max-w-[480px] rounded-[40px] bg-white p-6 shadow', props.className)}>
         {children}
       </form>
@@ -49,10 +52,11 @@ interface HeaderProps {
   titleClassName?: string;
 }
 const Header = ({ title, onClose, className, titleClassName }: HeaderProps) => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   return (
     <header className={cn('mb-3 border-b border-gray-200 pb-2', className)}>
       <div className='flex items-center justify-between'>
-        <Typography variant='title1-semibold' as='p' className={cn(titleClassName)}>
+        <Typography variant={isMobile ? 'title2-bold' : 'title1-semibold'} as='p' className={cn(titleClassName)}>
           {title}
         </Typography>
         <button type='button' className='cursor-pointer' onClick={onClose} aria-label='닫기'>
@@ -218,6 +222,7 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
   const repeatDays = form.watch('repeatDays') || [];
   const error = form.formState.errors.repeatDays;
 
+  const isMobile = useMediaQuery('(max-width: 768px)');
   return (
     <fieldset className={cn('w-full', className)}>
       <legend>
@@ -225,7 +230,7 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
           반복 요일
         </Typography>
       </legend>
-      <div className={cn('flex flex-wrap justify-between')}>
+      <div className={cn( isMobile ? 'grid grid-cols-6 gap-2 ' : 'flex flex-wrap justify-between')}>
         {REPEAT_DAYS.map((day) => {
           const isSelected = repeatDays.includes(day);
 
@@ -239,7 +244,8 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
               }}
               variant='quaternary'
               className={cn(
-                '!hover:text-purple-500 !hover:bg-purple-300 h-[39px] active:bg-purple-300 active:text-purple-500',
+                isMobile && day === '일' && 'col-span-full',
+                '!hover:text-purple-500 !hover:bg-purple-300 h-[39px]  active:bg-purple-300 active:text-purple-500',
                 isSelected ? '!bg-purple-300 !text-purple-500' : '!bg-gray-100 !text-gray-700',
               )}
               type='button'

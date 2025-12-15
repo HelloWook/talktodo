@@ -35,7 +35,7 @@ export default function TaskViewContainer({
   };
 
   return (
-    <div ref={setNodeRef} className='flex h-full min-h-0 w-full flex-col gap-2'>
+    <div ref={setNodeRef} className='flex w-full flex-col gap-2 h-[400px] sm:h-full'>
       <div className='mb-3 flex h-[44px] items-center gap-2 rounded-xl bg-purple-100 px-4'>
         <Typography variant='body2-medium-tight' className='text-gray-700'>
           {title}
@@ -48,8 +48,8 @@ export default function TaskViewContainer({
       {items.length > 0 ? (
         <div
           className={cn(
-            'scrollbar-hide min-h-0 flex-1 overflow-y-auto pb-4 transition-colors',
-            isListView ? 'flex flex-col space-y-2' : 'grid auto-rows-[170px] grid-cols-3 gap-2',
+            'scrollbar-hide min-h-0 overflow-y-auto pb-4 transition-colors',
+            isListView ? 'flex flex-col space-y-2' : 'grid grid-auto-rows-auto grid-cols-3 gap-2',
             isOver && 'rounded-lg bg-purple-100/50',
           )}
         >

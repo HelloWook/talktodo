@@ -46,15 +46,13 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
   if (url.protocol === 'chrome-extension:') {
-    return; 
+    return;
   }
-
 
   if (url.pathname.startsWith('/api/auth/')) {
     return;
   }
 
-  
   if (event.request.method !== 'GET') {
     return;
   }
