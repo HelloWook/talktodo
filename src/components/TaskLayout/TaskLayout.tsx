@@ -32,7 +32,7 @@ const TaskLayout = ({ tasks, selectedDate, onDateChange, onToggleDone, onOpenMem
         onLayoutChange={handleLayoutChange}
       />
 
-      <TaskBoard className='flex-1 ' tasks={tasks} layout={layout} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} />
+      <TaskBoard className='flex-1' tasks={tasks} layout={layout} onToggleDone={onToggleDone} onOpenMemo={onOpenMemo} />
     </>
   );
 };

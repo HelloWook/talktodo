@@ -36,7 +36,7 @@ interface FormProps<TFieldValues extends FieldValues = FieldValues> extends Reac
 function Form<TFieldValues extends FieldValues = FieldValues>({ children, form, ...props }: FormProps<TFieldValues>) {
   const isMobile = useMediaQuery('(max-width: 768px)');
   return (
-    <FormContext.Provider value={{ form, isMobile } as FormState<FieldValues> }>
+    <FormContext.Provider value={{ form, isMobile } as FormState<FieldValues>}>
       <form {...props} className={cn('mx-auto w-full max-w-[480px] rounded-[40px] bg-white p-6 shadow', props.className)}>
         {children}
       </form>
@@ -230,7 +230,7 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
           반복 요일
         </Typography>
       </legend>
-      <div className={cn( isMobile ? 'grid grid-cols-6 gap-2 ' : 'flex flex-wrap justify-between')}>
+      <div className={cn(isMobile ? 'grid grid-cols-6 gap-2' : 'flex flex-wrap justify-between')}>
         {REPEAT_DAYS.map((day) => {
           const isSelected = repeatDays.includes(day);
 
@@ -245,7 +245,7 @@ const RepeatButtonGroup = ({ className }: { className?: string }) => {
               variant='quaternary'
               className={cn(
                 isMobile && day === '일' && 'col-span-full',
-                '!hover:text-purple-500 !hover:bg-purple-300 h-[39px]  active:bg-purple-300 active:text-purple-500',
+                '!hover:text-purple-500 !hover:bg-purple-300 h-[39px] active:bg-purple-300 active:text-purple-500',
                 isSelected ? '!bg-purple-300 !text-purple-500' : '!bg-gray-100 !text-gray-700',
               )}
               type='button'
