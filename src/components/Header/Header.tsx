@@ -63,16 +63,16 @@ const Title = ({ className }: CommonProps) => {
       {!isMobile && '오늘 '}
       {!isMobile && <br />}
       {isCompleted ? (
-        <Typography as='span' variant={isMobile ? 'title3-bold' : 'title2-bold'} className='text-white md:text-lg'>
+        <Typography as='span' variant={isMobile ? 'title3-bold' : 'title2-bold'} className='line-clamp-1 text-white md:text-lg'>
           {'할 일을 모두 완료했어요!'}
         </Typography>
       ) : (
         <>
-          <Typography as='span' variant={isMobile ? 'title3-bold' : 'title2-bold'} className='text-white md:text-lg'>
+          <Typography as='span' variant={isMobile ? 'title3-bold' : 'title2-bold'} className='line-clamp-1 text-white md:text-lg'>
             총 {totalTodo}건
           </Typography>
 
-          <Typography as='span' variant={isMobile ? 'title3-bold' : 'title2-bold'} className='md:text-lg'>
+          <Typography as='span' variant={isMobile ? 'title3-bold' : 'title2-bold'} className='line-clamp-1 md:text-lg'>
             의 할 일이 있어요
           </Typography>
         </>

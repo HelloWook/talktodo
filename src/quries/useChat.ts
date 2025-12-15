@@ -19,7 +19,13 @@ interface UseChatOptions extends ChatRoomAction {
 }
 
 const useChat = ({ handleSetTaskSchedules, userId, goalId }: UseChatOptions) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      message:
+        '안녕하세요. 톡투두의 챗봇입니다. 할 일 정리를 원하신다면 할 일과 날짜를 입력해주세요. \n EX) 내일 책 읽기, 내일 축구하기, 내일 게임하기',
+      role: 'assistant',
+    },
+  ]);
 
   const handleMessage = (newMessage: Message) => {
     setMessages((prev) => [...prev, newMessage]);
